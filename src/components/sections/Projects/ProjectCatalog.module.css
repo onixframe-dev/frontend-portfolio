@@ -1,0 +1,133 @@
+.filterBar {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 10px;
+  margin: 0;
+  padding: 14px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 22px;
+  width: fit-content;
+  max-width: 100%;
+  background: rgba(255, 255, 255, 0.045);
+  backdrop-filter: blur(16px);
+}
+
+.catalogHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  align-items: center;
+  text-align: center;
+  padding: 0 4px;
+}
+
+.catalogTitle {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.catalogTitle p {
+  margin: 18px auto 0;
+  max-width: 640px;
+}
+
+.filterBarWrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.catalogGrid {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  align-items: stretch;
+  min-height: 0;
+}
+
+.catalogGrid > * {
+  flex: 1 1 calc(33.333% - 16px);
+  min-width: 320px;
+}
+
+.catalogSection {
+  scroll-margin-top: 120px;
+}
+
+.placeholderItem {
+  min-height: 520px;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.pagination {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: fit-content;
+  margin: 36px auto 0;
+  padding: 0;
+}
+
+.pageLink {
+  min-width: 42px;
+  height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #f5f7ff;
+  background: rgba(255, 255, 255, 0.06);
+  cursor: pointer;
+  transition: transform 0.22s ease, background 0.22s ease, border-color 0.22s ease;
+}
+
+.pageLink:hover,
+.paginationActive .pageLink {
+  transform: translateY(-2px);
+  border-color: rgba(124, 92, 255, 0.45) !important;
+  background: rgba(124, 92, 255, 0.22) !important;
+}
+
+.paginationDisabled .pageLink {
+  cursor: not-allowed;
+  opacity: 0.38;
+}
+
+@media (max-width: 920px) {
+  .catalogHeader {
+    display: block;
+  }
+
+  .filterBarWrapper {
+    justify-content: center;
+    margin-top: 18px;
+  }
+}
+
+@media (max-width: 760px) {
+  .filterBar {
+    width: 100%;
+  }
+
+  .filterBar > * {
+    flex: 1 1 calc(50% - 8px);
+  }
+
+  .catalogGrid > * {
+    min-width: 100%;
+  }
+}
+
+.pageItem {
+  list-style: none;
+}

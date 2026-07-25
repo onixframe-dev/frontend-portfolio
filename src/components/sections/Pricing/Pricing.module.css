@@ -1,0 +1,362 @@
+﻿.pricingGrid {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  gap: 24px;
+  align-items: stretch;
+}
+.pricingHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  max-width: 680px;
+  margin-bottom: 56px;
+}
+.pricingHeader h2 {
+  font-size: 44px;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.92);
+  margin-bottom: 18px;
+}
+.pricingHeader p {
+  margin: 0;
+  max-width: 560px;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.8;
+  letter-spacing: 0.01em;
+}
+.priceCard {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 540px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 32px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  transition: transform 0.35s ease, border-color 0.35s ease, background 0.35s ease, box-shadow 0.35s ease;
+}
+.priceCard:hover {
+  transform: translateY(-8px);
+  border-color: rgba(124, 92, 255, 0.4);
+  background: rgba(255, 255, 255, 0.021);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25), 0 0 12px rgba(124, 92, 255, 0.12);
+}
+.priceCardFeatured {
+  border-color: rgba(124, 92, 255, 0.4);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+}
+.priceTop {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 640px;
+}
+.priceBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  color: #f8f7ff;
+  background: rgba(124, 92, 255, 0.12);
+  border: 1px solid rgba(124, 92, 255, 0.2);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+.priceCard h3 {
+  margin: 20px 0 0;
+  font-size: 28px;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+}
+.priceCard strong {
+  display: block;
+  margin-top: 16px;
+  font-size: 44px;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  font-weight: 700;
+}
+.priceCard p {
+  margin-top: 16px;
+  color: rgba(255, 255, 255, 0.65);
+  line-height: 1.7;
+  font-size: 14px;
+  max-width: 540px;
+}
+.priceList {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin: 28px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.priceList li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.6;
+  font-size: 14px;
+}
+.priceList svg {
+  flex: 0 0 auto;
+  color: rgba(124, 92, 255, 0.9);
+  margin-top: 1px;
+}
+.clickable {
+  cursor: pointer;
+}
+.pricingModalOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(7, 11, 18, 0.84);
+  backdrop-filter: blur(18px);
+}
+.pricingModal {
+  position: relative;
+  width: min(100%, 900px);
+  max-height: min(86vh, 820px);
+  overflow: hidden;
+  padding: 0;
+  border-radius: 28px;
+  background: rgba(14, 18, 26, 0.98);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.3);
+}
+.pricingModal::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 20% 0%, rgba(124, 92, 255, 0.14), transparent 28%),
+    radial-gradient(circle at 90% 20%, rgba(92, 225, 230, 0.06), transparent 26%);
+  pointer-events: none;
+}
+.modalClose {
+  position: sticky;
+  top: 18px;
+  margin: 18px 18px 0 auto;
+  z-index: 4;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+  cursor: pointer;
+  transition: transform 0.22s ease, background 0.22s ease;
+}
+.modalClose:hover {
+  transform: rotate(90deg) scale(1.04);
+  background: rgba(255, 255, 255, 0.12);
+}
+.modalHeader,
+.modalSection,
+.pricingModal > a {
+  position: relative;
+  z-index: 1;
+}
+.modalHeader {
+  padding: 0 32px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.modalMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.modalBadge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  width: min(100%, 760px);
+  min-height: 40px;
+  margin: 0 auto 10px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: rgba(124, 92, 255, 0.14);
+  color: #f5f6ff;
+  border: 1px solid rgba(124, 92, 255, 0.24);
+  backdrop-filter: blur(16px);
+  text-align: center;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+.modalHeader h3 {
+  margin: 0;
+  font-size: 38px;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+.modalHeader strong {
+  font-size: 38px;
+  letter-spacing: -0.04em;
+}
+.modalHeader p {
+  max-width: 680px;
+  margin: 0;
+  color: rgba(255,255,255,0.7);
+  line-height: 1.7;
+  font-size: 15px;
+}
+.modalSection {
+  padding: 0 32px;
+  margin-top: 24px;
+}
+.modalSection:last-of-type {
+  padding-bottom: 20px;
+}
+.modalSection h4 {
+  margin: 0 0 10px;
+  font-size: 16px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  letter-spacing: 0.01em;
+}
+.modalSection p,
+.modalSection ul {
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.75;
+  font-size: 14px;
+}
+.modalSection ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0;
+  margin: 0;
+}
+.modalSection li {
+  position: relative;
+  padding-left: 20px;
+}
+.modalSection li::before {
+  content: '▹';
+  position: absolute;
+  left: 0;
+  top: 2px;
+  color: rgba(124, 92, 255, 0.9);
+}
+.pricingModal {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(124, 92, 255, 0.5) rgba(255, 255, 255, 0.05);
+  overflow-y: auto;
+}
+.pricingModal::-webkit-scrollbar {
+  width: 6px;
+}
+.pricingModal::-webkit-scrollbar-track {
+  background: rgba(8, 12, 18, 0.85);
+  border-radius: 999px;
+}
+.pricingModal::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(124, 92, 255, 0.8), rgba(92, 225, 230, 0.65));
+  border-radius: 999px;
+  border: 1px solid rgba(14, 18, 26, 0.96);
+}
+@media (max-width: 980px) {
+  .pricingGrid {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .pricingHeader h2 {
+    font-size: 36px;
+  }
+
+  .priceCard h3 {
+    font-size: 24px;
+  }
+
+  .priceCard strong {
+    font-size: 40px;
+  }
+
+  .modalHeader h3 {
+    font-size: 34px;
+  }
+
+  .priceCard {
+    min-height: auto;
+    padding: 28px;
+  }
+}
+@media (max-width: 560px) {
+  .pricingHeader h2 {
+    font-size: 28px;
+  }
+
+  .pricingHeader {
+    margin-bottom: 44px;
+  }
+
+  .priceCard h3 {
+    font-size: 22px;
+  }
+
+  .priceCard strong {
+    font-size: 36px;
+  }
+
+  .priceCard {
+    padding: 22px;
+    border-radius: 24px;
+  }
+  .pricingModalOverlay {
+    padding: 10px;
+  }
+  .pricingModal {
+    max-height: 90vh;
+    border-radius: 20px;
+  }
+  .modalHeader {
+    padding: 0 20px 16px;
+  }
+
+  .modalHeader h3 {
+    font-size: 28px;
+  }
+
+  .modalSection {
+    padding: 0 20px;
+  }
+
+  .modalBadge {
+    width: calc(100% - 64px);
+    min-height: 38px;
+    font-size: 14px;
+  }
+
+  .modalClose {
+    top: 12px;
+    margin: 12px 12px 0 auto;
+    width: 42px;
+    height: 42px;
+  }
+}

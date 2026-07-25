@@ -1,0 +1,173 @@
+.button {
+  font: inherit;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 52px;
+  padding: 0 28px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease, color 0.25s ease;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.button:hover,
+.button:focus-visible {
+  transform: translateY(-2px);
+}
+
+.primary {
+  background: linear-gradient(135deg, rgba(125, 92, 255, 0.623), rgba(92, 225, 230, 0.473));
+  color: #0d111b;
+  box-shadow: 0 3px 10px rgba(84, 214, 226, 0.16);
+}
+
+.primary:hover,
+.primary:focus-visible {
+  box-shadow: 5px 5px 5px rgba(84, 214, 226, 0.11);
+}
+
+.ghost {
+  color: rgba(255, 255, 255, 0.92);
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+.ghost:hover,
+.ghost:focus-visible {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.26);
+}
+
+.contact {
+  gap: 10px;
+  min-height: 44px;
+  padding: 0 18px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #ffff;
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.icon {
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.icon:hover,
+.icon:focus-visible,
+.contact:hover,.contact:focus-visible{
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+.filter {
+  gap: 0;
+  min-height: 42px;
+  padding: 0 18px;
+  border-radius: 16px;
+  color: rgba(255, 255, 255, 0.78);
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.14);
+  font-size: 13.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  backdrop-filter: blur(12px);
+}
+
+.filter:hover,
+.filter:focus-visible {
+  color: rgba(255, 255, 255, 0.96);
+  border-color: rgba(255, 255, 255, 0.24);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.filter.active {
+  color: #fff;
+  border-color: rgba(124, 92, 255, 0.4);
+  background: rgba(124, 92, 255, 0.18);
+  box-shadow: 0 10px 28px rgba(124, 92, 255, 0.14), inset 0 1px 1px rgba(255, 255, 255, 0.08);
+}
+
+.active {
+  color: #ffffff;
+  border-color: rgba(124, 92, 255, 0.48);
+  background: rgba(124, 92, 255, 0.18);
+  box-shadow: 0 12px 32px rgba(124, 92, 255, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.12);
+}
+
+.price {
+  justify-content: center;
+  min-height: 54px;
+  margin-top: 30px;
+  padding: 0 30px;
+  color: #edf2ff;
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.048);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.price:hover,
+.price:focus-visible {
+  background: rgba(255, 255, 255, 0.055);
+  box-shadow: 0 9px 24px rgba(0, 0, 0, 0.479);
+   border-color: rgba(255, 255, 255, 0.034);
+}
+
+.priceFeatured {
+  justify-content: center;
+  min-height: 54px;
+  margin-top: 30px;
+  padding: 0 30px;
+  color: #0d111b;
+  background: linear-gradient(35deg, rgba(125, 92, 255, 0.534), rgba(92, 225, 230, 0.363));
+  border-color: rgba(124, 92, 255, 0.24);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.priceFeatured:hover,
+.priceFeatured:focus-visible {
+  background: linear-gradient(35deg, rgba(125, 92, 255, 0.637), rgba(92, 225, 230, 0.466));
+  box-shadow: 0 5px 12px rgba(84, 214, 226, 0.22);
+}
+
+.modal {
+  min-height: 52px;
+  margin: 8px 0 34px 34px;
+  padding: 0 28px;
+  color: #f8f8ff;
+  background: rgba(18, 24, 38, 0.88);
+  border-color: rgba(124, 92, 255, 0.24);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 16px 32px rgba(0, 0, 0, 0.22);
+}
+
+.modal:hover,
+.modal:focus-visible {
+  background: linear-gradient(135deg, rgba(124, 92, 255, 0.95), rgba(92, 225, 230, 0.82));
+  box-shadow: 0 22px 70px rgba(84, 214, 226, 0.22);
+}
+
+@media (max-width: 560px) {
+  .button {
+    width: 100%;
+  }
+
+  .icon {
+    width: 42px;
+  }
+
+  .modal {
+    margin: 8px 22px 28px;
+  }
+}

@@ -1,0 +1,85 @@
+.aboutBlock {
+  padding-bottom: 92px;
+}
+
+.aboutHeader {
+  max-width: 820px;
+  margin-bottom: 44px;
+}
+
+.aboutHeader p {
+  margin: 12px auto 0;
+}
+
+.aboutIntro h2 {
+  margin-bottom: 22px;
+}
+
+.aboutIntro p {
+  max-width: 760px;
+  color: rgba(255, 255, 255, 0.78);
+  line-height: 1.82;
+}
+
+
+.aboutGrid {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  gap: 24px;
+  align-items: stretch;
+}
+
+.aboutCard {
+  flex: 1 1 0;
+  min-height: 280px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 30px;
+  background: rgba(255,255,255,0.045);
+  transition: transform 0.4s cubic-bezier(0.23, 1, 0.320, 1),
+              background 0.4s ease,
+              border-color 0.4s ease,
+              box-shadow 0.4s ease;
+}
+
+.aboutCard:hover {
+  transform: translateY(-6px);
+  border-color: rgba(185, 178, 255, 0.38);
+  background: rgba(255,255,255,0.08);
+  box-shadow: 0 24px 70px rgba(124, 92, 255, 0.12);
+}
+
+.aboutCard svg {
+  color: #b9b2ff;
+}
+
+.aboutCard h3 {
+  margin: 22px 0 0;
+  font-size: 24px;
+}
+
+.aboutCard p {
+  margin: 12px 0 0;
+  color: var(--muted);
+  line-height: 1.75;
+}
+
+@media (max-width: 860px) {
+  .aboutHeader {
+    padding: 0;
+  }
+}
+
+@media (max-width: 820px) {
+  .aboutGrid {
+    flex-direction: column;
+  }
+
+  .aboutCard {
+    min-height: 220px;
+  }
+}
