@@ -1,6 +1,5 @@
 import { About } from "@/components/sections/About/About";
 import { ContactForm } from "@/components/sections/ContactForm/ContactForm";
-import { FeaturedProjects } from "@/components/sections/Projects/FeaturedProjects";
 import { Footer } from "@/components/layout/Footer/Footer";
 import { Header } from "@/components/layout/Header/Header";
 import { Hero } from "@/components/sections/Hero/Hero";
@@ -14,13 +13,14 @@ export default function Home() {
     <main>
       <Header />
       <Hero />
-      <TechStack />
-      <FeaturedProjects />
-      <ProjectCatalog />
-      <Pricing />
-      <About />
-      <ContactForm />
-      <Footer />
+      <div className="starryRegion">
+        <TechStack />
+        <ProjectCatalog />
+        <Pricing />
+        <About />
+        <ContactForm />
+        <Footer />
+      </div>
       <ScrollToTop />
     </main>
   );

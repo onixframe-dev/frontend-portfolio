@@ -31,6 +31,18 @@
   background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.03));
 }
 
+.projectImage {
+  object-fit: cover;
+  object-position: top center;
+  transform: scale(1.01);
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), filter 0.5s ease;
+}
+
+.projectCard:hover .projectImage {
+  transform: scale(1.045);
+  filter: saturate(1.08) contrast(1.04);
+}
+
 .featuredCard .projectThumb {
   min-height: 320px;
 }
@@ -82,16 +94,8 @@
   padding: 30px;
 }
 
-.projectMeta {
-  display: flex;
-  justify-content: space-between;
-  gap: 14px;
-  color: rgba(255, 255, 255, 0.72);
-  font-size: 13px;
-}
-
 .projectContent h3 {
-  margin: 22px 0 0;
+  margin: 0;
   font-size: 28px;
   letter-spacing: -0.045em;
   line-height: 1.08;

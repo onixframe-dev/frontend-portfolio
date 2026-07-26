@@ -1,228 +1,229 @@
 .hero {
   position: relative;
-  min-height: calc(100vh - 100px);
+  min-height: min(640px, calc(100vh - 120px));
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 72px;
-  padding: 100px 0 90px;
+  justify-content: center;
+  padding: 64px 0;
+  text-align: center;
+  overflow: hidden;
+  isolation: isolate;
+  touch-action: pan-y;
+  background: #000;
+  box-shadow: 0 0 0 100vmax #000, 0 56px 120px rgba(0, 0, 0, 0.58);
 }
 
-.hero::before {
+/* .hero::before {
   content: '';
   position: absolute;
   width: 560px;
   height: 560px;
   top: 12%;
   left: 4%;
-  background: radial-gradient(circle, rgba(124, 92, 255, 0.18), transparent 62%);
+  background: radial-gradient(circle, rgba(124, 92, 255, 0.12), transparent 62%);
   filter: blur(96px);
   pointer-events: none;
   z-index: 0;
+} */
+
+/* .hero::after {
+  content: '';
+  position: absolute;
+  inset: 8% 0 auto 50%;
+  width: min(840px, 90vw);
+  height: min(840px, 90vw);
+  background: radial-gradient(circle, rgba(92, 225, 230, 0.08), transparent 66%);
+  filter: blur(86px);
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 0;
+} */
+
+.particlesLayer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  opacity: 0.92;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 8%, #000 86%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 8%, #000 86%, transparent 100%);
+}
+
+.particles {
+  position: absolute;
+  inset: 0;
+}
+
+.particleCanvas {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .heroCopy {
   position: relative;
-  z-index: 1;
-  flex: 1 1 52%;
-  min-width: 0;
+  z-index: 2;
+  width: min(100%, 760px);
+  margin: 0 auto;
 }
 
 .heroCopy h1 {
   margin: 0;
-  font-size: 88px;
-  line-height: 0.98;
-  letter-spacing: -0.05em;
+  font-size: clamp(38px, 4.2vw, 58px);
+  line-height: 0.96;
+  letter-spacing: 0;
+  font-weight: 500;
+  text-wrap: balance;
 }
 
-.heroCopy h1 span {
+.heroLine {
   display: block;
+  background: linear-gradient(
+    110deg,
+    rgba(255, 255, 255, 0.72) 0%,
+    #ffffff 26%,
+    rgba(124, 92, 255, 0.95) 40%,
+    rgba(92, 225, 230, 0.9) 54%,
+    #ffffff 68%,
+    rgba(255, 255, 255, 0.72) 100%
+  );
+  background-size: 260% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: heroTextFlow 8s ease-in-out infinite;
+  text-shadow: 0 0 28px rgba(92, 225, 230, 0.08);
 }
 
-.heroAccent {
-  background: linear-gradient(90deg, rgba(124, 92, 255, 0.95), rgba(92, 225, 230, 0.85));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.heroLine:nth-child(2) {
+  animation-delay: 0.9s;
+}
+
+.heroLine:nth-child(3) {
+  animation-delay: 1.8s;
 }
 
 .heroText {
-  max-width: 680px;
-  margin-top: 30px;
-  color: rgba(255, 255, 255, 0.74);
-  font-size: 20px;
-  line-height: 1.78;
-  letter-spacing: 0.01em;
+  max-width: 600px;
+  margin: 22px auto 0;
+  color: rgba(255, 255, 255, 0.712);
+  font-size: 16px;
+  line-height: 1.55;
+  letter-spacing: 0;
 }
 
 .heroButtons {
   display: flex;
   flex-wrap: wrap;
-  gap: 18px;
-  margin-top: 44px;
-}
-
-.heroVisual {
-  position: relative;
-  z-index: 1;
-  flex: 0 1 520px;
-  min-height: 560px;
-  display: flex;
-  align-items: center;
   justify-content: center;
-  pointer-events: none;
+  gap: 18px;
+  margin-top: 36px;
 }
 
-.orb {
-  position: absolute;
-  border-radius: 50%;
-  opacity: 0.8;
-  pointer-events: none;
-}
-
-.orbOne {
-  width: 260px;
-  height: 260px;
-  top: -2%;
-  left: -4%;
-  background: radial-gradient(circle, rgba(124, 92, 255, 0.2), transparent 72%);
-}
-
-.orbTwo {
-  width: 240px;
-  height: 240px;
-  bottom: 4%;
-  right: -2%;
-  background: radial-gradient(circle, rgba(92, 225, 230, 0.14), transparent 72%);
-}
-
-.mockupCard {
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
-  box-shadow: 0 42px 110px rgba(0, 0, 0, 0.28);
-  backdrop-filter: blur(22px);
-}
-
-.mainMockup {
+.heroButtons a {
   position: relative;
-  width: min(100%, 520px);
-  min-height: 540px;
-  padding: 34px;
-  border-radius: 42px;
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  gap: 26px;
-  transition: transform 0.5s cubic-bezier(0.23, 1, 0.320, 1),
-              box-shadow 0.5s cubic-bezier(0.23, 1, 0.320, 1),
-              border-color 0.5s ease;
+  border-color: rgba(92, 225, 230, 0.22);
+  background: rgba(255, 255, 255, 0.055);
+  color: rgba(255, 255, 255, 0.9);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 0 0 rgba(92, 225, 230, 0);
 }
 
-.heroVisual:hover .mainMockup {
-  transform: translateY(-8px);
-  box-shadow: 0 52px 140px rgba(124, 92, 255, 0.18), 0 0 1px rgba(124, 92, 255, 0.1);
-  border-color: rgba(124, 92, 255, 0.3);
-}
-
-.mockupHeader {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.mockupHeader strong {
-  font-size: 16px;
-  font-weight: 800;
+.heroButtons a:hover,
+.heroButtons a:focus-visible {
+  transform: translateY(-3px);
+  border-color: rgba(92, 225, 230, 0.5);
+  background: rgba(92, 225, 230, 0.12);
   color: #ffffff;
-  line-height: 1.2;
+  box-shadow: 0 12px 32px rgba(92, 225, 230, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.14);
 }
 
-.mockupHeader span {
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.56);
-  font-weight: 500;
+.heroButtons a:focus-visible {
+  outline: 2px solid rgba(92, 225, 230, 0.68);
+  outline-offset: 4px;
 }
 
-.mockupContent {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+.heroButtons a:first-child {
+  border-color: rgba(92, 225, 230, 0.42);
+  background: rgba(16, 52, 68, 0.86);
+  color: #ecfbff;
+  box-shadow: 0 12px 30px rgba(92, 225, 230, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.12);
 }
 
-.mockupBlock {
-  flex: 1;
-  padding: 18px;
-  border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  transition: background 0.3s ease, border-color 0.3s ease;
-}
-
-.mockupBlockHeader {
-  height: 6px;
-  width: 60%;
-  border-radius: 3px;
-  background: rgba(255, 255, 255, 0.12);
-  margin-bottom: 14px;
-}
-
-.mockupBlockLines {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.mockupBlockLines::before,
-.mockupBlockLines::after {
+.heroButtons a:first-child::before {
   content: '';
-  height: 4px;
-  border-radius: 2px;
-  background: rgba(255, 255, 255, 0.08);
+  position: absolute;
+  inset: -40% auto -40% -70%;
+  width: 56%;
+  transform: rotate(18deg);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.14),
+    rgba(92, 225, 230, 0.44),
+    rgba(255, 255, 255, 0.18),
+    transparent
+  );
+  animation: buttonShine 3.6s ease-in-out infinite;
+  pointer-events: none;
 }
 
-.mockupBlockLines::before {
-  width: 100%;
+.heroButtons a:first-child:hover,
+.heroButtons a:first-child:focus-visible {
+  border-color: rgba(124, 92, 255, 0.58);
+  background: rgba(24, 63, 80, 0.94);
+  box-shadow: 0 16px 38px rgba(92, 225, 230, 0.22), 0 0 30px rgba(124, 92, 255, 0.12);
 }
 
-.mockupBlockLines::after {
-  width: 85%;
+@keyframes heroTextFlow {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  45%,
+  60% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes buttonShine {
+  0%,
+  28% {
+    left: -75%;
+  }
+
+  58%,
+  100% {
+    left: 125%;
+  }
 }
 
 @media (max-width: 980px) {
   .hero {
-    flex-direction: column;
-    align-items: stretch;
-    padding: 84px 0 76px;
-    gap: 46px;
+    min-height: 560px;
+    padding: 47px 0 41px;
   }
 
   .heroCopy h1 {
-    font-size: 72px;
+    font-size: clamp(36px, 7vw, 52px);
   }
 
   .heroText {
-    font-size: 18px;
+    font-size: 13px;
   }
 
-  .heroVisual {
-    flex-basis: auto;
-    min-height: auto;
-  }
-
-  .mainMockup {
-    width: 100%;
-    min-height: 460px;
-  }
 }
 
 @media (max-width: 560px) {
   .hero {
-    min-height: auto;
-    padding: 62px 0 58px;
+    min-height: 500px;
+    padding: 31px 0 29px;
     align-items: center;
     text-align: center;
-    gap: 34px;
   }
 
   .hero::before {
@@ -234,20 +235,30 @@
     opacity: 0.65;
   }
 
+  .hero::after {
+    width: 420px;
+    height: 420px;
+    filter: blur(68px);
+  }
+
+  .particlesLayer {
+    opacity: 0.76;
+  }
+
   .heroCopy {
     width: 100%;
   }
 
   .heroCopy h1 {
-    font-size: clamp(36px, 11.2vw, 44px);
-    line-height: 1.02;
+    font-size: clamp(29px, 9vw, 38px);
+    line-height: 0.98;
   }
 
   .heroText {
     max-width: 100%;
-    margin-top: 22px;
-    font-size: 15px;
-    line-height: 1.7;
+    margin: 22px auto 0;
+    font-size: 12px;
+    line-height: 1.55;
   }
 
   .heroButtons {
@@ -255,20 +266,5 @@
     align-items: stretch;
     gap: 12px;
     margin-top: 30px;
-  }
-
-  .heroVisual {
-    width: 100%;
-  }
-
-  .mainMockup {
-    width: 100%;
-    min-height: 360px;
-    padding: 22px;
-    border-radius: 32px;
-  }
-
-  .mockupPreview {
-    min-height: 230px;
   }
 }

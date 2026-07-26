@@ -6,15 +6,23 @@
 }
 .sectionBlock {
   padding: 50px 0;
+  isolation: isolate;
 }
 .sectionBlock::before {
   content: '';
   position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at 10% 15%, rgba(182, 92, 255, 0.089), transparent 15%),
-    radial-gradient(circle at 90% 10%, rgba(84, 214, 226, 0.068), transparent 22%);
+  top: -88px;
+  bottom: -88px;
+  left: 50%;
+  width: 100vw;
+  transform: translateX(-50%);
+  background:
+    radial-gradient(circle at 16% 18%, rgba(124, 92, 255, 0.045), transparent 22rem),
+    radial-gradient(circle at 82% 24%, rgba(92, 225, 230, 0.035), transparent 24rem),
+    linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.28) 18%, rgba(0, 0, 0, 0.28) 82%, transparent);
   pointer-events: none;
-  opacity: 0.32;
+  opacity: 0.72;
+  z-index: -1;
 }
 .sectionHeader {
   position: relative;
