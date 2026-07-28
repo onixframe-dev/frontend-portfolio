@@ -44,6 +44,7 @@
   letter-spacing: -0.03em;
   font-weight: 600;
   color: rgba(255, 255, 255, 0.92);
+  text-wrap: balance;
 }
 .sectionHeader p {
   margin-top: 24px;
@@ -52,6 +53,7 @@
   line-height: 1.8;
   max-width: 560px;
   letter-spacing: 0.01em;
+  text-wrap: balance;
 }
 .rowHeader {
   max-width: none;
@@ -92,6 +94,10 @@
 
   .sectionHeader h2 {
     font-size: 28px;
+  }
+
+  .sectionHeader p {
+    width: min(100%, 330px);
   }
 
   .sectionBlock {

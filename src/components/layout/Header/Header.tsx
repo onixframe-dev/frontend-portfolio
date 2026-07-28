@@ -67,6 +67,8 @@ export function Header() {
       .map((item) => document.querySelector<HTMLElement>(item.href.replace("/", "")))
       .filter(Boolean) as HTMLElement[];
 
+    let frameId = 0;
+
     const updateActiveSection = () => {
       const offset = 140;
       let currentHash = "";
@@ -79,14 +81,28 @@ export function Header() {
         }
       });
 
-      setActiveHash(currentHash);
+      setActiveHash((previousHash) => (previousHash === currentHash ? previousHash : currentHash));
+    };
+
+    const requestActiveSectionUpdate = () => {
+      if (frameId) {
+        return;
+      }
+
+      frameId = window.requestAnimationFrame(() => {
+        frameId = 0;
+        updateActiveSection();
+      });
     };
 
     updateActiveSection();
-    window.addEventListener("scroll", updateActiveSection, { passive: true });
+    window.addEventListener("scroll", requestActiveSectionUpdate, { passive: true });
 
     return () => {
-      window.removeEventListener("scroll", updateActiveSection);
+      window.removeEventListener("scroll", requestActiveSectionUpdate);
+      if (frameId) {
+        window.cancelAnimationFrame(frameId);
+      }
     };
   }, [pathname]);
 
@@ -140,13 +156,13 @@ export function Header() {
           <Button variant="icon" href="https://github.com" target="_blank" rel="noreferrer" ariaLabel="GitHub">
             <Github size={18} />
           </Button>
-          <Button variant="icon" href="https://instagram.com" target="_blank" rel="noreferrer" ariaLabel="Instagram">
+          <Button variant="icon" href="https://www.instagram.com/igor_gordich/" target="_blank" rel="noreferrer" ariaLabel="Instagram">
             <Instagram size={18} />
           </Button>
           <Button variant="icon" href="https://t.me" target="_blank" rel="noreferrer" ariaLabel="Telegram">
             <Send size={17} />
           </Button>
-          <Button variant="contact" href="mailto:hello@example.com">
+          <Button variant="contact" href="mailto:onixframe.dev@gmail.com">
             <Mail size={17} /> Связаться
           </Button>
           <button
@@ -189,7 +205,7 @@ export function Header() {
           </nav>
           <div className={styles.mobileSocials}>
             <a href="https://github.com" target="_blank" rel="noreferrer"><Github size={18} /> GitHub</a>
-            <a href="https://instagram.com" target="_blank" rel="noreferrer"><Instagram size={18} /> Instagram</a>
+            <a href="https://www.instagram.com/igor_gordich/" target="_blank" rel="noreferrer"><Instagram size={18} /> Instagram</a>
             <a href="https://t.me" target="_blank" rel="noreferrer"><Send size={18} /> Telegram</a>
           </div>
         </div>

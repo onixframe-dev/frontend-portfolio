@@ -18,6 +18,12 @@ export function Hero() {
   const modeRef = useRef<"auto" | "pointer" | "static">("auto");
   const startTimeRef = useRef(Date.now());
   const lastPointerMoveRef = useRef(Date.now());
+  const autoReturnRef = useRef({
+    active: false,
+    startedAt: 0,
+    fromX: 0,
+    fromY: 0,
+  });
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -54,6 +60,15 @@ export function Hero() {
     resizeCanvas();
     window.addEventListener("resize", resizeCanvas);
 
+    let observer: IntersectionObserver | null = null;
+
+    const stopAnimation = () => {
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+        animationFrameRef.current = undefined;
+      }
+    };
+
     const animate = () => {
       const currentTime = (Date.now() - startTimeRef.current) * 0.001;
       const width = canvas.clientWidth;
@@ -64,10 +79,29 @@ export function Hero() {
       const startY = Math.max(28, (height - bottomSafeArea - gridSize) / 2);
 
       if (modeRef.current === "auto") {
-        cursorRef.current = {
+        const autoCursor = {
           x: Math.sin(currentTime * 0.3) * 200 + Math.sin(currentTime * 0.17) * 100,
           y: Math.cos(currentTime * 0.2) * 150 + Math.cos(currentTime * 0.23) * 80,
         };
+
+        if (autoReturnRef.current.active) {
+          const elapsed = Date.now() - autoReturnRef.current.startedAt;
+          const progress = Math.min(elapsed / 1400, 1);
+          const eased = progress < 0.5
+            ? 4 * progress ** 3
+            : 1 - (-2 * progress + 2) ** 3 / 2;
+
+          cursorRef.current = {
+            x: autoReturnRef.current.fromX + (autoCursor.x - autoReturnRef.current.fromX) * eased,
+            y: autoReturnRef.current.fromY + (autoCursor.y - autoReturnRef.current.fromY) * eased,
+          };
+
+          if (progress >= 1) {
+            autoReturnRef.current.active = false;
+          }
+        } else {
+          cursorRef.current = autoCursor;
+        }
       }
 
       if (modeRef.current === "static") {
@@ -108,13 +142,30 @@ export function Hero() {
       animationFrameRef.current = requestAnimationFrame(animate);
     };
 
-    animate();
+    const startAnimation = () => {
+      if (!animationFrameRef.current) {
+        startTimeRef.current = Date.now();
+        animate();
+      }
+    };
+
+    if ("IntersectionObserver" in window) {
+      observer = new IntersectionObserver(([entry]) => {
+        if (entry.isIntersecting) {
+          startAnimation();
+        } else {
+          stopAnimation();
+        }
+      });
+      observer.observe(canvas);
+    } else {
+      startAnimation();
+    }
 
     return () => {
+      observer?.disconnect();
       window.removeEventListener("resize", resizeCanvas);
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-      }
+      stopAnimation();
       if (idleTimeoutRef.current) {
         clearTimeout(idleTimeoutRef.current);
       }
@@ -131,6 +182,7 @@ export function Hero() {
     cursorRef.current = nextCursor;
     staticCursorRef.current = nextCursor;
     modeRef.current = "pointer";
+    autoReturnRef.current.active = false;
     lastPointerMoveRef.current = Date.now();
 
     if (idleTimeoutRef.current) {
@@ -149,11 +201,27 @@ export function Hero() {
     }, 4000);
   };
 
+  const handlePointerLeave = () => {
+    if (idleTimeoutRef.current) {
+      clearTimeout(idleTimeoutRef.current);
+    }
+
+    autoReturnRef.current = {
+      active: true,
+      startedAt: Date.now(),
+      fromX: cursorRef.current.x,
+      fromY: cursorRef.current.y,
+    };
+    modeRef.current = "auto";
+    startTimeRef.current = Date.now();
+  };
+
   return (
     <section
       id="top"
       className={`${styles.hero} ${sectionStyles.sectionGrid}`}
       onPointerMove={handlePointerMove}
+      onPointerLeave={handlePointerLeave}
     >
       <div className={styles.particlesLayer} aria-hidden="true">
         <div className={styles.particles}>
@@ -168,8 +236,13 @@ export function Hero() {
           <span className={styles.heroLine}>проектов</span>
         </h1>
         <p className={styles.heroText}>
-          Современные сайты, лендинги и интерфейсы на React, Next.js и TypeScript.
-          Адаптивная вёрстка, продуманная архитектура и готовое решение для запуска на Vercel.
+          Современные сайты и интерфейсы
+          <br />
+          на React, Next.js и TypeScript.
+          <br />
+          Адаптивная вёрстка, архитектура проекта.
+          <br />
+          Быстрый запуск.
         </p>
         <div className={styles.heroButtons}>
           <Button variant="primary" href="#pricing">

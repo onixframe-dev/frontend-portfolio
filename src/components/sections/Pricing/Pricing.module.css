@@ -92,6 +92,20 @@
   font-size: 13px;
   line-height: 1.4;
 }
+
+.paymentNote {
+  position: relative;
+  z-index: 1;
+  max-width: 620px;
+  margin: 26px auto 0;
+  color: rgba(220, 228, 238, 0.58);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.7;
+  text-align: center;
+  text-wrap: balance;
+}
+
 .priceCard {
   position: relative;
   flex: 1 1 0;

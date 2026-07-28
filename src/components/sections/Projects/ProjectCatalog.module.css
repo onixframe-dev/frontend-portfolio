@@ -108,15 +108,15 @@
   transition: transform 0.24s ease, background 0.24s ease, border-color 0.24s ease, box-shadow 0.24s ease, color 0.24s ease;
 }
 
-.pageItem:first-child .pageLink,
-.pageItem:last-child .pageLink {
+.pageItem:first-child,
+.pageItem:last-child {
   min-width: 36px;
   height: 36px;
   border-radius: 12px;
 }
 
-.pageItem:first-child .pageLink svg,
-.pageItem:last-child .pageLink svg {
+.pageItem:first-child svg,
+.pageItem:last-child svg {
   width: 15px;
   height: 15px;
 }
@@ -164,7 +164,7 @@
   animation-duration: 2.7s;
 }
 
-.paginationActive .pageLink {
+.paginationActive {
   transform: translateY(-2px);
   color: #ffffff;
   border-color: transparent !important;
@@ -172,7 +172,7 @@
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.12);
 }
 
-.paginationDisabled .pageLink {
+.paginationDisabled {
   cursor: not-allowed;
   opacity: 0.42;
   transform: none;
@@ -181,12 +181,12 @@
   box-shadow: none;
 }
 
-.paginationDisabled .pageLink::before {
+.paginationDisabled::before {
   animation: none;
   opacity: 0;
 }
 
-.paginationDisabled .pageLink:hover {
+.paginationDisabled:hover {
   transform: none;
   color: rgba(245, 250, 255, 0.88);
   background: rgba(8, 18, 22, 0.54);
@@ -210,7 +210,8 @@
   }
 
   .filterBar > * {
-    flex: 1 1 calc(50% - 8px);
+    flex: 1 1 100%;
+    min-width: 0;
   }
 
   .catalogGrid > * {

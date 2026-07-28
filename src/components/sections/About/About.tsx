@@ -5,9 +5,9 @@ import sectionStyles from "../../ui/Section.module.css";
 import styles from "./About.module.css";
 
 const items = [
-  { icon: Code2, title: "Frontend", text: "Адаптивные страницы, аккуратная структура, чистая верстка и понятные компоненты." },
-  { icon: Layers3, title: "UI logic", text: "Карточки, фильтры, состояния, модальные окна, hover-эффекты и плавные анимации." },
-  { icon: Rocket, title: "Launch", text: "Подготовка проекта к публикации: GitHub, Vercel, оптимизация и проверка деталей." }
+  { icon: Code2, title: "Frontend", text: "Адаптивные страницы, чистая вёрстка, аккуратная структура и понятные компоненты." },
+  { icon: Layers3, title: "UI logic", text: "Карточки, фильтры, модальные окна, состояния, hover-эффекты и плавные анимации." },
+  { icon: Rocket, title: "Launch", text: "Подготовка проекта к публикации: GitHub, Vercel, оптимизация и финальная проверка." }
 ];
 
 export function About() {
@@ -17,8 +17,9 @@ export function About() {
         <div>
           <AnimatedTitle>Подход: визуал, архитектура, результат</AnimatedTitle>
           <SectionSubtitle>
-            Делаю современные лендинги и интерфейсы, где важны не только блоки на странице,
-            но и ощущение продукта: от первого экрана до адаптива.
+            Делаю современные лендинги и интерфейсы с продуманной структурой.
+            <br />
+            В фокусе — первый экран, логика и аккуратный адаптив.
           </SectionSubtitle>
         </div>
       </div>

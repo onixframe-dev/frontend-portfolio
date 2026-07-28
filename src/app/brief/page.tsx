@@ -26,7 +26,8 @@ import { Header } from "@/components/layout/Header/Header";
 import { Footer } from "@/components/layout/Footer/Footer";
 import { AnimatedTitle } from "@/components/ui/AnimatedTitle";
 import { Button } from "@/components/ui/Button";
-import { briefSchema, briefStepFields, type BriefFormValues } from "@/lib/validation";
+import { SuccessToast } from "@/components/ui/SuccessToast";
+import { briefSchema, briefStepFields, normalizeTextValue, type BriefFormValues } from "@/lib/validation";
 import styles from "./brief.module.css";
 
 const steps = [
@@ -51,7 +52,7 @@ const packages = [
     shortName: "HTML Landing",
     price: "от 600 Br",
     deadline: "3–5 рабочих дней",
-    note: "Лендинг, визитка или промо-страница без сложной логики.",
+    note: "Лендинг, сайт-визитка или промо-страница без сложной логики.",
     icon: FileText,
   },
   {
@@ -88,7 +89,8 @@ const deadlines = ["Как можно скорее", "3–5 дней", "1–2 н
 
 export default function BriefPage() {
   const [step, setStep] = useState(1);
-  const [isSent, setIsSent] = useState(false);
+  const [showSuccessToast, setShowSuccessToast] = useState(false);
+  const [sendError, setSendError] = useState("");
   const {
     register,
     handleSubmit,
@@ -96,7 +98,8 @@ export default function BriefPage() {
     getValues,
     setValue,
     trigger,
-    formState: { errors },
+    reset,
+    formState: { errors, isSubmitting },
   } = useForm<BriefFormValues>({
     resolver: zodResolver(briefSchema),
     mode: "onBlur",
@@ -120,6 +123,12 @@ export default function BriefPage() {
   });
 
   const values = watch();
+
+  const normalizeTextField = (
+    field: "projectName" | "business" | "audience" | "advantage" | "inspiration" | "contactName" | "notes",
+  ) => {
+    setValue(field, normalizeTextValue(getValues(field) || ""), { shouldDirty: true, shouldValidate: true });
+  };
 
   const handleToggleIntegration = (item: string) => {
     const current = getValues("integrations");
@@ -157,8 +166,26 @@ export default function BriefPage() {
     }
   };
 
-  const submitBrief = handleSubmit(() => {
-    setIsSent(true);
+  const submitBrief = handleSubmit(async (values) => {
+    setSendError("");
+
+    const response = await fetch("/api/email/brief", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(values),
+    });
+
+    if (!response.ok) {
+      const data = (await response.json().catch(() => null)) as { error?: string } | null;
+      setSendError(data?.error || "Не удалось отправить заявку. Попробуйте написать на email или в Telegram.");
+      return;
+    }
+
+    reset();
+    setStep(1);
+    setShowSuccessToast(true);
   });
 
   return (
@@ -172,7 +199,11 @@ export default function BriefPage() {
 
           <header className={styles.header}>
             <AnimatedTitle as="h1">Расскажите о проекте</AnimatedTitle>
-            <p>Короткая анкета без лишней бюрократии. По ответам я пойму формат сайта, примерные сроки и объём работы.</p>
+            <p>
+              Короткая анкета без лишней бюрократии.
+              <br />
+              По ответам я пойму формат сайта, сроки и объём работы.
+            </p>
           </header>
 
           <div className={styles.navigation}>
@@ -201,30 +232,22 @@ export default function BriefPage() {
 
           <div className={styles.layout}>
             <form className={styles.form} onSubmit={submitBrief} noValidate>
-              {isSent ? (
-                <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className={styles.successBox}>
-                  <CheckCircle2 size={38} />
-                  <h2>Заявка собрана</h2>
-                  <p>Форма сейчас работает как frontend-заготовка. Следующим шагом можно подключить отправку в Telegram, email или CRM.</p>
-                  <Button variant="primary" href="/">На главную</Button>
-                </motion.div>
-              ) : (
-                <motion.div
-                  key={step}
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.22 }}
-                  className={styles.formContent}
-                >
+              <motion.div
+                key={step}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.22 }}
+                className={styles.formContent}
+              >
                   {step === 1 && (
                     <div className={styles.stepContent}>
                       <Field label="Название проекта" htmlFor="projectName">
                         <input
                           id="projectName"
                           type="text"
-                          placeholder="Например: студия маникюра LUNA, бренд одежды Nubo, личное портфолио"
+                          placeholder="Например: студия маникюра LUNA, бренд одежды Nubo, личное портфолио."
                           aria-invalid={Boolean(errors.projectName)}
-                          {...register("projectName")}
+                          {...register("projectName", { onBlur: () => normalizeTextField("projectName") })}
                         />
                         {errors.projectName ? <small className={styles.errorText}>{errors.projectName.message}</small> : null}
                       </Field>
@@ -232,10 +255,10 @@ export default function BriefPage() {
                       <Field label="Чем занимаетесь?" htmlFor="business">
                         <textarea
                           id="business"
-                          placeholder="Например: продаём женскую одежду онлайн, делаем ремонт квартир, запускаем курс по дизайну"
+                          placeholder="Например: продаём женскую одежду онлайн, делаем ремонт квартир, запускаем курс по дизайну."
                           rows={3}
                           aria-invalid={Boolean(errors.business)}
-                          {...register("business")}
+                          {...register("business", { onBlur: () => normalizeTextField("business") })}
                         />
                         {errors.business ? <small className={styles.errorText}>{errors.business.message}</small> : null}
                       </Field>
@@ -244,9 +267,9 @@ export default function BriefPage() {
                         <input
                           id="audience"
                           type="text"
-                          placeholder="Например: девушки 20–35 лет, малый бизнес, владельцы квартир после покупки"
+                          placeholder="Например: девушки 20–35 лет, малый бизнес, владельцы квартир после покупки."
                           aria-invalid={Boolean(errors.audience)}
-                          {...register("audience")}
+                          {...register("audience", { onBlur: () => normalizeTextField("audience") })}
                         />
                         {errors.audience ? <small className={styles.errorText}>{errors.audience.message}</small> : null}
                       </Field>
@@ -255,9 +278,9 @@ export default function BriefPage() {
                         <input
                           id="advantage"
                           type="text"
-                          placeholder="Например: быстро отвечаем, работаем под ключ, сильный визуал, честные сроки"
+                          placeholder="Например: быстро отвечаем, работаем под ключ, сильный визуал, честные сроки."
                           aria-invalid={Boolean(errors.advantage)}
-                          {...register("advantage")}
+                          {...register("advantage", { onBlur: () => normalizeTextField("advantage") })}
                         />
                         {errors.advantage ? <small className={styles.errorText}>{errors.advantage.message}</small> : null}
                       </Field>
@@ -284,7 +307,7 @@ export default function BriefPage() {
                           placeholder="Например: нравится структура Apple, чистота Vercel, карточки как у Linear. Можно просто вставить ссылки."
                           rows={4}
                           aria-invalid={Boolean(errors.inspiration)}
-                          {...register("inspiration")}
+                          {...register("inspiration", { onBlur: () => normalizeTextField("inspiration") })}
                         />
                         {errors.inspiration ? <small className={styles.errorText}>{errors.inspiration.message}</small> : null}
                       </Field>
@@ -366,7 +389,7 @@ export default function BriefPage() {
                             type="text"
                             placeholder="Например: Анна"
                             aria-invalid={Boolean(errors.contactName)}
-                            {...register("contactName")}
+                            {...register("contactName", { onBlur: () => normalizeTextField("contactName") })}
                           />
                           {errors.contactName ? <small className={styles.errorText}>{errors.contactName.message}</small> : null}
                         </Field>
@@ -374,7 +397,7 @@ export default function BriefPage() {
                           <input
                             id="contactContact"
                             type="text"
-                            placeholder="Например: @username или +375 29 000-00-00"
+                            placeholder="Например: @username или +375 29 670-25-46"
                             aria-invalid={Boolean(errors.contactContact)}
                             {...register("contactContact")}
                           />
@@ -393,39 +416,44 @@ export default function BriefPage() {
                       <Field label="Дополнительные пожелания" htmlFor="notes">
                         <textarea
                           id="notes"
-                          placeholder="Например: нужен тёмный стиль, добавить блок с отзывами, форма должна отправляться в Telegram"
+                          placeholder="Например: нужен тёмный стиль, нужно добавить блок с отзывами, форма должна отправляться в Telegram."
                           rows={4}
                           aria-invalid={Boolean(errors.notes)}
-                          {...register("notes")}
+                          {...register("notes", { onBlur: () => normalizeTextField("notes") })}
                         />
                         {errors.notes ? <small className={styles.errorText}>{errors.notes.message}</small> : null}
                       </Field>
                     </div>
                   )}
-                </motion.div>
-              )}
+              </motion.div>
 
-              {!isSent && (
-                <div className={styles.actions}>
-                  <button type="button" className={styles.secondaryBtn} onClick={handlePrevStep} disabled={step === 1}>
-                    Назад
-                  </button>
-                  <button
-                    type={step === 4 ? "submit" : "button"}
-                    className={styles.primaryBtn}
-                    onClick={step === 4 ? undefined : () => {
-                      void handleNextStep();
-                    }}
-                  >
-                    {step === 4 ? "Отправить заявку" : "Далее"}
-                  </button>
-                </div>
-              )}
+              <div className={styles.actions}>
+                <button type="button" className={styles.secondaryBtn} onClick={handlePrevStep} disabled={step === 1}>
+                  Назад
+                </button>
+                <button
+                  type={step === 4 ? "submit" : "button"}
+                  className={styles.primaryBtn}
+                  disabled={isSubmitting}
+                  onClick={step === 4 ? undefined : () => {
+                    void handleNextStep();
+                  }}
+                >
+                  {step === 4 ? (isSubmitting ? "Отправляю..." : "Отправить заявку") : "Далее"}
+                </button>
+                {sendError ? <small className={styles.errorText}>{sendError}</small> : null}
+              </div>
             </form>
 
           </div>
         </div>
       </main>
+      <SuccessToast
+        open={showSuccessToast}
+        title="Заявка отправлена"
+        description="Спасибо. Я получил заявку и отвечу по указанному контакту."
+        onClose={() => setShowSuccessToast(false)}
+      />
       <Footer />
     </>
   );

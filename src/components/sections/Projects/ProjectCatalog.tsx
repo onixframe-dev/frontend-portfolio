@@ -1,6 +1,5 @@
 "use client";
 
-import ReactPaginate from "react-paginate";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useMemo, useRef, useState } from "react";
 import { categories, projects } from "@/data/projects";
@@ -39,13 +38,22 @@ export function ProjectCatalog() {
     scrollToSection();
   };
 
+  const selectPage = (nextPage: number) => {
+    setPage(Math.min(Math.max(nextPage, 0), pageCount - 1));
+    scrollToSection();
+  };
+
   return (
     <section ref={sectionRef} id="catalog" className={`${sectionStyles.sectionBlock} ${styles.catalogSection}`}>
       <div className={`${sectionStyles.sectionHeader} ${styles.catalogHeader}`}>
         <div className={styles.catalogTitle}>
           <AnimatedTitle>Полный каталог проектов</AnimatedTitle>
           <SectionSubtitle>
-            Отфильтруйте проекты по языку и типу: лендинги, React-приложения, Next.js + TypeScript решения.
+            Отфильтруйте проекты по типу и стеку.
+            <br />
+            Лендинги, React-приложения.
+            <br />
+            Next.js + TypeScript.
           </SectionSubtitle>
         </div>
         <div className={styles.filterBarWrapper}>
@@ -74,27 +82,39 @@ export function ProjectCatalog() {
       </div>
 
       {pageCount > 1 ? (
-        <ReactPaginate
-          pageCount={pageCount}
-          forcePage={page}
-          onPageChange={(event) => {
-            setPage(event.selected);
-            scrollToSection();
-          }}
-          previousLabel={<ChevronLeft size={18} />}
-          nextLabel={<ChevronRight size={18} />}
-          breakLabel="..."
-          containerClassName={styles.pagination}
-          pageClassName={styles.pageItem}
-          pageLinkClassName={styles.pageLink}
-          previousClassName={styles.pageItem}
-          nextClassName={styles.pageItem}
-          previousLinkClassName={styles.pageLink}
-          nextLinkClassName={styles.pageLink}
-          activeClassName={styles.paginationActive}
-          disabledClassName={styles.paginationDisabled}
-          renderOnZeroPageCount={null}
-        />
+        <nav className={styles.pagination} aria-label="Project pagination">
+          <button
+            type="button"
+            className={`${styles.pageItem} ${styles.pageLink} ${page === 0 ? styles.paginationDisabled : ""}`}
+            onClick={() => selectPage(page - 1)}
+            disabled={page === 0}
+            aria-label="Previous page"
+          >
+            <ChevronLeft size={18} />
+          </button>
+
+          {Array.from({ length: pageCount }, (_, index) => (
+            <button
+              key={index}
+              type="button"
+              className={`${styles.pageItem} ${styles.pageLink} ${page === index ? styles.paginationActive : ""}`}
+              onClick={() => selectPage(index)}
+              aria-current={page === index ? "page" : undefined}
+            >
+              {index + 1}
+            </button>
+          ))}
+
+          <button
+            type="button"
+            className={`${styles.pageItem} ${styles.pageLink} ${page === pageCount - 1 ? styles.paginationDisabled : ""}`}
+            onClick={() => selectPage(page + 1)}
+            disabled={page === pageCount - 1}
+            aria-label="Next page"
+          >
+            <ChevronRight size={18} />
+          </button>
+        </nav>
       ) : null}
     </section>
   );

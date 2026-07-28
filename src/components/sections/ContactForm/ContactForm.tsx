@@ -1,25 +1,30 @@
 "use client";
 
-import { Mail, MessageCircle, Send } from "lucide-react";
+import { Instagram, Mail, MessageCircle, Phone, Send } from "lucide-react";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { contactFormSchema, type ContactFormValues } from "@/lib/validation";
+import { contactFormSchema, normalizeTextValue, type ContactFormValues } from "@/lib/validation";
 import sectionStyles from "../../ui/Section.module.css";
 import { AnimatedTitle } from "../../ui/AnimatedTitle";
 import { SectionSubtitle } from "../../ui/SectionSubtitle";
 import { Button } from "../../ui/Button";
+import { SuccessToast } from "../../ui/SuccessToast";
 import styles from "./ContactForm.module.css";
 
 export function ContactForm() {
-  const [sent, setSent] = useState(false);
+  const [showSuccessToast, setShowSuccessToast] = useState(false);
+  const [sendError, setSendError] = useState("");
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    getValues,
+    setValue,
+    reset,
+    formState: { errors, isSubmitting },
   } = useForm<ContactFormValues>({
     resolver: zodResolver(contactFormSchema),
-    mode: "onBlur",
+    mode: "onChange",
     reValidateMode: "onChange",
     defaultValues: {
       name: "",
@@ -28,17 +33,40 @@ export function ContactForm() {
     },
   });
 
-  const onSubmit = () => {
-    setSent(true);
+  const normalizeTextField = (field: "name" | "message") => {
+    setValue(field, normalizeTextValue(getValues(field)), { shouldDirty: true, shouldValidate: true });
+  };
+
+  const onSubmit = async (values: ContactFormValues) => {
+    setSendError("");
+
+    const response = await fetch("/api/email/contact", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(values),
+    });
+
+    if (!response.ok) {
+      const data = (await response.json().catch(() => null)) as { error?: string } | null;
+      setSendError(data?.error || "Не удалось отправить сообщение. Попробуйте написать на email или в Telegram.");
+      return;
+    }
+
+    reset();
+    setShowSuccessToast(true);
   };
 
   return (
     <section id="contacts" className={`${sectionStyles.sectionBlock} ${styles.contactSection}`}>
       <div className={`${sectionStyles.sectionHeader} ${styles.contactHeader}`}>
         <div>
-          <AnimatedTitle>Обсудим проект без лишних кругов</AnimatedTitle>
+          <AnimatedTitle>Обсудим проект без лишних слов</AnimatedTitle>
           <SectionSubtitle>
-            Оставьте короткое сообщение или сразу заполните заявку. Я отвечу и подскажу, какой формат разработки подойдёт лучше.
+            Оставьте короткое сообщение или сразу заполните заявку.
+            <br />
+            Я отвечу, уточню детали и подскажу подходящий формат разработки.
           </SectionSubtitle>
         </div>
       </div>
@@ -48,11 +76,14 @@ export function ContactForm() {
           <div className={styles.infoIcon}><MessageCircle size={22} /></div>
           <h3>Можно начать с пары строк</h3>
           <p>
-            Напишите, какой сайт нужен, есть ли макет и примерный срок. Если задача объёмная, удобнее заполнить заявку.
+            Напишите, какой сайт нужен, есть ли макет и какие сроки важны.
+            Если задача объёмная, удобнее заполнить заявку.
           </p>
           <div className={styles.quickLinks}>
-            <a href="https://t.me" target="_blank" rel="noreferrer"><Send size={16} /> Telegram</a>
-            <a href="mailto:hello@example.com"><Mail size={16} /> Email</a>
+            <a href="https://t.me" target="_blank" rel="noreferrer"><Send size={16} /> <span>Telegram</span></a>
+            <a href="tel:+375296702546"><Phone size={16} /> <span>Телефон</span></a>
+            <a href="https://www.instagram.com/igor_gordich/" target="_blank" rel="noreferrer"><Instagram size={16} /> <span>Instagram</span></a>
+            <a href="mailto:onixframe.dev@gmail.com"><Mail size={16} /> <span>Email</span></a>
           </div>
         </div>
 
@@ -61,56 +92,55 @@ export function ContactForm() {
           onSubmit={handleSubmit(onSubmit)}
           noValidate
         >
-          {sent ? (
-            <div className={styles.successBox}>
-              <h3>Сообщение подготовлено</h3>
-              <p>Форма сейчас frontend-ready. Следующий шаг: подключить отправку в Telegram, email или вашу CRM.</p>
-              <Button variant="ghost" href="/brief">Заполнить заявку</Button>
-            </div>
-          ) : (
-            <>
-              <div className={styles.row}>
-                <label>
-                  <span>Ваше имя</span>
-                  <input
-                    type="text"
-                    placeholder="Например: Анна"
-                    aria-invalid={Boolean(errors.name)}
-                    {...register("name")}
-                  />
-                  {errors.name ? <small className={styles.errorText}>{errors.name.message}</small> : null}
-                </label>
-                <label>
-                  <span>Телефон или Telegram</span>
-                  <input
-                    type="text"
-                    placeholder="@username или номер"
-                    aria-invalid={Boolean(errors.contact)}
-                    {...register("contact")}
-                  />
-                  {errors.contact ? <small className={styles.errorText}>{errors.contact.message}</small> : null}
-                </label>
-              </div>
+          <div className={styles.row}>
+            <label>
+              <span>Ваше имя</span>
+              <input
+                type="text"
+                placeholder="Например: Анна"
+                aria-invalid={Boolean(errors.name)}
+                {...register("name", { onBlur: () => normalizeTextField("name") })}
+              />
+                  <small className={styles.errorText}>{errors.name?.message || "\u00a0"}</small>
+            </label>
+            <label>
+              <span>Телефон или Telegram</span>
+              <input
+                type="text"
+                placeholder="@username или номер телефона"
+                aria-invalid={Boolean(errors.contact)}
+                {...register("contact")}
+              />
+                  <small className={styles.errorText}>{errors.contact?.message || "\u00a0"}</small>
+            </label>
+          </div>
 
-              <label>
-                <span>Что нужно сделать?</span>
-                <textarea
-                  rows={5}
-                  placeholder="Например: нужен лендинг для услуги, есть тексты и референсы, макета пока нет"
-                  aria-invalid={Boolean(errors.message)}
-                  {...register("message")}
-                />
-                {errors.message ? <small className={styles.errorText}>{errors.message.message}</small> : null}
-              </label>
+          <label>
+            <span>Что нужно сделать?</span>
+            <textarea
+              rows={5}
+              placeholder="Например: нужен лендинг для услуги, есть тексты и референсы, макета пока нет."
+              aria-invalid={Boolean(errors.message)}
+              {...register("message", { onBlur: () => normalizeTextField("message") })}
+            />
+            <small className={styles.errorText}>{errors.message?.message || "\u00a0"}</small>
+          </label>
 
-              <div className={styles.actions}>
-                <Button variant="priceFeatured" type="submit" className={styles.submitButton}>Отправить сообщение</Button>
-                <Button variant="price" href="/brief" className={styles.briefButton}>Заполнить заявку</Button>
-              </div>
-            </>
-          )}
+          <div className={styles.actions}>
+            <Button variant="priceFeatured" type="submit" className={styles.submitButton} disabled={isSubmitting}>
+              {isSubmitting ? "Отправляю..." : "Отправить сообщение"}
+            </Button>
+            <Button variant="price" href="/brief" className={styles.briefButton}>Заполнить заявку</Button>
+          </div>
+          {sendError ? <small className={styles.errorText}>{sendError}</small> : null}
         </form>
       </div>
+      <SuccessToast
+        open={showSuccessToast}
+        title="Сообщение отправлено"
+        description="Спасибо. Я получил сообщение и отвечу по указанному контакту."
+        onClose={() => setShowSuccessToast(false)}
+      />
     </section>
   );
 }

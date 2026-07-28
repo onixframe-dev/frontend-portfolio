@@ -246,16 +246,16 @@
   }
 
   .heroCopy {
-    width: 100%;
+    width: min(100%, calc(100vw - 24px));
   }
 
   .heroCopy h1 {
-    font-size: clamp(29px, 9vw, 38px);
-    line-height: 0.98;
+    font-size: clamp(29px, 8vw, 33px);
+    line-height: 1.04;
   }
 
   .heroText {
-    max-width: 100%;
+    max-width: 330px;
     margin: 22px auto 0;
     font-size: 12px;
     line-height: 1.55;

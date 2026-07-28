@@ -1,5 +1,3 @@
-'use client';
-
 import type { MouseEventHandler, ReactNode } from 'react';
 import styles from './Button.module.css';
 
@@ -24,6 +22,7 @@ type Props = {
   type?: 'button' | 'submit' | 'reset';
   onClick?: MouseEventHandler<HTMLButtonElement | HTMLAnchorElement>;
   ariaLabel?: string;
+  disabled?: boolean;
 };
 
 export function Button({
@@ -37,6 +36,7 @@ export function Button({
   type = 'button',
   onClick,
   ariaLabel,
+  disabled = false,
 }: Props) {
   const variantClass = styles[variant] || '';
   const classes = [styles.button, variantClass, active ? styles.active : '', className]
@@ -64,6 +64,7 @@ export function Button({
       className={classes}
       onClick={onClick as MouseEventHandler<HTMLButtonElement>}
       aria-label={ariaLabel}
+      disabled={disabled}
     >
       <span className={styles.content}>{children}</span>
     </button>
