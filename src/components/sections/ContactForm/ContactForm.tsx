@@ -38,7 +38,7 @@ export function ContactForm() {
         <div>
           <AnimatedTitle>Обсудим проект без лишних кругов</AnimatedTitle>
           <SectionSubtitle>
-            Оставьте короткое сообщение или сразу заполните бриф. Я отвечу и подскажу, какой формат разработки подойдёт лучше.
+            Оставьте короткое сообщение или сразу заполните заявку. Я отвечу и подскажу, какой формат разработки подойдёт лучше.
           </SectionSubtitle>
         </div>
       </div>
@@ -48,7 +48,7 @@ export function ContactForm() {
           <div className={styles.infoIcon}><MessageCircle size={22} /></div>
           <h3>Можно начать с пары строк</h3>
           <p>
-            Напишите, какой сайт нужен, есть ли макет и примерный срок. Если задача объёмная, удобнее пройти бриф.
+            Напишите, какой сайт нужен, есть ли макет и примерный срок. Если задача объёмная, удобнее заполнить заявку.
           </p>
           <div className={styles.quickLinks}>
             <a href="https://t.me" target="_blank" rel="noreferrer"><Send size={16} /> Telegram</a>

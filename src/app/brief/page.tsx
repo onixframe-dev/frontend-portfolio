@@ -24,6 +24,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Header } from "@/components/layout/Header/Header";
 import { Footer } from "@/components/layout/Footer/Footer";
+import { AnimatedTitle } from "@/components/ui/AnimatedTitle";
 import { Button } from "@/components/ui/Button";
 import { briefSchema, briefStepFields, type BriefFormValues } from "@/lib/validation";
 import styles from "./brief.module.css";
@@ -170,8 +171,7 @@ export default function BriefPage() {
           </Button>
 
           <header className={styles.header}>
-            <span className={styles.kicker}>Бриф на разработку</span>
-            <h1>Расскажите о проекте</h1>
+            <AnimatedTitle as="h1">Расскажите о проекте</AnimatedTitle>
             <p>Короткая анкета без лишней бюрократии. По ответам я пойму формат сайта, примерные сроки и объём работы.</p>
           </header>
 
@@ -204,7 +204,7 @@ export default function BriefPage() {
               {isSent ? (
                 <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className={styles.successBox}>
                   <CheckCircle2 size={38} />
-                  <h2>Бриф собран</h2>
+                  <h2>Заявка собрана</h2>
                   <p>Форма сейчас работает как frontend-заготовка. Следующим шагом можно подключить отправку в Telegram, email или CRM.</p>
                   <Button variant="primary" href="/">На главную</Button>
                 </motion.div>
