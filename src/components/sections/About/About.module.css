@@ -7,10 +7,6 @@
   margin-bottom: 44px;
 }
 
-.aboutHeader p {
-  margin: 12px auto 0;
-}
-
 .aboutIntro h2 {
   margin-bottom: 22px;
 }
@@ -31,6 +27,8 @@
 }
 
 .aboutCard {
+  position: relative;
+  overflow: hidden;
   flex: 1 1 0;
   min-height: 280px;
   padding: 32px;
@@ -39,30 +37,92 @@
   justify-content: space-between;
   border: 1px solid rgba(255,255,255,0.1);
   border-radius: 30px;
-  background: rgba(255,255,255,0.045);
+  background: rgba(255,255,255,0.042);
   transition: transform 0.4s cubic-bezier(0.23, 1, 0.320, 1),
               background 0.4s ease,
               border-color 0.4s ease,
               box-shadow 0.4s ease;
 }
 
-.aboutCard:hover {
+.aboutCard::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at 28% 18%, rgba(180, 190, 205, 0.025), transparent 32%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 62%);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.aboutCard::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: conic-gradient(
+    from var(--about-border-angle),
+    transparent 0deg,
+    transparent 236deg,
+    rgba(92, 225, 230, 0.16) 262deg,
+    rgba(124, 92, 255, 0.58) 286deg,
+    rgba(92, 225, 230, 0.18) 310deg,
+    transparent 338deg,
+    transparent 360deg
+  );
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  opacity: 0.62;
+  pointer-events: none;
+  animation: aboutBorderTravel 10s linear infinite;
+}
+
+.aboutCard:hover,
+.aboutCard:focus-within {
   transform: translateY(-6px);
-  border-color: rgba(185, 178, 255, 0.38);
-  background: rgba(255,255,255,0.08);
-  box-shadow: 0 24px 70px rgba(124, 92, 255, 0.12);
+  border-color: transparent;
+  background: rgba(255,255,255,0.058);
+  box-shadow: 0 22px 64px rgba(92, 225, 230, 0.08), 0 18px 52px rgba(124, 92, 255, 0.08);
+}
+
+.aboutCard:hover::before,
+.aboutCard:focus-within::before {
+  opacity: 1;
+}
+
+.aboutCard:hover::after,
+.aboutCard:focus-within::after {
+  opacity: 0.95;
+  animation-duration: 7s;
 }
 
 .aboutCard svg {
+  position: relative;
+  z-index: 1;
   color: #b9b2ff;
+  transition: color 0.32s ease, filter 0.32s ease, transform 0.32s ease;
+}
+
+.aboutCard:hover svg,
+.aboutCard:focus-within svg {
+  color: rgba(92, 225, 230, 0.95);
+  filter: drop-shadow(0 10px 24px rgba(92, 225, 230, 0.2));
+  transform: translateY(-2px);
 }
 
 .aboutCard h3 {
+  position: relative;
+  z-index: 1;
   margin: 22px 0 0;
   font-size: 24px;
 }
 
 .aboutCard p {
+  position: relative;
+  z-index: 1;
   margin: 12px 0 0;
   color: var(--muted);
   line-height: 1.75;
@@ -71,6 +131,18 @@
 @media (max-width: 860px) {
   .aboutHeader {
     padding: 0;
+  }
+}
+
+@property --about-border-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes aboutBorderTravel {
+  to {
+    --about-border-angle: 360deg;
   }
 }
 

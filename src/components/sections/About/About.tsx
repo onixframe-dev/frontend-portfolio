@@ -1,4 +1,6 @@
 import { Code2, Layers3, Rocket } from "lucide-react";
+import { AnimatedTitle } from "../../ui/AnimatedTitle";
+import { SectionSubtitle } from "../../ui/SectionSubtitle";
 import sectionStyles from "../../ui/Section.module.css";
 import styles from "./About.module.css";
 
@@ -13,11 +15,11 @@ export function About() {
     <section id="about" className={`${sectionStyles.sectionBlock} ${styles.aboutBlock}`}>
       <div className={`${sectionStyles.sectionHeader} ${styles.aboutHeader}`}>
         <div>
-          <h2>Подход: визуал, архитектура, результат</h2>
-          <p>
+          <AnimatedTitle>Подход: визуал, архитектура, результат</AnimatedTitle>
+          <SectionSubtitle>
             Делаю современные лендинги и интерфейсы, где важны не только блоки на странице,
             но и ощущение продукта: от первого экрана до адаптива.
-          </p>
+          </SectionSubtitle>
         </div>
       </div>
       <div className={styles.aboutGrid}>

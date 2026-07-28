@@ -37,7 +37,7 @@
   margin: 0;
   font-size: 64px;
   line-height: 1.02;
-  letter-spacing: -0.06em;
+  letter-spacing: -0.03em;
   background: linear-gradient(
     110deg,
     #ffffff 0%,
@@ -53,13 +53,6 @@
   color: transparent;
   text-shadow: 0 0 34px rgba(92, 225, 230, 0.1);
   animation: techTitleFlow 8.5s ease-in-out infinite;
-}
-
-.techStackHeader p {
-  margin-top: 16px;
-  color: rgba(255, 255, 255, 0.72);
-  font-size: 1rem;
-  line-height: 1.8;
 }
 
 .techStackGrid {

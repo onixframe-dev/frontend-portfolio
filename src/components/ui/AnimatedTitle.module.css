@@ -1,0 +1,49 @@
+.title {
+  position: relative;
+  display: inline-block;
+  color: transparent !important;
+  background:
+    linear-gradient(90deg, #f7fbff 0%, #dffbff 28%, #7c5cff 48%, #5ce1e6 68%, #f7fbff 100%);
+  background-size: 240% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  text-shadow: 0 0 22px rgba(92, 225, 230, 0.08);
+  animation: titleColorFlow 7.5s ease-in-out infinite;
+}
+
+.title::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.14em;
+  height: 1px;
+  transform-origin: left;
+  background: linear-gradient(90deg, transparent, rgba(92, 225, 230, 0.55), rgba(124, 92, 255, 0.38), transparent);
+  opacity: 0.58;
+  animation: titleLinePulse 4.8s ease-in-out infinite;
+}
+
+@keyframes titleColorFlow {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes titleLinePulse {
+  0%,
+  100% {
+    opacity: 0.28;
+    transform: scaleX(0.34);
+  }
+
+  50% {
+    opacity: 0.72;
+    transform: scaleX(1);
+  }
+}

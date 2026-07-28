@@ -20,9 +20,12 @@ import {
   Sparkles,
 } from "lucide-react";
 import { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import { Header } from "@/components/layout/Header/Header";
 import { Footer } from "@/components/layout/Footer/Footer";
 import { Button } from "@/components/ui/Button";
+import { briefSchema, briefStepFields, type BriefFormValues } from "@/lib/validation";
 import styles from "./brief.module.css";
 
 const steps = [
@@ -45,7 +48,7 @@ const packages = [
     key: "html",
     name: "HTML / CSS / JS Landing",
     shortName: "HTML Landing",
-    price: "от 8 000 ₽",
+    price: "от 600 Br",
     deadline: "3–5 рабочих дней",
     note: "Лендинг, визитка или промо-страница без сложной логики.",
     icon: FileText,
@@ -54,7 +57,7 @@ const packages = [
     key: "react",
     name: "React Landing / Website",
     shortName: "React Website",
-    price: "от 15 000 ₽",
+    price: "от 1 100 Br",
     deadline: "7–14 рабочих дней",
     note: "Компоненты, карточки, фильтры, модальные окна и интерактивность.",
     icon: Layers3,
@@ -64,7 +67,7 @@ const packages = [
     key: "next",
     name: "Next.js + TypeScript",
     shortName: "Next.js / TS",
-    price: "от 25 000 ₽",
+    price: "от 1 700 Br",
     deadline: "14–30 рабочих дней",
     note: "SEO, страницы, архитектура проекта и база для дальнейшего роста.",
     icon: Code2,
@@ -85,39 +88,77 @@ const deadlines = ["Как можно скорее", "3–5 дней", "1–2 н
 export default function BriefPage() {
   const [step, setStep] = useState(1);
   const [isSent, setIsSent] = useState(false);
-  const [values, setValues] = useState({
-    projectName: "",
-    business: "",
-    audience: "",
-    advantage: "",
-    brandStyle: "Частично",
-    inspiration: "",
-    mood: moods[1],
-    siteType: siteTypes[0].label,
-    packageKey: "react",
-    integrations: ["Форма заявки"],
-    deadline: "Как можно скорее",
-    contactName: "",
-    contactContact: "",
-    notes: "",
+  const {
+    register,
+    handleSubmit,
+    watch,
+    getValues,
+    setValue,
+    trigger,
+    formState: { errors },
+  } = useForm<BriefFormValues>({
+    resolver: zodResolver(briefSchema),
+    mode: "onBlur",
+    reValidateMode: "onChange",
+    defaultValues: {
+      projectName: "",
+      business: "",
+      audience: "",
+      advantage: "",
+      brandStyle: "Частично",
+      inspiration: "",
+      mood: moods[1],
+      siteType: siteTypes[0].label,
+      packageKey: "react",
+      integrations: ["Форма заявки"],
+      deadline: "Как можно скорее",
+      contactName: "",
+      contactContact: "",
+      notes: "",
+    },
   });
 
-  const handleToggleIntegration = (item: string) => {
-    setValues((prev) => {
-      if (item === "Ничего") return { ...prev, integrations: ["Ничего"] };
+  const values = watch();
 
-      const clean = prev.integrations.filter((value) => value !== "Ничего");
-      const next = clean.includes(item) ? clean.filter((value) => value !== item) : [...clean, item];
-      return { ...prev, integrations: next.length ? next : ["Ничего"] };
-    });
+  const handleToggleIntegration = (item: string) => {
+    const current = getValues("integrations");
+
+    if (item === "Ничего") {
+      setValue("integrations", ["Ничего"], { shouldDirty: true, shouldValidate: true });
+      return;
+    }
+
+    const clean = current.filter((value) => value !== "Ничего");
+    const next = clean.includes(item) ? clean.filter((value) => value !== item) : [...clean, item];
+    setValue("integrations", next.length ? next : ["Ничего"], { shouldDirty: true, shouldValidate: true });
   };
 
-  const handleNextStep = () => setStep((s) => Math.min(4, s + 1));
+  const handleNextStep = async () => {
+    const isStepValid = await trigger(briefStepFields[step], { shouldFocus: true });
+
+    if (isStepValid) {
+      setStep((s) => Math.min(4, s + 1));
+    }
+  };
+
   const handlePrevStep = () => setStep((s) => Math.max(1, s - 1));
 
-  const handleSubmit = () => {
-    setIsSent(true);
+  const handleStepClick = async (targetStep: number) => {
+    if (targetStep <= step) {
+      setStep(targetStep);
+      return;
+    }
+
+    const isStepValid = await trigger(briefStepFields[step], { shouldFocus: true });
+
+    if (isStepValid) {
+      setStep(targetStep);
+    }
   };
+
+  const submitBrief = handleSubmit(() => {
+    setIsSent(true);
+  });
 
   return (
     <>
@@ -143,7 +184,9 @@ export default function BriefPage() {
                     key={item.id}
                     type="button"
                     className={`${styles.tab} ${step === item.id ? styles.tabActive : ""}`}
-                    onClick={() => setStep(item.id)}
+                    onClick={() => {
+                      void handleStepClick(item.id);
+                    }}
                   >
                     <Icon size={16} />
                     <span>{item.label}</span>
@@ -157,7 +200,7 @@ export default function BriefPage() {
           </div>
 
           <div className={styles.layout}>
-            <form className={styles.form} onSubmit={(event) => event.preventDefault()}>
+            <form className={styles.form} onSubmit={submitBrief} noValidate>
               {isSent ? (
                 <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className={styles.successBox}>
                   <CheckCircle2 size={38} />
@@ -180,9 +223,10 @@ export default function BriefPage() {
                           id="projectName"
                           type="text"
                           placeholder="Например: студия маникюра LUNA, бренд одежды Nubo, личное портфолио"
-                          value={values.projectName}
-                          onChange={(e) => setValues({ ...values, projectName: e.target.value })}
+                          aria-invalid={Boolean(errors.projectName)}
+                          {...register("projectName")}
                         />
+                        {errors.projectName ? <small className={styles.errorText}>{errors.projectName.message}</small> : null}
                       </Field>
 
                       <Field label="Чем занимаетесь?" htmlFor="business">
@@ -190,9 +234,10 @@ export default function BriefPage() {
                           id="business"
                           placeholder="Например: продаём женскую одежду онлайн, делаем ремонт квартир, запускаем курс по дизайну"
                           rows={3}
-                          value={values.business}
-                          onChange={(e) => setValues({ ...values, business: e.target.value })}
+                          aria-invalid={Boolean(errors.business)}
+                          {...register("business")}
                         />
+                        {errors.business ? <small className={styles.errorText}>{errors.business.message}</small> : null}
                       </Field>
 
                       <Field label="Целевая аудитория" htmlFor="audience">
@@ -200,9 +245,10 @@ export default function BriefPage() {
                           id="audience"
                           type="text"
                           placeholder="Например: девушки 20–35 лет, малый бизнес, владельцы квартир после покупки"
-                          value={values.audience}
-                          onChange={(e) => setValues({ ...values, audience: e.target.value })}
+                          aria-invalid={Boolean(errors.audience)}
+                          {...register("audience")}
                         />
+                        {errors.audience ? <small className={styles.errorText}>{errors.audience.message}</small> : null}
                       </Field>
 
                       <Field label="Главное преимущество" htmlFor="advantage">
@@ -210,9 +256,10 @@ export default function BriefPage() {
                           id="advantage"
                           type="text"
                           placeholder="Например: быстро отвечаем, работаем под ключ, сильный визуал, честные сроки"
-                          value={values.advantage}
-                          onChange={(e) => setValues({ ...values, advantage: e.target.value })}
+                          aria-invalid={Boolean(errors.advantage)}
+                          {...register("advantage")}
                         />
+                        {errors.advantage ? <small className={styles.errorText}>{errors.advantage.message}</small> : null}
                       </Field>
                     </div>
                   )}
@@ -224,7 +271,7 @@ export default function BriefPage() {
                           <Choice
                             key={item}
                             active={values.brandStyle === item}
-                            onClick={() => setValues({ ...values, brandStyle: item })}
+                            onClick={() => setValue("brandStyle", item, { shouldDirty: true, shouldValidate: true })}
                           >
                             {item}
                           </Choice>
@@ -236,14 +283,15 @@ export default function BriefPage() {
                           id="inspiration"
                           placeholder="Например: нравится структура Apple, чистота Vercel, карточки как у Linear. Можно просто вставить ссылки."
                           rows={4}
-                          value={values.inspiration}
-                          onChange={(e) => setValues({ ...values, inspiration: e.target.value })}
+                          aria-invalid={Boolean(errors.inspiration)}
+                          {...register("inspiration")}
                         />
+                        {errors.inspiration ? <small className={styles.errorText}>{errors.inspiration.message}</small> : null}
                       </Field>
 
                       <ChoiceGroup label="Настроение сайта" columns="three">
                         {moods.map((mood) => (
-                          <Choice key={mood} active={values.mood === mood} onClick={() => setValues({ ...values, mood })}>
+                          <Choice key={mood} active={values.mood === mood} onClick={() => setValue("mood", mood, { shouldDirty: true, shouldValidate: true })}>
                             {mood}
                           </Choice>
                         ))}
@@ -257,7 +305,7 @@ export default function BriefPage() {
                         {siteTypes.map((type) => {
                           const Icon = type.icon;
                           return (
-                            <Choice key={type.label} active={values.siteType === type.label} onClick={() => setValues({ ...values, siteType: type.label })}>
+                            <Choice key={type.label} active={values.siteType === type.label} onClick={() => setValue("siteType", type.label, { shouldDirty: true, shouldValidate: true })}>
                               <Icon size={17} /> {type.label}
                             </Choice>
                           );
@@ -274,7 +322,7 @@ export default function BriefPage() {
                                 key={pkg.key}
                                 type="button"
                                 className={`${styles.packageCard} ${values.packageKey === pkg.key ? styles.packageActive : ""}`}
-                                onClick={() => setValues({ ...values, packageKey: pkg.key })}
+                                onClick={() => setValue("packageKey", pkg.key, { shouldDirty: true, shouldValidate: true })}
                               >
                                 <span className={styles.packageIcon}><Icon size={18} /></span>
                                 <span className={styles.packageMain}>
@@ -317,24 +365,26 @@ export default function BriefPage() {
                             id="contactName"
                             type="text"
                             placeholder="Например: Анна"
-                            value={values.contactName}
-                            onChange={(e) => setValues({ ...values, contactName: e.target.value })}
+                            aria-invalid={Boolean(errors.contactName)}
+                            {...register("contactName")}
                           />
+                          {errors.contactName ? <small className={styles.errorText}>{errors.contactName.message}</small> : null}
                         </Field>
                         <Field label="Телефон или Telegram" htmlFor="contactContact">
                           <input
                             id="contactContact"
                             type="text"
                             placeholder="Например: @username или +375 29 000-00-00"
-                            value={values.contactContact}
-                            onChange={(e) => setValues({ ...values, contactContact: e.target.value })}
+                            aria-invalid={Boolean(errors.contactContact)}
+                            {...register("contactContact")}
                           />
+                          {errors.contactContact ? <small className={styles.errorText}>{errors.contactContact.message}</small> : null}
                         </Field>
                       </div>
 
                       <ChoiceGroup label="Желаемый срок" columns="deadline">
                         {deadlines.map((deadline) => (
-                          <Choice key={deadline} active={values.deadline === deadline} onClick={() => setValues({ ...values, deadline })}>
+                          <Choice key={deadline} active={values.deadline === deadline} onClick={() => setValue("deadline", deadline, { shouldDirty: true, shouldValidate: true })}>
                             {deadline}
                           </Choice>
                         ))}
@@ -345,9 +395,10 @@ export default function BriefPage() {
                           id="notes"
                           placeholder="Например: нужен тёмный стиль, добавить блок с отзывами, форма должна отправляться в Telegram"
                           rows={4}
-                          value={values.notes}
-                          onChange={(e) => setValues({ ...values, notes: e.target.value })}
+                          aria-invalid={Boolean(errors.notes)}
+                          {...register("notes")}
                         />
+                        {errors.notes ? <small className={styles.errorText}>{errors.notes.message}</small> : null}
                       </Field>
                     </div>
                   )}
@@ -359,8 +410,14 @@ export default function BriefPage() {
                   <button type="button" className={styles.secondaryBtn} onClick={handlePrevStep} disabled={step === 1}>
                     Назад
                   </button>
-                  <button type="button" className={styles.primaryBtn} onClick={step === 4 ? handleSubmit : handleNextStep}>
-                    {step === 4 ? "Отправить бриф" : "Далее"}
+                  <button
+                    type={step === 4 ? "submit" : "button"}
+                    className={styles.primaryBtn}
+                    onClick={step === 4 ? undefined : () => {
+                      void handleNextStep();
+                    }}
+                  >
+                    {step === 4 ? "Отправить заявку" : "Далее"}
                   </button>
                 </div>
               )}

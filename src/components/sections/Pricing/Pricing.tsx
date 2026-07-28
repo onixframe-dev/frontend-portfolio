@@ -3,33 +3,47 @@
 import { Check, Sparkles, X } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { Button } from "../../ui/Button";
+import { AnimatedTitle } from "../../ui/AnimatedTitle";
+import { SectionSubtitle } from "../../ui/SectionSubtitle";
 import sectionStyles from "../../ui/Section.module.css";
 import styles from "./Pricing.module.css";
 
+type Currency = "BYN" | "USD";
+
 type Plan = {
   title: string;
-  price: string;
+  priceByn: number;
   badge: string;
+  badgeTone: "starter" | "popular" | "advanced";
   description: string;
   includes: string[];
   featured?: boolean;
   duration: string;
   baseVolume: string;
-  extraPrice: string;
+  extraPriceByn: number;
+  extraUnit: string;
   fitsFor: string;
   additional: string[];
+};
+
+type RateState = {
+  rate: number | null;
+  date: string | null;
+  status: "loading" | "ready" | "error";
 };
 
 const plans: Plan[] = [
   {
     title: "HTML / CSS / JS Landing",
-    price: "от 8 000 ₽",
+    priceByn: 600,
     badge: "Базовый сайт",
+    badgeTone: "starter",
     description: "Подходит для простого лендинга, портфолио, визитки или промо-страницы без сложной логики.",
     fitsFor: "Небольшой коммерческий сайт, промо-страница услуги или презентация продукта без backend-интеграций.",
     duration: "3–5 рабочих дней",
     baseVolume: "до 5 секций",
-    extraPrice: "+1 500 ₽ за секцию",
+    extraPriceByn: 120,
+    extraUnit: "за секцию",
     includes: [
       "Верстка до 5 секций",
       "Адаптив под телефон, планшет и desktop",
@@ -41,20 +55,22 @@ const plans: Plan[] = [
       "Базовая оптимизация изображений"
     ],
     additional: [
-      "Каждая дополнительная секция: +1 500 ₽",
+      "Сложность и объём фиксируются перед стартом",
       "Сложная анимация: обсуждается отдельно",
       "Форма с отправкой в Telegram/email: отдельно"
     ]
   },
   {
     title: "React Landing / Website",
-    price: "от 15 000 ₽",
+    priceByn: 1100,
     badge: "Популярный",
+    badgeTone: "popular",
     description: "Подходит для сайта с компонентами, состояниями, фильтрами, карточками, каталогом и более гибкой структурой.",
     fitsFor: "Компаниям и продуктам, которым нужен современный frontend на React с интерактивными секциями и логикой.",
     duration: "7–14 рабочих дней",
     baseVolume: "до 7 секций",
-    extraPrice: "+2 000 ₽ за секцию",
+    extraPriceByn: 180,
+    extraUnit: "за секцию",
     includes: [
       "React + Vite",
       "Компонентная структура",
@@ -68,7 +84,7 @@ const plans: Plan[] = [
       "Базовая оптимизация интерфейса"
     ],
     additional: [
-      "Каждая дополнительная секция: +2 000 ₽",
+      "Дополнительные секции считаются по тарифу пакета",
       "Фильтры/поиск/сортировка: отдельно",
       "Сложные состояния интерфейса: отдельно",
       "Интеграция API: отдельно",
@@ -78,13 +94,15 @@ const plans: Plan[] = [
   },
   {
     title: "Next.js + TypeScript",
-    price: "от 25 000 ₽",
+    priceByn: 1700,
     badge: "Продвинутый",
+    badgeTone: "advanced",
     description: "Подходит для современного сайта, портфолио-хаба, каталога проектов или коммерческого frontend-приложения.",
     fitsFor: "Бизнесам и стартапам, которым нужен мощный Next.js проект с SEO, страницами и архитектурой для роста.",
     duration: "14–30 рабочих дней",
     baseVolume: "до 8 секций или страниц",
-    extraPrice: "+3 000 ₽ за секцию или страницу",
+    extraPriceByn: 250,
+    extraUnit: "за секцию или страницу",
     includes: [
       "Next.js + TypeScript",
       "Страницы, компоненты и данные",
@@ -98,7 +116,7 @@ const plans: Plan[] = [
       "Подготовка проекта к дальнейшему развитию"
     ],
     additional: [
-      "Каждая дополнительная секция или страница: +3 000 ₽",
+      "Дополнительные секции и страницы считаются по тарифу пакета",
       "Подключение CMS: отдельно",
       "Авторизация/личный кабинет: отдельно",
       "Интеграция базы данных: отдельно",
@@ -109,40 +127,176 @@ const plans: Plan[] = [
   }
 ];
 
+const bynFormatter = new Intl.NumberFormat("ru-BY", {
+  maximumFractionDigits: 0,
+});
+
+const usdFormatter = new Intl.NumberFormat("en-US", {
+  maximumFractionDigits: 0,
+});
+
 export function Pricing() {
   const [activePlan, setActivePlan] = useState<Plan | null>(null);
+  const [currency, setCurrency] = useState<Currency>("BYN");
+  const [rateState, setRateState] = useState<RateState>({
+    rate: null,
+    date: null,
+    status: "loading",
+  });
 
   const openPlan = (plan: Plan) => setActivePlan(plan);
   const closePlan = () => setActivePlan(null);
 
   const selectedPlan = useMemo(() => activePlan, [activePlan]);
+  const isModalOpen = Boolean(selectedPlan);
 
   useEffect(() => {
-    const previousOverflow = document.body.style.overflow;
+    const controller = new AbortController();
 
-    if (selectedPlan) {
+    async function loadRate() {
+      try {
+        const response = await fetch("/api/rates/usd", {
+          signal: controller.signal,
+        });
+
+        if (!response.ok) {
+          throw new Error("Rate request failed");
+        }
+
+        const data = (await response.json()) as { rate: number; date: string };
+
+        setRateState({
+          rate: data.rate,
+          date: data.date,
+          status: "ready",
+        });
+      } catch {
+        if (controller.signal.aborted) {
+          return;
+        }
+
+        setRateState({
+          rate: null,
+          date: null,
+          status: "error",
+        });
+      }
+    }
+
+    loadRate();
+
+    return () => controller.abort();
+  }, []);
+
+  useEffect(() => {
+    const scrollY = window.scrollY;
+    const previousOverflow = document.body.style.overflow;
+    const previousPosition = document.body.style.position;
+    const previousTop = document.body.style.top;
+    const previousWidth = document.body.style.width;
+
+    if (isModalOpen) {
       document.body.dataset.pricingModalOpen = "true";
       document.body.style.overflow = "hidden";
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = "100%";
     } else {
+      const lockedTop = document.body.style.top;
       delete document.body.dataset.pricingModalOpen;
       document.body.style.overflow = previousOverflow;
+      document.body.style.position = previousPosition;
+      document.body.style.top = previousTop;
+      document.body.style.width = previousWidth;
+
+      if (lockedTop) {
+        window.scrollTo(0, Math.abs(parseInt(lockedTop, 10)));
+      }
     }
 
     return () => {
+      const lockedTop = document.body.style.top;
       delete document.body.dataset.pricingModalOpen;
       document.body.style.overflow = previousOverflow;
+      document.body.style.position = previousPosition;
+      document.body.style.top = previousTop;
+      document.body.style.width = previousWidth;
+
+      if (lockedTop) {
+        window.scrollTo(0, Math.abs(parseInt(lockedTop, 10)));
+      }
     };
-  }, [selectedPlan]);
+  }, [isModalOpen]);
+
+  const formatPrice = (amountByn: number, prefix = "от ") => {
+    if (currency === "BYN") {
+      return `${prefix}${bynFormatter.format(amountByn)} Br`;
+    }
+
+    if (!rateState.rate) {
+      return "курс загружается";
+    }
+
+    return `${prefix}$${usdFormatter.format(amountByn / rateState.rate)}`;
+  };
+
+  const formatBynPrice = (amountByn: number, prefix = "от ") => `${prefix}${bynFormatter.format(amountByn)} Br`;
+
+  const formatUsdPrice = (amountByn: number, prefix = "") => {
+    if (!rateState.rate) {
+      return "USD загружается";
+    }
+
+    return `${prefix}$${usdFormatter.format(amountByn / rateState.rate)}`;
+  };
+
+  const formatDualPrice = (amountByn: number, prefix = "от ") => {
+    const usdPrefix = prefix.trim() === "+" ? "+" : "";
+    return `${formatBynPrice(amountByn, prefix)} / ${formatUsdPrice(amountByn, usdPrefix)}`;
+  };
+
+  const formatDualExtraPrice = (plan: Plan) => `${formatDualPrice(plan.extraPriceByn, "+")} ${plan.extraUnit}`;
+
+  const rateLabel =
+    rateState.status === "ready" && rateState.rate
+      ? `Курс НБРБ: 1 USD = ${rateState.rate.toFixed(4)} Br`
+      : rateState.status === "loading"
+        ? "Загружаю курс НБРБ"
+        : "Курс НБРБ временно недоступен";
 
   return (
-    <section id="pricing" className={sectionStyles.sectionBlock}>
+    <section
+      id="pricing"
+      className={`${sectionStyles.sectionBlock} ${isModalOpen ? styles.pricingModalRootOpen : ""}`}
+    >
       <div className={`${sectionStyles.sectionHeader} ${styles.pricingHeader}`}>
         <div>
-          <h2>Прайс на разработку сайтов.</h2>
-          <p>
+          <AnimatedTitle>Прайс на разработку сайтов.</AnimatedTitle>
+          <SectionSubtitle>
             Пакеты созданы как быстрый выбор с деталями внутри. После клика вы увидите сроки,
             базовый объём и доплаты за дополнительные секции.
-          </p>
+          </SectionSubtitle>
+        </div>
+        <div className={styles.currencyPanel}>
+          <div className={styles.currencyToggle} role="group" aria-label="Валюта прайса">
+            <button
+              type="button"
+              className={`${styles.currencyButton} ${currency === "BYN" ? styles.currencyButtonActive : ""}`}
+              onClick={() => setCurrency("BYN")}
+              aria-pressed={currency === "BYN"}
+            >
+              BYN
+            </button>
+            <button
+              type="button"
+              className={`${styles.currencyButton} ${currency === "USD" ? styles.currencyButtonActive : ""}`}
+              onClick={() => setCurrency("USD")}
+              aria-pressed={currency === "USD"}
+            >
+              USD
+            </button>
+          </div>
+          <span className={styles.rateNote}>{rateLabel}</span>
         </div>
       </div>
 
@@ -150,7 +304,9 @@ export function Pricing() {
         {plans.map((plan) => (
           <article
             key={plan.title}
-            className={`${styles.priceCard} ${plan.featured ? styles.priceCardFeatured : ''} ${styles.clickable}`}
+            className={`${styles.priceCard} ${styles[`priceCard${plan.badgeTone}`]} ${
+              plan.featured ? styles.priceCardFeatured : ""
+            } ${styles.clickable}`}
             role="button"
             tabIndex={0}
             onClick={() => openPlan(plan)}
@@ -162,12 +318,19 @@ export function Pricing() {
             }}
           >
             <div className={styles.priceTop}>
-              <span className={styles.priceBadge}>
+              <span className={`${styles.priceBadge} ${styles[`priceBadge${plan.badgeTone}`]}`}>
                 <Sparkles size={14} />
                 {plan.badge}
               </span>
               <h3>{plan.title}</h3>
-              <strong>{plan.price}</strong>
+              <strong
+                key={`${plan.title}-${currency}-${rateState.rate ?? "pending"}`}
+                className={`${styles.priceValue} ${
+                  currency === "USD" ? styles.priceValueUsd : styles.priceValueByn
+                }`}
+              >
+                {formatPrice(plan.priceByn)}
+              </strong>
               <p>{plan.description}</p>
             </div>
 
@@ -207,54 +370,81 @@ export function Pricing() {
               <X size={18} />
             </button>
 
-            <div className={styles.modalHeader}>
-              <span className={`${styles.priceBadge} ${styles.modalBadge}`}>{selectedPlan.badge}</span>
-              <h3 id="pricing-modal-title">{selectedPlan.title}</h3>
-              <strong>{selectedPlan.price}</strong>
-              <p>{selectedPlan.description}</p>
-
-              <div className={styles.modalMeta}>
-                <span className={styles.modalBadge}>Срок: {selectedPlan.duration}</span>
-                <span className={styles.modalBadge}>Базовый объём: {selectedPlan.baseVolume}</span>
-                <span className={styles.modalBadge}>Дополнительно: {selectedPlan.extraPrice}</span>
+            <div className={styles.modalScrollArea}>
+              <div className={styles.modalPlanSwitcher} role="tablist" aria-label="Тарифы">
+                {plans.map((plan, index) => (
+                  <button
+                    key={plan.title}
+                    type="button"
+                    className={`${styles.modalPlanTab} ${
+                      selectedPlan.title === plan.title ? styles.modalPlanTabActive : ""
+                    }`}
+                    onClick={() => setActivePlan(plan)}
+                    role="tab"
+                    aria-selected={selectedPlan.title === plan.title}
+                  >
+                    <span>{plan.badge}</span>
+                    <small>{index + 1}</small>
+                  </button>
+                ))}
               </div>
-            </div>
 
-            <div className={styles.modalSection}>
-              <h4>Кому подходит</h4>
-              <p>{selectedPlan.fitsFor}</p>
-            </div>
+              <div className={styles.modalHeader} key={selectedPlan.title}>
+                <span className={`${styles.priceBadge} ${styles[`priceBadge${selectedPlan.badgeTone}`]} ${styles.modalBadge}`}>
+                  {selectedPlan.badge}
+                </span>
+                <h3 id="pricing-modal-title">{selectedPlan.title}</h3>
+                <strong
+                  key={`modal-${selectedPlan.title}-${rateState.rate ?? "pending"}`}
+                  className={`${styles.priceValue} ${styles.priceValueByn} ${styles.modalDualPrice}`}
+                >
+                  {formatDualPrice(selectedPlan.priceByn)}
+                </strong>
+                <p>{selectedPlan.description}</p>
 
-            <div className={styles.modalSection}>
-              <h4>Что входит</h4>
-              <ul>
-                {selectedPlan.includes.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </div>
+                <div className={styles.modalMeta}>
+                  <span className={styles.modalBadge}>Срок: {selectedPlan.duration}</span>
+                  <span className={styles.modalBadge}>Базовый объём: {selectedPlan.baseVolume}</span>
+                  <span className={styles.modalBadge}>Дополнительно: {formatDualExtraPrice(selectedPlan)}</span>
+                </div>
+              </div>
 
-            <div className={styles.modalSection}>
-              <h4>Сроки и объём</h4>
-              <ul>
-                <li>Базовый объём: {selectedPlan.baseVolume}</li>
-                <li>Дополнительная секция: {selectedPlan.extraPrice}</li>
-                <li>Срок выполнения: {selectedPlan.duration}</li>
-              </ul>
-            </div>
+              <div className={styles.modalSection}>
+                <h4>Кому подходит</h4>
+                <p>{selectedPlan.fitsFor}</p>
+              </div>
 
-            <div className={styles.modalSection}>
-              <h4>Дополнительно</h4>
-              <ul>
-                {selectedPlan.additional.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </div>
+              <div className={styles.modalSection}>
+                <h4>Что входит</h4>
+                <ul>
+                  {selectedPlan.includes.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </div>
 
-            <Button variant="modal" href="mailto:hello@example.com">
-              Обсудить проект
-            </Button>
+              <div className={styles.modalSection}>
+                <h4>Сроки и объём</h4>
+                <ul>
+                  <li>Базовый объём: {selectedPlan.baseVolume}</li>
+                  <li>Дополнительная секция: {formatDualExtraPrice(selectedPlan)}</li>
+                  <li>Срок выполнения: {selectedPlan.duration}</li>
+                </ul>
+              </div>
+
+              <div className={styles.modalSection}>
+                <h4>Дополнительно</h4>
+                <ul>
+                  {selectedPlan.additional.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+
+              <Button variant="modal" href="mailto:hello@example.com">
+                Обсудить проект
+              </Button>
+            </div>
           </div>
         </div>
       ) : null}

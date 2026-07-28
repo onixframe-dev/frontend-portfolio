@@ -8,18 +8,27 @@ import { Button } from "../../ui/Button";
 import styles from "./Header.module.css";
 
 const navItems = [
-  { href: "/#catalog", label: "Проекты" },
   { href: "/#catalog", label: "Каталог" },
   { href: "/#pricing", label: "Услуги" },
   { href: "/#about", label: "Подход" },
   { href: "/#contacts", label: "Контакты" },
-  { href: "/brief", label: "Бриф" },
+  { href: "/brief", label: "Заявка" },
 ];
 
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
   const [activeHash, setActiveHash] = useState<string>("");
+
+  useEffect(() => {
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+
+    if (!window.location.hash) {
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    }
+  }, []);
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
@@ -100,8 +109,8 @@ export function Header() {
             src="/8.png"
             alt="NEXFRAME logo"
             className={styles.logo}
-            width={48}
-            height={48}
+            width={50}
+            height={50}
             priority
           />
           <span className={styles.brandText}>

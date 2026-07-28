@@ -5,6 +5,10 @@
   gap: 24px;
   align-items: stretch;
 }
+.pricingModalRootOpen {
+  z-index: 120;
+}
+
 .pricingHeader {
   display: flex;
   flex-direction: column;
@@ -20,13 +24,73 @@
   color: rgba(255, 255, 255, 0.92);
   margin-bottom: 18px;
 }
-.pricingHeader p {
-  margin: 0;
-  max-width: 560px;
-  color: var(--muted);
-  font-size: 16px;
-  line-height: 1.8;
-  letter-spacing: 0.01em;
+.currencyPanel {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+}
+.currencyToggle {
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  gap: 6px;
+  padding: 6px;
+  border-radius: 999px;
+  border: 1px solid rgba(92, 225, 230, 0.16);
+  background: rgba(8, 21, 26, 0.72);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+.currencyToggle::before {
+  content: '';
+  position: absolute;
+  inset: -42% auto -42% -55%;
+  width: 38%;
+  transform: skewX(-18deg);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.07),
+    rgba(92, 225, 230, 0.16),
+    transparent
+  );
+  opacity: 0.55;
+  pointer-events: none;
+  animation: currencyToggleHint 4.4s ease-in-out infinite;
+}
+.currencyButton {
+  position: relative;
+  z-index: 1;
+  min-width: 70px;
+  height: 38px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.7);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: color 0.22s ease, background 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+}
+.currencyButton:hover,
+.currencyButton:focus-visible {
+  color: #ffffff;
+  border-color: rgba(92, 225, 230, 0.24);
+  background: rgba(12, 40, 48, 0.65);
+  outline: none;
+}
+.currencyButtonActive {
+  color: #ffffff;
+  border-color: rgba(92, 225, 230, 0.34);
+  background: linear-gradient(135deg, rgba(11, 58, 70, 0.96), rgba(47, 40, 112, 0.86));
+  box-shadow: 0 8px 20px rgba(92, 225, 230, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  animation: currencyActivePulse 2.8s ease-in-out infinite;
+}
+.rateNote {
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 13px;
+  line-height: 1.4;
 }
 .priceCard {
   position: relative;
@@ -45,11 +109,53 @@
   overflow: hidden;
   transition: transform 0.35s ease, border-color 0.35s ease, background 0.35s ease, box-shadow 0.35s ease;
 }
+.priceCard::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  padding: 1px;
+  border-radius: inherit;
+  background:
+    conic-gradient(
+      from var(--pricing-border-angle),
+      transparent 0deg,
+      transparent 238deg,
+      var(--card-border-soft) 266deg,
+      var(--card-border-glow) 286deg,
+      var(--card-border-soft) 306deg,
+      transparent 336deg,
+      transparent 360deg
+    );
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  pointer-events: none;
+  opacity: 0.72;
+  animation: pricingBorderTravel 9.5s linear infinite;
+}
+.priceCardstarter {
+  --card-border-glow: rgba(34, 211, 238, 0.82);
+  --card-border-soft: rgba(56, 189, 248, 0.28);
+}
+.priceCardpopular {
+  --card-border-glow: rgba(124, 92, 255, 0.68);
+  --card-border-soft: rgba(92, 225, 230, 0.18);
+}
+.priceCardadvanced {
+  --card-border-glow: rgba(210, 218, 230, 0.44);
+  --card-border-soft: rgba(124, 92, 255, 0.14);
+}
 .priceCard:hover {
   transform: translateY(-8px);
   border-color: rgba(124, 92, 255, 0.4);
   background: rgba(255, 255, 255, 0.021);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25), 0 0 12px rgba(124, 92, 255, 0.12);
+}
+.priceCard:hover::after {
+  opacity: 0.96;
+  animation-duration: 6.8s;
 }
 .priceCardFeatured {
   border-color: rgba(124, 92, 255, 0.4);
@@ -62,32 +168,90 @@
   max-width: 640px;
 }
 .priceBadge {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 8px 14px;
+  padding: 8px 15px;
   border-radius: 999px;
-  color: #f8f7ff;
-  background: rgba(124, 92, 255, 0.12);
-  border: 1px solid rgba(124, 92, 255, 0.2);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.02em;
+  color: rgba(250, 253, 255, 0.94);
+  background: rgba(12, 31, 36, 0.74);
+  border: 1px solid transparent;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+.priceBadge svg,
+.priceBadge span {
+  position: relative;
+  z-index: 1;
+}
+.priceBadgestarter {
+  color: #eefcff;
+  background: linear-gradient(135deg, rgba(9, 36, 42, 0.9), rgba(10, 23, 27, 0.86));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 8px 22px rgba(92, 225, 230, 0.05);
+}
+.priceBadgepopular {
+  color: #ffffff;
+  background: linear-gradient(135deg, rgba(12, 58, 66, 0.94), rgba(47, 40, 112, 0.86));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.11), 0 10px 24px rgba(92, 225, 230, 0.08);
+}
+.priceBadgeadvanced {
+  color: #f8f6ff;
+  background: linear-gradient(135deg, rgba(25, 24, 36, 0.92), rgba(62, 48, 105, 0.74));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 10px 24px rgba(124, 92, 255, 0.07);
 }
 .priceCard h3 {
   margin: 20px 0 0;
+  min-height: 68px;
   font-size: 28px;
   line-height: 1.2;
   letter-spacing: -0.02em;
   font-weight: 600;
+  display: flex;
+  align-items: flex-start;
 }
-.priceCard strong {
+.priceCard strong,
+.priceValue {
   display: block;
   margin-top: 16px;
   font-size: 44px;
   letter-spacing: -0.04em;
   line-height: 1;
   font-weight: 700;
+}
+.priceValue {
+  position: relative;
+  overflow: hidden;
+  padding-bottom: 4px;
+  animation: priceCurrencySwap 1.15s cubic-bezier(0.22, 1, 0.36, 1) both;
+  will-change: transform, opacity, clip-path;
+}
+.priceValue::after {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 -42%;
+  width: 34%;
+  transform: skewX(-18deg);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.22),
+    rgba(92, 225, 230, 0.2),
+    transparent
+  );
+  opacity: 0;
+  pointer-events: none;
+  animation: priceCurrencySweep 1.15s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.priceValueByn {
+  color: rgba(244, 251, 255, 0.96);
+  text-shadow: 0 0 18px rgba(92, 225, 230, 0.08), 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+.priceValueUsd {
+  color: rgba(225, 242, 255, 0.96);
+  text-shadow: 0 0 18px rgba(124, 92, 255, 0.09), 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 .priceCard p {
   margin-top: 16px;
@@ -123,69 +287,188 @@
 .pricingModalOverlay {
   position: fixed;
   inset: 0;
-  z-index: 80;
+  z-index: 1000;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 24px;
-  background: rgba(7, 11, 18, 0.84);
-  backdrop-filter: blur(18px);
+  background: #000;
+  backdrop-filter: blur(22px);
+  overflow: hidden;
+  animation: modalOverlayFade 0.22s ease both;
+}
+.pricingModalOverlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle, rgba(255, 255, 255, 0.72) 0 1px, transparent 1.7px),
+    radial-gradient(circle, rgba(92, 225, 230, 0.62) 0 1.2px, transparent 2px),
+    radial-gradient(circle, rgba(124, 92, 255, 0.5) 0 1px, transparent 1.9px);
+  background-size: 176px 176px, 292px 292px, 388px 388px;
+  background-position: 34px 20px, 118px 92px, 226px 156px;
+  opacity: 0.28;
+  pointer-events: none;
+  z-index: 0;
+  filter: drop-shadow(0 0 7px rgba(92, 225, 230, 0.16));
+  animation: modalStarsDrift 46s linear infinite, modalStarsPulse 7.5s ease-in-out infinite;
+}
+.pricingModalOverlay::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 50% 10%, rgba(92, 225, 230, 0.08), transparent 32rem),
+    radial-gradient(ellipse at 22% 24%, rgba(124, 92, 255, 0.06), transparent 34rem),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.18), transparent 38%, rgba(0, 0, 0, 0.26));
 }
 .pricingModal {
   position: relative;
-  width: min(100%, 900px);
+  z-index: 1;
+  width: min(100%, 940px);
   max-height: min(86vh, 820px);
   overflow: hidden;
   padding: 0;
   border-radius: 28px;
-  background: rgba(14, 18, 26, 0.98);
+  background: linear-gradient(180deg, #0b1117, #070b10);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.34), 0 0 0 1px rgba(92, 225, 230, 0.035);
+  animation: modalEnter 0.32s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 .pricingModal::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at 20% 0%, rgba(124, 92, 255, 0.14), transparent 28%),
-    radial-gradient(circle at 90% 20%, rgba(92, 225, 230, 0.06), transparent 26%);
-  pointer-events: none;
+  content: none;
 }
 .modalClose {
-  position: sticky;
+  position: absolute;
   top: 18px;
-  margin: 18px 18px 0 auto;
-  z-index: 4;
-  width: 44px;
-  height: 44px;
+  right: 18px;
+  margin: 0;
+  z-index: 6;
+  width: 48px;
+  height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(92, 225, 230, 0.16);
+  background: rgba(16, 24, 28, 0.84);
   color: #fff;
   cursor: pointer;
-  transition: transform 0.22s ease, background 0.22s ease;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(14px);
+  transition: transform 0.24s ease, background 0.24s ease, border-color 0.24s ease, box-shadow 0.24s ease;
 }
-.modalClose:hover {
+.modalClose:hover,
+.modalClose:focus-visible {
   transform: rotate(90deg) scale(1.04);
-  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(92, 225, 230, 0.36);
+  background: rgba(10, 42, 50, 0.9);
+  box-shadow: 0 18px 42px rgba(92, 225, 230, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  outline: none;
+}
+.modalScrollArea {
+  position: relative;
+  z-index: 1;
+  max-height: min(86vh, 820px);
+  overflow-y: auto;
+  padding: 30px 18px 0 0;
+  background: linear-gradient(180deg, #0b1117, #070b10);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(92, 225, 230, 0.58) rgba(255, 255, 255, 0.045);
 }
 .modalHeader,
 .modalSection,
+.modalPlanSwitcher,
 .pricingModal > a {
   position: relative;
   z-index: 1;
+}
+.modalPlanSwitcher {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  width: calc(100% - 64px);
+  margin: 0 auto 24px;
+  padding: 8px;
+  border-radius: 22px;
+  background: rgba(5, 17, 21, 0.62);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.055);
+}
+.modalPlanTab {
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 46px;
+  padding: 0 14px;
+  border: 1px solid transparent;
+  border-radius: 16px;
+  color: rgba(244, 251, 255, 0.72);
+  background: rgba(8, 27, 32, 0.66);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 850;
+  cursor: pointer;
+  transition: transform 0.24s ease, color 0.24s ease, background 0.24s ease, box-shadow 0.24s ease;
+}
+.modalPlanTab::before {
+  content: '';
+  position: absolute;
+  inset: -46% auto -46% -72%;
+  width: 46%;
+  transform: rotate(18deg);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.06), rgba(92, 225, 230, 0.14), transparent);
+  opacity: 0.34;
+  animation: modalTabShine 5.4s ease-in-out infinite;
+}
+.modalPlanTab span,
+.modalPlanTab small {
+  position: relative;
+  z-index: 1;
+}
+.modalPlanTab small {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  color: rgba(244, 251, 255, 0.72);
+  background: rgba(255, 255, 255, 0.06);
+  font-size: 11px;
+  line-height: 1;
+}
+.modalPlanTab:hover,
+.modalPlanTab:focus-visible {
+  transform: translateY(-1px);
+  color: #ffffff;
+  background: rgba(10, 42, 50, 0.82);
+  box-shadow: 0 12px 26px rgba(92, 225, 230, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  outline: none;
+}
+.modalPlanTabActive {
+  color: #ffffff;
+  background: linear-gradient(135deg, rgba(12, 52, 64, 0.94), rgba(47, 40, 112, 0.82));
+  box-shadow: 0 12px 26px rgba(92, 225, 230, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+.modalPlanTabActive small {
+  color: #ffffff;
+  background: rgba(92, 225, 230, 0.16);
 }
 .modalHeader {
   padding: 0 32px 20px;
   display: flex;
   flex-direction: column;
   gap: 18px;
+  animation: modalContentEnter 0.34s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 .modalMeta {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
 }
 .modalBadge {
@@ -193,14 +476,14 @@
   align-items: center;
   justify-content: center;
   align-self: center;
-  width: min(100%, 760px);
+  width: 100%;
   min-height: 40px;
   margin: 0 auto 10px;
   padding: 10px 18px;
   border-radius: 999px;
-  background: rgba(124, 92, 255, 0.14);
+  background: rgba(24, 22, 48, 0.72);
   color: #f5f6ff;
-  border: 1px solid rgba(124, 92, 255, 0.24);
+  border: 1px solid rgba(124, 92, 255, 0.2);
   backdrop-filter: blur(16px);
   text-align: center;
   font-size: 15px;
@@ -213,9 +496,15 @@
   line-height: 1.15;
   letter-spacing: -0.02em;
 }
-.modalHeader strong {
+.modalHeader strong,
+.modalHeader .priceValue {
   font-size: 38px;
   letter-spacing: -0.04em;
+}
+.modalDualPrice {
+  width: fit-content;
+  max-width: 100%;
+  line-height: 1.08;
 }
 .modalHeader p {
   max-width: 680px;
@@ -263,22 +552,21 @@
   top: 2px;
   color: rgba(124, 92, 255, 0.9);
 }
-.pricingModal {
-  scrollbar-width: thin;
-  scrollbar-color: rgba(124, 92, 255, 0.5) rgba(255, 255, 255, 0.05);
-  overflow-y: auto;
+.modalScrollArea::-webkit-scrollbar {
+  width: 10px;
 }
-.pricingModal::-webkit-scrollbar {
-  width: 6px;
-}
-.pricingModal::-webkit-scrollbar-track {
-  background: rgba(8, 12, 18, 0.85);
+.modalScrollArea::-webkit-scrollbar-track {
+  margin: 24px 0;
+  background: rgba(5, 12, 16, 0.72);
   border-radius: 999px;
 }
-.pricingModal::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, rgba(124, 92, 255, 0.8), rgba(92, 225, 230, 0.65));
+.modalScrollArea::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(92, 225, 230, 0.72), rgba(124, 92, 255, 0.58));
   border-radius: 999px;
-  border: 1px solid rgba(14, 18, 26, 0.96);
+  border: 2px solid rgba(5, 12, 16, 0.88);
+}
+.modalScrollArea::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, rgba(92, 225, 230, 0.9), rgba(124, 92, 255, 0.72));
 }
 @media (max-width: 980px) {
   .pricingGrid {
@@ -292,6 +580,7 @@
 
   .priceCard h3 {
     font-size: 24px;
+    min-height: 58px;
   }
 
   .priceCard strong {
@@ -318,6 +607,7 @@
 
   .priceCard h3 {
     font-size: 22px;
+    min-height: auto;
   }
 
   .priceCard strong {
@@ -335,6 +625,15 @@
     max-height: 90vh;
     border-radius: 20px;
   }
+  .modalScrollArea {
+    max-height: 90vh;
+    padding: 22px 12px 0 0;
+  }
+  .modalPlanSwitcher {
+    grid-template-columns: 1fr;
+    width: calc(100% - 40px);
+    margin-top: 22px;
+  }
   .modalHeader {
     padding: 0 20px 16px;
   }
@@ -348,15 +647,164 @@
   }
 
   .modalBadge {
-    width: calc(100% - 64px);
     min-height: 38px;
     font-size: 14px;
+  }
+  .modalMeta {
+    grid-template-columns: 1fr;
   }
 
   .modalClose {
     top: 12px;
-    margin: 12px 12px 0 auto;
+    right: 12px;
+    margin: 0;
     width: 42px;
     height: 42px;
+  }
+}
+
+@keyframes modalOverlayFade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalEnter {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes modalContentEnter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes modalTabShine {
+  0%,
+  30% {
+    left: -72%;
+  }
+
+  62%,
+  100% {
+    left: 126%;
+  }
+}
+
+@keyframes modalStarsDrift {
+  0% {
+    background-position: 34px 20px, 118px 92px, 226px 156px;
+  }
+
+  100% {
+    background-position: 210px 196px, 410px 384px, 614px 544px;
+  }
+}
+
+@keyframes modalStarsPulse {
+  0%,
+  100% {
+    opacity: 0.2;
+  }
+
+  50% {
+    opacity: 0.34;
+  }
+}
+
+@keyframes priceCurrencySwap {
+  0% {
+    opacity: 0;
+    transform: translateX(-18px);
+    clip-path: inset(0 100% 0 0);
+  }
+
+  42% {
+    opacity: 0.86;
+    transform: translateX(0);
+    clip-path: inset(0 28% 0 0);
+  }
+
+  72% {
+    opacity: 1;
+    transform: translateX(0);
+    clip-path: inset(0 0 0 0);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes currencyToggleHint {
+  0%,
+  34% {
+    left: -55%;
+  }
+
+  62%,
+  100% {
+    left: 118%;
+  }
+}
+
+@keyframes currencyActivePulse {
+  0%,
+  100% {
+    box-shadow: 0 8px 20px rgba(92, 225, 230, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  }
+
+  50% {
+    box-shadow: 0 10px 24px rgba(92, 225, 230, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.16);
+  }
+}
+
+@keyframes priceCurrencySweep {
+  0%,
+  18% {
+    left: -42%;
+    opacity: 0;
+  }
+
+  36% {
+    opacity: 0.9;
+  }
+
+  78%,
+  100% {
+    left: 112%;
+    opacity: 0;
+  }
+}
+
+@property --pricing-border-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes pricingBorderTravel {
+  to {
+    --pricing-border-angle: 360deg;
   }
 }

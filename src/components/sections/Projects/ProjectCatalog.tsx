@@ -6,6 +6,8 @@ import { useMemo, useRef, useState } from "react";
 import { categories, projects } from "@/data/projects";
 import type { ProjectCategory } from "@/data/projects";
 import { ProjectCard } from "./ProjectCard";
+import { AnimatedTitle } from "../../ui/AnimatedTitle";
+import { SectionSubtitle } from "../../ui/SectionSubtitle";
 import { Button } from "../../ui/Button";
 import sectionStyles from "../../ui/Section.module.css";
 import styles from "./ProjectCatalog.module.css";
@@ -41,8 +43,10 @@ export function ProjectCatalog() {
     <section ref={sectionRef} id="catalog" className={`${sectionStyles.sectionBlock} ${styles.catalogSection}`}>
       <div className={`${sectionStyles.sectionHeader} ${styles.catalogHeader}`}>
         <div className={styles.catalogTitle}>
-          <h2>Полный каталог проектов</h2>
-          <p>Отфильтруйте проекты по языку и типу: лендинги, React-приложения, Next.js + TypeScript решения.</p>
+          <AnimatedTitle>Полный каталог проектов</AnimatedTitle>
+          <SectionSubtitle>
+            Отфильтруйте проекты по языку и типу: лендинги, React-приложения, Next.js + TypeScript решения.
+          </SectionSubtitle>
         </div>
         <div className={styles.filterBarWrapper}>
           <div className={styles.filterBar} role="tablist" aria-label="Project categories">
@@ -63,14 +67,9 @@ export function ProjectCatalog() {
 
       <div className={styles.catalogSection}>
         <div className={styles.catalogGrid}>
-          {Array.from({ length: PROJECTS_PER_PAGE }).map((_, index) => {
-            const project = visibleProjects[index];
-            return project ? (
-              <ProjectCard key={`${project.id}-${project.title}-${index}`} project={project} />
-            ) : (
-              <div key={`placeholder-${index}`} className={styles.placeholderItem} aria-hidden="true" />
-            );
-          })}
+          {visibleProjects.map((project, index) => (
+            <ProjectCard key={`${project.id}-${project.title}-${index}`} project={project} />
+          ))}
         </div>
       </div>
 

@@ -86,7 +86,7 @@
 
 .nav {
   gap: 32px;
-  color: rgba(255, 255, 255, 0.78);
+  color: rgba(245, 249, 255, 0.82);
   font-size: 15px;
   letter-spacing: 0.02em;
 }
@@ -104,28 +104,30 @@
 .nav a::after {
   content: '';
   position: absolute;
-  left: 50%;
+  left: 0;
+  right: 0;
   bottom: 0;
-  width: 26px;
   height: 2px;
   border-radius: 999px;
-  background: linear-gradient(90deg, rgba(124, 92, 255, 0.92), rgba(92, 225, 230, 0.85));
+  background: linear-gradient(90deg, transparent, rgba(92, 225, 230, 0.9), rgba(124, 92, 255, 0.62), transparent);
   opacity: 0;
-  transform: translateX(-50%) scaleX(0);
-  transform-origin: center;
-  transition: transform 0.28s ease, opacity 0.28s ease;
+  transform: scaleX(0);
+  transform-origin: left;
+  box-shadow: 0 0 10px rgba(92, 225, 230, 0.22);
+  transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
 .nav a:hover,
 .nav a:focus-visible {
   color: #fff;
+  outline: none;
 }
 
 .nav a:hover::after,
 .nav a:focus-visible::after,
 .nav a.activeLink::after {
   opacity: 0.75;
-  transform: translateX(-50%) scaleX(1);
+  transform: scaleX(1);
 }
 
 .nav a.activeLink {
@@ -133,9 +135,9 @@
 }
 
 .nav a.activeLink::after {
-  background: linear-gradient(90deg, rgba(124, 92, 255, 0.95), rgba(92, 225, 230, 0.95));
+  background: linear-gradient(90deg, transparent, rgba(92, 225, 230, 0.95), rgba(124, 92, 255, 0.74), transparent);
   opacity: 1;
-  transform: translateX(-50%) scaleX(1);
+  transform: scaleX(1);
 }
 
 .mobileNav a.activeLink {

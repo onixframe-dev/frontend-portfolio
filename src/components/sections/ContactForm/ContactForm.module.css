@@ -6,20 +6,6 @@
   margin-bottom: 42px;
 }
 
-.kicker {
-  display: inline-flex;
-  margin-bottom: 16px;
-  padding: 7px 14px;
-  border: 1px solid rgba(124, 92, 255, 0.24);
-  border-radius: 999px;
-  color: rgba(177, 165, 255, 0.98);
-  background: rgba(124, 92, 255, 0.1);
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
 .contactGrid {
   position: relative;
   z-index: 1;
@@ -30,11 +16,64 @@
 
 .infoCard,
 .form {
-  border: 1px solid rgba(255, 255, 255, 0.11);
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.09);
   border-radius: 30px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.035));
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.052), rgba(255, 255, 255, 0.026));
+  box-shadow: 0 28px 76px rgba(0, 0, 0, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.055);
   backdrop-filter: blur(18px);
+}
+
+.infoCard::before,
+.form::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at 16% 0%, rgba(92, 225, 230, 0.045), transparent 34%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), transparent 58%);
+  opacity: 0.86;
+}
+
+.infoCard::after,
+.form::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 1px;
+  border-radius: inherit;
+  background: conic-gradient(
+    from var(--contact-border-angle),
+    transparent 0deg,
+    transparent 232deg,
+    rgba(180, 190, 205, 0.12) 260deg,
+    rgba(92, 225, 230, 0.42) 286deg,
+    rgba(180, 190, 205, 0.12) 312deg,
+    transparent 340deg,
+    transparent 360deg
+  );
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  opacity: 0.58;
+  pointer-events: none;
+  animation: contactBorderTravel 11s linear infinite;
+}
+
+.infoCard:hover::after,
+.form:hover::after,
+.form:focus-within::after {
+  opacity: 0.86;
+  animation-duration: 7.5s;
+}
+
+.infoCard > *,
+.form > * {
+  position: relative;
+  z-index: 2;
 }
 
 .infoCard {
@@ -50,8 +89,9 @@
   margin-bottom: 22px;
   border-radius: 16px;
   color: rgba(92, 225, 230, 0.95);
-  background: rgba(92, 225, 230, 0.1);
-  border: 1px solid rgba(92, 225, 230, 0.18);
+  background: rgba(8, 38, 44, 0.82);
+  border: 1px solid rgba(92, 225, 230, 0.2);
+  box-shadow: 0 12px 28px rgba(92, 225, 230, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 .infoCard h3 {
@@ -62,7 +102,8 @@
 
 .infoCard p {
   margin: 16px 0 26px;
-  color: var(--muted);
+  color: rgba(220, 228, 238, 0.72);
+  line-height: 1.78;
 }
 
 .quickLinks {
@@ -75,14 +116,17 @@
   align-items: center;
   gap: 10px;
   width: fit-content;
-  color: rgba(244, 246, 251, 0.88);
+  color: rgba(244, 251, 255, 0.86);
   font-weight: 800;
-  transition: color 0.22s ease, transform 0.22s ease;
+  transition: color 0.22s ease, transform 0.22s ease, filter 0.22s ease;
 }
 
-.quickLinks a:hover {
+.quickLinks a:hover,
+.quickLinks a:focus-visible {
   color: #fff;
   transform: translateX(3px);
+  filter: drop-shadow(0 8px 18px rgba(92, 225, 230, 0.12));
+  outline: none;
 }
 
 .form {
@@ -111,13 +155,13 @@
 .form input,
 .form textarea {
   width: 100%;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.105);
   border-radius: 18px;
   color: #fff;
-  background: rgba(255, 255, 255, 0.055);
+  background: rgba(255, 255, 255, 0.045);
   padding: 15px 16px;
   outline: none;
-  resize: vertical;
+  resize: none;
   transition: border-color 0.22s ease, background 0.22s ease, box-shadow 0.22s ease;
 }
 
@@ -127,20 +171,45 @@
 
 .form input::placeholder,
 .form textarea::placeholder {
-  color: rgba(168, 176, 191, 0.6);
+  color: rgba(168, 176, 191, 0.54);
 }
 
 .form input:focus,
 .form textarea:focus {
-  border-color: rgba(124, 92, 255, 0.55);
-  background: rgba(124, 92, 255, 0.075);
-  box-shadow: 0 0 0 4px rgba(124, 92, 255, 0.1);
+  border-color: rgba(92, 225, 230, 0.38);
+  background: rgba(8, 34, 40, 0.58);
+  box-shadow: 0 0 0 4px rgba(92, 225, 230, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.055);
+}
+
+.form input[aria-invalid="true"],
+.form textarea[aria-invalid="true"] {
+  border-color: rgba(255, 110, 110, 0.52);
+  background: rgba(80, 22, 28, 0.24);
+  box-shadow: 0 0 0 3px rgba(255, 110, 110, 0.08);
+}
+
+.errorText {
+  color: rgba(255, 150, 150, 0.92);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.45;
 }
 
 .actions {
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
+}
+
+.submitButton,
+.briefButton {
+  min-width: 220px;
+  margin-top: 0;
+  color: #f8fdff;
+}
+
+.briefButton {
+  min-width: 180px;
 }
 
 .successBox {
@@ -167,6 +236,18 @@
   .contactGrid,
   .row {
     grid-template-columns: 1fr;
+  }
+}
+
+@property --contact-border-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes contactBorderTravel {
+  to {
+    --contact-border-angle: 360deg;
   }
 }
 

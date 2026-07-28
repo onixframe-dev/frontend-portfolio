@@ -186,7 +186,7 @@
   background: rgba(255, 255, 255, 0.025);
   padding: 15px 16px;
   outline: none;
-  resize: vertical;
+  resize: none;
   transition: border-color 0.22s ease, background 0.22s ease, box-shadow 0.22s ease;
 }
 
@@ -208,6 +208,20 @@
   border-color: rgba(125, 92, 255, 0.34);
   background: rgba(255, 255, 255, 0.035);
   box-shadow: 0 0 0 3px rgba(125, 92, 255, 0.11);
+}
+
+.field input[aria-invalid="true"],
+.field textarea[aria-invalid="true"] {
+  border-color: rgba(255, 110, 110, 0.52);
+  background: rgba(80, 22, 28, 0.22);
+  box-shadow: 0 0 0 3px rgba(255, 110, 110, 0.08);
+}
+
+.errorText {
+  color: rgba(255, 150, 150, 0.92);
+  font-size: 12px;
+  font-weight: 750;
+  line-height: 1.45;
 }
 
 .fieldGroup {

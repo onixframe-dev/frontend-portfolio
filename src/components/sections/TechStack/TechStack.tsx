@@ -11,6 +11,8 @@ import {
   SiVercel,
   SiFigma,
 } from 'react-icons/si';
+import { AnimatedTitle } from '../../ui/AnimatedTitle';
+import { SectionSubtitle } from '../../ui/SectionSubtitle';
 import sectionStyles from '../../ui/Section.module.css';
 import styles from './TechStack.module.css';
 
@@ -93,8 +95,8 @@ export function TechStack() {
     <section className={styles.techStackSection}>
       <div className={sectionStyles.sectionGrid}>
         <div className={styles.techStackHeader}>
-          <h3>Рабочий стек технологий</h3>
-          <p>Современный frontend-stack для премиальных проектов</p>
+          <AnimatedTitle as="h3">Рабочий стек технологий</AnimatedTitle>
+          <SectionSubtitle>Современный frontend-stack для премиальных проектов</SectionSubtitle>
         </div>
 
         <div className={styles.techStackGrid}>
@@ -142,4 +144,3 @@ export function TechStack() {
     </section>
   );
 }
-

@@ -53,7 +53,7 @@ export function Button({
         aria-label={ariaLabel}
         onClick={onClick as MouseEventHandler<HTMLAnchorElement>}
       >
-        {children}
+        <span className={styles.content}>{children}</span>
       </a>
     );
   }
@@ -65,7 +65,7 @@ export function Button({
       onClick={onClick as MouseEventHandler<HTMLButtonElement>}
       aria-label={ariaLabel}
     >
-      {children}
+      <span className={styles.content}>{children}</span>
     </button>
   );
 }

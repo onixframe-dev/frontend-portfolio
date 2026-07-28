@@ -7,12 +7,12 @@
   gap: 10px;
   margin: 0;
   padding: 14px 16px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.09);
   border-radius: 22px;
   width: fit-content;
   max-width: 100%;
-  background: rgba(255, 255, 255, 0.045);
-  backdrop-filter: blur(16px);
+  background: rgba(7, 17, 22, 0.58);
+  backdrop-filter: blur(12px);
 }
 
 .catalogHeader {
@@ -29,9 +29,21 @@
   margin: 0 auto;
 }
 
-.catalogTitle p {
-  margin: 18px auto 0;
-  max-width: 640px;
+.catalogTitle h2 {
+  background: linear-gradient(
+    110deg,
+    #ffffff 0%,
+    rgba(230, 248, 255, 0.96) 28%,
+    rgba(92, 225, 230, 0.96) 48%,
+    rgba(124, 92, 255, 0.94) 66%,
+    #ffffff 100%
+  );
+  background-size: 240% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 34px rgba(92, 225, 230, 0.08);
+  animation: catalogTitleFlow 8s ease-in-out infinite;
 }
 
 .filterBarWrapper {
@@ -59,48 +71,126 @@
   scroll-margin-top: 120px;
 }
 
-.placeholderItem {
-  min-height: 520px;
-  visibility: hidden;
-  pointer-events: none;
-}
-
 .pagination {
   position: relative;
   z-index: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 8px;
   width: fit-content;
   margin: 36px auto 0;
   padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
 }
 
 .pageLink {
+  position: relative;
+  overflow: hidden;
   min-width: 42px;
   height: 42px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  color: #f5f7ff;
-  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid transparent;
+  color: rgba(245, 250, 255, 0.88);
+  background: rgba(9, 24, 28, 0.72);
+  font-size: 15px;
+  font-weight: 800;
+  text-decoration: none;
   cursor: pointer;
-  transition: transform 0.22s ease, background 0.22s ease, border-color 0.22s ease;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  transition: transform 0.24s ease, background 0.24s ease, border-color 0.24s ease, box-shadow 0.24s ease, color 0.24s ease;
 }
 
-.pageLink:hover,
+.pageItem:first-child .pageLink,
+.pageItem:last-child .pageLink {
+  min-width: 36px;
+  height: 36px;
+  border-radius: 12px;
+}
+
+.pageItem:first-child .pageLink svg,
+.pageItem:last-child .pageLink svg {
+  width: 15px;
+  height: 15px;
+}
+
+.pageLink::before {
+  content: '';
+  position: absolute;
+  inset: -48% auto -48% -76%;
+  width: 52%;
+  transform: rotate(18deg);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.06),
+    rgba(92, 225, 230, 0.16),
+    rgba(124, 92, 255, 0.1),
+    transparent
+  );
+  opacity: 0.42;
+  pointer-events: none;
+  animation: paginationSkeleton 4.9s ease-in-out infinite;
+}
+
+.pageLink svg {
+  position: relative;
+  z-index: 1;
+}
+
+.pageLink:focus-visible {
+  outline: 2px solid rgba(92, 225, 230, 0.42);
+  outline-offset: 4px;
+}
+
+.pageLink:hover {
+  transform: translateY(-2px);
+  color: #ffffff;
+  border-color: transparent;
+  background: rgba(12, 41, 46, 0.9);
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.pageLink:hover::before,
+.pageLink:focus-visible::before {
+  opacity: 0.72;
+  animation-duration: 2.7s;
+}
+
 .paginationActive .pageLink {
   transform: translateY(-2px);
-  border-color: rgba(124, 92, 255, 0.45) !important;
-  background: rgba(124, 92, 255, 0.22) !important;
+  color: #ffffff;
+  border-color: transparent !important;
+  background: linear-gradient(135deg, rgba(12, 54, 56, 0.96), rgba(17, 31, 34, 0.94)) !important;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.12);
 }
 
 .paginationDisabled .pageLink {
   cursor: not-allowed;
-  opacity: 0.38;
+  opacity: 0.42;
+  transform: none;
+  background: rgba(8, 18, 22, 0.54);
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.paginationDisabled .pageLink::before {
+  animation: none;
+  opacity: 0;
+}
+
+.paginationDisabled .pageLink:hover {
+  transform: none;
+  color: rgba(245, 250, 255, 0.88);
+  background: rgba(8, 18, 22, 0.54);
+  border-color: transparent;
 }
 
 @media (max-width: 920px) {
@@ -130,4 +220,28 @@
 
 .pageItem {
   list-style: none;
+}
+
+@keyframes catalogTitleFlow {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  48%,
+  62% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes paginationSkeleton {
+  0%,
+  30% {
+    left: -76%;
+  }
+
+  62%,
+  100% {
+    left: 126%;
+  }
 }
