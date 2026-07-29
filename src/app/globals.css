@@ -10,6 +10,9 @@
   --accent: #7c5cff;
   --radius: 28px;
   --max: 1180px;
+  --mobile-page-gutter: 20px;
+  --mobile-card-radius: 22px;
+  --mobile-card-padding: 20px;
 }
 
 * { box-sizing: border-box; }
@@ -165,5 +168,30 @@ a {
 
   50% {
     opacity: 0.52;
+  }
+}
+
+@media (max-width: 760px) {
+  :root {
+    --mobile-page-gutter: 18px;
+    --mobile-card-radius: 20px;
+    --mobile-card-padding: 18px;
+  }
+
+  .siteContent {
+    padding-top: 94px;
+  }
+
+  .starryRegion::after {
+    background:
+      radial-gradient(ellipse at 50% 8%, rgba(92, 225, 230, 0.045), transparent 18rem),
+      linear-gradient(to bottom, #000 0, transparent 54px, transparent calc(100% - 90px), #000 100%);
+  }
+}
+
+@media (max-width: 380px) {
+  :root {
+    --mobile-page-gutter: 16px;
+    --mobile-card-padding: 16px;
   }
 }

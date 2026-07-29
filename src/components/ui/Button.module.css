@@ -326,13 +326,42 @@
 @media (max-width: 560px) {
   .button {
     width: 100%;
+    min-height: 48px;
+    padding-inline: 22px;
+    font-size: 14px;
   }
 
   .icon {
     width: 42px;
   }
 
+  .filter {
+    min-height: 40px;
+    padding-inline: 16px;
+    border-radius: 14px;
+    font-size: 13px;
+  }
+
+  .price,
+  .priceFeatured {
+    min-height: 50px;
+    margin-top: 24px;
+    padding-inline: 22px;
+  }
+
   .modal {
     margin: 8px 22px 28px;
+  }
+}
+
+@media (max-width: 380px) {
+  .button {
+    min-height: 46px;
+    padding-inline: 18px;
+    font-size: 13.5px;
+  }
+
+  .filter {
+    min-height: 38px;
   }
 }

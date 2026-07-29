@@ -89,7 +89,7 @@
 @media (max-width: 560px) {
   .sectionGrid,
   .sectionBlock {
-    width: min(100% - 24px, var(--max));
+    width: min(100% - var(--mobile-page-gutter), var(--max));
   }
 
   .sectionHeader h2 {
@@ -101,6 +101,24 @@
   }
 
   .sectionBlock {
-    padding: 64px 0;
+    padding: 56px 0;
+  }
+}
+
+@media (max-width: 380px) {
+  .sectionHeader {
+    margin-bottom: 44px;
+  }
+
+  .sectionHeader h2 {
+    font-size: 26px;
+  }
+
+  .sectionHeader p {
+    font-size: 14px;
+  }
+
+  .sectionBlock {
+    padding: 50px 0;
   }
 }

@@ -178,17 +178,81 @@
 
 @media (max-width: 760px) {
   .thumbFrame strong {
-    font-size: 28px;
+    font-size: 26px;
   }
 
   .projectCard,
   .featuredCard {
     min-height: auto;
+    border-radius: var(--mobile-card-radius);
   }
 
   .projectThumb,
   .featuredCard .projectThumb {
-    min-height: 230px;
+    min-height: 204px;
+    padding: 18px;
+  }
+
+  .thumbFrame {
+    min-height: 168px;
+    padding: 20px;
+    border-radius: 22px;
+  }
+
+  .projectContent {
+    padding: 22px;
+  }
+
+  .projectContent h3 {
+    font-size: 25px;
+  }
+
+  .projectContent p {
+    margin-top: 12px;
+    font-size: 14px;
+    line-height: 1.65;
+  }
+
+  .stackList {
+    gap: 8px;
+    margin-top: 18px;
+  }
+
+  .stackList span {
+    padding: 8px 13px;
+  }
+
+  .projectLink {
+    padding-top: 20px;
+  }
+}
+
+@media (max-width: 380px) {
+  .projectThumb,
+  .featuredCard .projectThumb {
+    min-height: 184px;
+    padding: 14px;
+  }
+
+  .thumbFrame {
+    min-height: 154px;
+    padding: 18px;
+  }
+
+  .thumbFrame strong {
+    font-size: 23px;
+  }
+
+  .projectContent {
+    padding: 19px;
+  }
+
+  .projectContent h3 {
+    font-size: 23px;
+  }
+
+  .projectContent p {
+    font-size: 13.5px;
   }
 }
 

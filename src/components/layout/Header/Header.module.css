@@ -152,13 +152,48 @@
 
 .menuButton {
   display: none;
+  position: relative;
+  overflow: hidden;
   width: 42px;
   height: 42px;
   border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.13);
+  border: 1px solid rgba(92, 225, 230, 0.16);
   color: #fff;
-  background: rgba(255, 255, 255, 0.07);
+  background: rgba(8, 27, 32, 0.74);
   cursor: pointer;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transition: transform 0.24s ease, border-color 0.24s ease, background 0.24s ease, box-shadow 0.24s ease;
+}
+
+.menuButton::before {
+  content: '';
+  position: absolute;
+  inset: -48% auto -48% -76%;
+  width: 50%;
+  transform: rotate(18deg);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), rgba(92, 225, 230, 0.18), transparent);
+  opacity: 0.36;
+  pointer-events: none;
+  animation: mobileMenuShine 5.2s ease-in-out infinite;
+}
+
+.menuButton svg {
+  position: relative;
+  z-index: 1;
+  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.menuButton:hover,
+.menuButton:focus-visible {
+  transform: translateY(-1px);
+  border-color: rgba(92, 225, 230, 0.34);
+  background: rgba(10, 42, 50, 0.86);
+  box-shadow: 0 12px 26px rgba(92, 225, 230, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  outline: none;
+}
+
+.menuButton[aria-expanded="true"] svg {
+  transform: rotate(90deg) scale(1.04);
 }
 
 .mobileOverlay {
@@ -204,13 +239,23 @@
 }
 
 .mobileTop button {
+  position: relative;
   width: 42px;
   height: 42px;
-  border: 1px solid rgba(255, 255, 255, 0.13);
+  border: 1px solid rgba(92, 225, 230, 0.16);
   border-radius: 50%;
   color: #fff;
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(8, 27, 32, 0.74);
   cursor: pointer;
+  transition: transform 0.24s ease, border-color 0.24s ease, background 0.24s ease;
+}
+
+.mobileTop button:hover,
+.mobileTop button:focus-visible {
+  transform: rotate(90deg) scale(1.04);
+  border-color: rgba(92, 225, 230, 0.34);
+  background: rgba(10, 42, 50, 0.86);
+  outline: none;
 }
 
 .mobileNav {
@@ -223,10 +268,22 @@
 .mobileNav a,
 .mobileSocials a {
   border-radius: 18px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.052);
+  border: 1px solid rgba(92, 225, 230, 0.1);
   padding: 16px;
   color: #f5f7ff;
+  transition: transform 0.22s ease, border-color 0.22s ease, background 0.22s ease, box-shadow 0.22s ease;
+}
+
+.mobileNav a:hover,
+.mobileNav a:focus-visible,
+.mobileSocials a:hover,
+.mobileSocials a:focus-visible {
+  transform: translateY(-1px);
+  border-color: rgba(92, 225, 230, 0.28);
+  background: rgba(10, 42, 50, 0.76);
+  box-shadow: 0 12px 26px rgba(92, 225, 230, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  outline: none;
 }
 
 .mobileSocials {
@@ -276,5 +333,40 @@
 
   .brandText {
     font-size: 18px;
+  }
+
+  .mobileOverlay {
+    padding: 10px;
+  }
+
+  .mobilePanel {
+    width: 100%;
+    max-height: calc(100vh - 20px);
+    overflow-y: auto;
+    padding: 20px;
+    border-radius: 24px;
+  }
+
+  .mobileNav {
+    gap: 9px;
+    margin-top: 22px;
+  }
+
+  .mobileNav a,
+  .mobileSocials a {
+    padding: 13px 15px;
+    border-radius: 15px;
+  }
+}
+
+@keyframes mobileMenuShine {
+  0%,
+  30% {
+    left: -76%;
+  }
+
+  62%,
+  100% {
+    left: 126%;
   }
 }

@@ -234,7 +234,7 @@ export function Pricing() {
     }
 
     if (!rateState.rate) {
-      return "курс загружается";
+      return rateState.status === "loading" ? "Курс..." : "Курс недоступен";
     }
 
     return `${prefix}$${usdFormatter.format(amountByn / rateState.rate)}`;
@@ -324,14 +324,11 @@ export function Pricing() {
                 {plan.badge}
               </span>
               <h3>{plan.title}</h3>
-              <strong
-                key={`${plan.title}-${currency}-${rateState.rate ?? "pending"}`}
-                className={`${styles.priceValue} ${
-                  currency === "USD" ? styles.priceValueUsd : styles.priceValueByn
-                }`}
-              >
-                {formatPrice(plan.priceByn)}
-              </strong>
+              <PriceValue
+                value={formatPrice(plan.priceByn)}
+                tone={currency === "USD" ? "usd" : "byn"}
+                compact={currency === "USD" && !rateState.rate}
+              />
               <p>{plan.description}</p>
             </div>
 
@@ -452,5 +449,41 @@ export function Pricing() {
         </div>
       ) : null}
     </section>
+  );
+}
+
+function PriceValue({ value, tone, compact = false }: { value: string; tone: "byn" | "usd"; compact?: boolean }) {
+  const [currentValue, setCurrentValue] = useState(value);
+  const [previousValue, setPreviousValue] = useState<string | null>(null);
+  const [isChanging, setIsChanging] = useState(false);
+
+  useEffect(() => {
+    if (value === currentValue) {
+      return;
+    }
+
+    setPreviousValue(currentValue);
+    setCurrentValue(value);
+    setIsChanging(true);
+
+    const timer = window.setTimeout(() => {
+      setPreviousValue(null);
+      setIsChanging(false);
+    }, 520);
+
+    return () => window.clearTimeout(timer);
+  }, [currentValue, value]);
+
+  return (
+    <strong className={`${styles.priceValue} ${tone === "usd" ? styles.priceValueUsd : styles.priceValueByn} ${compact ? styles.priceValueCompact : ""} ${isChanging ? styles.priceValueChanging : ""}`}>
+      {previousValue ? (
+        <span className={`${styles.priceValueText} ${styles.priceValueTextOld}`}>
+          {previousValue}
+        </span>
+      ) : null}
+      <span className={`${styles.priceValueText} ${isChanging ? styles.priceValueTextNew : ""}`}>
+        {currentValue}
+      </span>
+    </strong>
   );
 }

@@ -155,3 +155,48 @@
     min-height: 220px;
   }
 }
+
+@media (max-width: 560px) {
+  .aboutBlock {
+    padding-bottom: 64px;
+  }
+
+  .aboutHeader {
+    margin-bottom: 34px;
+  }
+
+  .aboutGrid {
+    gap: 16px;
+  }
+
+  .aboutCard {
+    min-height: 206px;
+    padding: var(--mobile-card-padding);
+    border-radius: var(--mobile-card-radius);
+  }
+
+  .aboutCard svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .aboutCard h3 {
+    margin-top: 18px;
+    font-size: 22px;
+  }
+
+  .aboutCard p {
+    font-size: 14px;
+    line-height: 1.62;
+  }
+}
+
+@media (max-width: 380px) {
+  .aboutCard {
+    min-height: 188px;
+  }
+
+  .aboutCard h3 {
+    font-size: 20px;
+  }
+}

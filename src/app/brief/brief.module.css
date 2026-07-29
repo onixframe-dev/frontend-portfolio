@@ -525,24 +525,28 @@
 
 @media (max-width: 720px) {
   .briefPage {
-    padding: 52px 0 60px;
+    padding: 42px 0 54px;
   }
 
   .container {
-    width: min(100% - 24px, var(--max));
+    width: min(100% - var(--mobile-page-gutter), var(--max));
   }
 
   .backButton {
     width: 100%;
-    margin-bottom: 26px;
+    min-height: 42px;
+    margin-bottom: 24px;
   }
 
   .header h1 {
-    font-size: 38px;
+    font-size: 36px;
+    line-height: 1.02;
   }
 
   .header p {
-    font-size: 15px;
+    margin-top: 18px;
+    font-size: 14.5px;
+    line-height: 1.72;
   }
 
   .tabs {
@@ -552,6 +556,9 @@
 
   .tab {
     justify-content: center;
+    min-height: 38px;
+    padding-inline: 12px;
+    font-size: 12.5px;
   }
 
   .choiceGrid_three,
@@ -573,21 +580,89 @@
 
   .actions {
     flex-direction: column-reverse;
+    margin-top: 24px;
   }
 }
 
 @media (max-width: 430px) {
   .container {
-    width: min(100% - 20px, var(--max));
+    width: min(100% - var(--mobile-page-gutter), var(--max));
   }
 
   .form {
-    padding: 20px;
-    border-radius: 22px;
+    padding: var(--mobile-card-padding);
+    border-radius: var(--mobile-card-radius);
   }
 
   .header h1 {
-    font-size: 32px;
+    font-size: 30px;
+  }
+
+  .header {
+    margin-bottom: 24px;
+  }
+
+  .navigation {
+    margin-bottom: 24px;
+  }
+
+  .tabs {
+    gap: 9px;
+  }
+
+  .stepContent {
+    gap: 18px;
+  }
+
+  .field input {
+    min-height: 50px;
+  }
+
+  .field textarea {
+    min-height: 104px;
+  }
+
+  .field input,
+  .field textarea {
+    padding: 13px 14px;
+    font-size: 14px;
+  }
+
+  .choice {
+    min-height: 46px;
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+
+  .packageCard {
+    min-height: 94px;
+    gap: 12px;
+    padding: 15px;
+  }
+
+  .packageIcon {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+  }
+
+  .packageMain strong {
+    font-size: 15px;
+  }
+
+  .packageMain small,
+  .packageMeta small {
+    font-size: 12.5px;
+  }
+
+  .packageMeta b {
+    font-size: 16px;
+  }
+
+  .primaryBtn,
+  .secondaryBtn {
+    min-height: 50px;
+    padding-inline: 18px;
   }
 
   .choice,

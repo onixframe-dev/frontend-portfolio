@@ -207,6 +207,9 @@
 @media (max-width: 760px) {
   .filterBar {
     width: 100%;
+    gap: 10px;
+    padding: 12px;
+    border-radius: var(--mobile-card-radius);
   }
 
   .filterBar > * {
@@ -216,6 +219,33 @@
 
   .catalogGrid > * {
     min-width: 100%;
+  }
+}
+
+@media (max-width: 380px) {
+  .catalogHeader {
+    gap: 18px;
+  }
+
+  .filterBar {
+    padding: 10px;
+  }
+
+  .pagination {
+    margin-top: 28px;
+  }
+
+  .pageLink {
+    min-width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    font-size: 14px;
+  }
+
+  .pageItem:first-child,
+  .pageItem:last-child {
+    min-width: 32px;
+    height: 32px;
   }
 }
 

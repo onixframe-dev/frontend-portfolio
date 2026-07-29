@@ -335,7 +335,66 @@
 @media (max-width: 520px) {
   .infoCard,
   .form {
-    padding: 22px;
-    border-radius: 24px;
+    padding: var(--mobile-card-padding);
+    border-radius: var(--mobile-card-radius);
+    backdrop-filter: blur(10px);
+  }
+
+  .contactSection {
+    padding-bottom: 66px;
+  }
+
+  .contactHeader {
+    margin-bottom: 32px;
+  }
+
+  .infoIcon {
+    width: 42px;
+    height: 42px;
+    margin-bottom: 18px;
+    border-radius: 14px;
+  }
+
+  .infoCard h3 {
+    font-size: 23px;
+  }
+
+  .infoCard p {
+    margin: 14px 0 22px;
+    font-size: 14px;
+    line-height: 1.65;
+  }
+
+  .quickLinks a {
+    min-height: 44px;
+    padding-inline: 14px;
+    border-radius: 14px;
+  }
+
+  .form {
+    gap: 14px;
+  }
+
+  .row {
+    gap: 14px;
+  }
+
+  .row label {
+    min-height: 106px;
+  }
+
+  .form input {
+    min-height: 50px;
+  }
+
+  .form input,
+  .form textarea {
+    padding: 13px 14px;
+    border-radius: 15px;
+    font-size: 14px;
+  }
+
+  .actions {
+    gap: 10px;
   }
 }

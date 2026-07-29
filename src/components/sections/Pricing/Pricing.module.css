@@ -239,25 +239,55 @@
   position: relative;
   overflow: hidden;
   padding-bottom: 4px;
-  animation: priceCurrencySwap 1.15s cubic-bezier(0.22, 1, 0.36, 1) both;
-  will-change: transform, opacity, clip-path;
+  transform-origin: left center;
+  display: block;
+  width: 100%;
+  height: 52px;
+  line-height: 1;
+  will-change: color, text-shadow;
 }
 .priceValue::after {
   content: '';
   position: absolute;
-  inset: 0 auto 0 -42%;
-  width: 34%;
-  transform: skewX(-18deg);
+  inset: -18% auto -18% -28%;
+  width: 18%;
+  transform: skewX(-16deg);
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(255, 255, 255, 0.22),
-    rgba(92, 225, 230, 0.2),
+    rgba(255, 255, 255, 0.1),
+    rgba(92, 225, 230, 0.14),
     transparent
   );
   opacity: 0;
   pointer-events: none;
-  animation: priceCurrencySweep 1.15s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.priceValueChanging::after {
+  animation: priceCurrencySweep 0.82s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.priceValueText {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  display: block;
+  max-width: 100%;
+  white-space: nowrap;
+  transform: translate3d(0, -50%, 0);
+  will-change: transform, opacity, filter;
+}
+
+.priceValueCompact {
+  height: 52px;
+  font-size: clamp(1.15rem, 2.05vw, 1.45rem);
+  letter-spacing: -0.02em;
+}
+
+.priceValueTextOld {
+  animation: priceCurrencyOld 0.52s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.priceValueTextNew {
+  animation: priceCurrencyNew 0.52s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 .priceValueByn {
   color: rgba(244, 251, 255, 0.96);
@@ -601,6 +631,15 @@
     font-size: 40px;
   }
 
+  .priceValue {
+    height: 48px;
+  }
+
+  .priceValueCompact {
+    height: 48px;
+    font-size: clamp(1.05rem, 3.2vw, 1.3rem);
+  }
+
   .modalHeader h3 {
     font-size: 34px;
   }
@@ -616,21 +655,72 @@
   }
 
   .pricingHeader {
-    margin-bottom: 44px;
+    gap: 22px;
+    margin-bottom: 34px;
+    align-items: center;
+    text-align: center;
+  }
+
+  .currencyPanel {
+    width: 100%;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .currencyToggle {
+    margin-inline: auto;
+  }
+
+  .rateNote {
+    flex-basis: 100%;
+    text-align: center;
+    font-size: 12.5px;
   }
 
   .priceCard h3 {
-    font-size: 22px;
+    margin-top: 18px;
+    font-size: 21px;
     min-height: auto;
   }
 
   .priceCard strong {
-    font-size: 36px;
+    font-size: 33px;
+  }
+
+  .priceValue {
+    height: 40px;
+  }
+
+  .priceValueCompact {
+    height: 40px;
+    font-size: 0.95rem;
   }
 
   .priceCard {
-    padding: 22px;
-    border-radius: 24px;
+    padding: var(--mobile-card-padding);
+    border-radius: var(--mobile-card-radius);
+  }
+
+  .priceBadge {
+    padding: 7px 13px;
+    font-size: 13px;
+  }
+
+  .priceCard p {
+    margin-top: 12px;
+    font-size: 13.5px;
+    line-height: 1.62;
+  }
+
+  .priceList {
+    gap: 11px;
+    margin-top: 22px;
+  }
+
+  .priceList li {
+    gap: 10px;
+    font-size: 13.5px;
+    line-height: 1.5;
   }
   .pricingModalOverlay {
     padding: 10px;
@@ -674,6 +764,45 @@
     margin: 0;
     width: 42px;
     height: 42px;
+  }
+}
+
+@media (max-width: 380px) {
+  .pricingGrid {
+    gap: 16px;
+  }
+
+  .currencyToggle {
+    padding: 5px;
+  }
+
+  .currencyButton {
+    min-width: 62px;
+    height: 34px;
+    font-size: 12.5px;
+  }
+
+  .priceCard h3 {
+    font-size: 20px;
+  }
+
+  .priceCard strong {
+    font-size: 31px;
+  }
+
+  .priceValue {
+    height: 38px;
+    margin-top: 14px;
+  }
+
+  .priceValueCompact {
+    height: 38px;
+    font-size: 0.86rem;
+  }
+
+  .priceCard p,
+  .priceList li {
+    font-size: 13px;
   }
 }
 
@@ -744,29 +873,37 @@
   }
 }
 
-@keyframes priceCurrencySwap {
+@keyframes priceCurrencyNew {
   0% {
     opacity: 0;
-    transform: translateX(-18px);
-    clip-path: inset(0 100% 0 0);
+    transform: translate3d(0, calc(-50% + 2px), 0);
+    filter: blur(1.5px);
   }
 
-  42% {
-    opacity: 0.86;
-    transform: translateX(0);
-    clip-path: inset(0 28% 0 0);
-  }
-
-  72% {
-    opacity: 1;
-    transform: translateX(0);
-    clip-path: inset(0 0 0 0);
+  58% {
+    opacity: 0.9;
+    transform: translate3d(0, -50%, 0);
+    filter: blur(0.4px);
   }
 
   100% {
     opacity: 1;
-    transform: translateX(0);
-    clip-path: inset(0 0 0 0);
+    transform: translate3d(0, -50%, 0);
+    filter: blur(0);
+  }
+}
+
+@keyframes priceCurrencyOld {
+  0% {
+    opacity: 1;
+    transform: translate3d(0, -50%, 0);
+    filter: blur(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate3d(0, calc(-50% - 2px), 0);
+    filter: blur(1px);
   }
 }
 
@@ -795,18 +932,18 @@
 
 @keyframes priceCurrencySweep {
   0%,
-  18% {
-    left: -42%;
+  22% {
+    left: -28%;
     opacity: 0;
   }
 
-  36% {
-    opacity: 0.9;
+  42% {
+    opacity: 0.44;
   }
 
-  78%,
+  82%,
   100% {
-    left: 112%;
+    left: 108%;
     opacity: 0;
   }
 }

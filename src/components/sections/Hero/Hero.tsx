@@ -9,6 +9,39 @@ import styles from "./Hero.module.css";
 const PARTICLE_ROWS = 15;
 const PARTICLE_SPACING_REM = 1.8;
 
+const getParticleConfig = (width: number) => {
+  if (width <= 380) {
+    return {
+      spacingPx: 17,
+      radius: 2.45,
+      autoX: 118,
+      autoY: 92,
+      pointerStrength: 0.46,
+      bottomSafeArea: 58,
+    };
+  }
+
+  if (width <= 560) {
+    return {
+      spacingPx: 19,
+      radius: 2.65,
+      autoX: 142,
+      autoY: 104,
+      pointerStrength: 0.55,
+      bottomSafeArea: 62,
+    };
+  }
+
+  return {
+    spacingPx: PARTICLE_SPACING_REM * 16,
+    radius: 3.2,
+    autoX: 200,
+    autoY: 150,
+    pointerStrength: 0.8,
+    bottomSafeArea: 70,
+  };
+};
+
 export function Hero() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationFrameRef = useRef<number>();
@@ -73,15 +106,16 @@ export function Hero() {
       const currentTime = (Date.now() - startTimeRef.current) * 0.001;
       const width = canvas.clientWidth;
       const height = canvas.clientHeight;
-      const gridSize = PARTICLE_ROWS * PARTICLE_SPACING_REM * 16;
-      const bottomSafeArea = 70;
+      const particleConfig = getParticleConfig(width);
+      const gridSize = PARTICLE_ROWS * particleConfig.spacingPx;
+      const bottomSafeArea = particleConfig.bottomSafeArea;
       const startX = (width - gridSize) / 2;
       const startY = Math.max(28, (height - bottomSafeArea - gridSize) / 2);
 
       if (modeRef.current === "auto") {
         const autoCursor = {
-          x: Math.sin(currentTime * 0.3) * 200 + Math.sin(currentTime * 0.17) * 100,
-          y: Math.cos(currentTime * 0.2) * 150 + Math.cos(currentTime * 0.23) * 80,
+          x: Math.sin(currentTime * 0.3) * particleConfig.autoX + Math.sin(currentTime * 0.17) * particleConfig.autoX * 0.5,
+          y: Math.cos(currentTime * 0.2) * particleConfig.autoY + Math.cos(currentTime * 0.23) * particleConfig.autoY * 0.53,
         };
 
         if (autoReturnRef.current.active) {
@@ -118,9 +152,9 @@ export function Hero() {
       particles.forEach(({ row, col, distance, scale, opacity, hue, lightness }) => {
         const dampening = Math.max(0.3, 1 - distance * 0.08);
         const wave = Math.sin(currentTime * 1.5 + row * 0.42 + col * 0.24) * 2;
-        const x = startX + col * PARTICLE_SPACING_REM * 16 + cursorRef.current.x * dampening + wave;
-        const y = startY + row * PARTICLE_SPACING_REM * 16 + cursorRef.current.y * dampening - wave;
-        const radius = 3.2 * scale;
+        const x = startX + col * particleConfig.spacingPx + cursorRef.current.x * dampening + wave;
+        const y = startY + row * particleConfig.spacingPx + cursorRef.current.y * dampening - wave;
+        const radius = particleConfig.radius * scale;
         const fadeStart = height - bottomSafeArea;
         const edgeFade = Math.min(1, Math.max(0, (height - y) / bottomSafeArea));
         const visibleOpacity = y > fadeStart ? opacity * edgeFade : opacity;
@@ -174,9 +208,10 @@ export function Hero() {
 
   const handlePointerMove = (event: PointerEvent<HTMLElement>) => {
     const rect = event.currentTarget.getBoundingClientRect();
+    const particleConfig = getParticleConfig(rect.width);
     const nextCursor = {
-      x: (event.clientX - (rect.left + rect.width / 2)) * 0.8,
-      y: (event.clientY - (rect.top + rect.height / 2)) * 0.8,
+      x: (event.clientX - (rect.left + rect.width / 2)) * particleConfig.pointerStrength,
+      y: (event.clientY - (rect.top + rect.height / 2)) * particleConfig.pointerStrength,
     };
 
     cursorRef.current = nextCursor;

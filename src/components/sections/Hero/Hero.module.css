@@ -220,8 +220,8 @@
 
 @media (max-width: 560px) {
   .hero {
-    min-height: 500px;
-    padding: 31px 0 29px;
+    min-height: 512px;
+    padding: 34px 0 34px;
     align-items: center;
     text-align: center;
   }
@@ -242,7 +242,15 @@
   }
 
   .particlesLayer {
-    opacity: 0.76;
+    opacity: 0.72;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 11%, #000 82%, transparent 96%);
+    mask-image: linear-gradient(to bottom, transparent 0%, #000 11%, #000 82%, transparent 96%);
+  }
+
+  .particles {
+    inset: -2% -10% 4%;
+    transform: none;
+    transform-origin: center;
   }
 
   .heroCopy {
@@ -266,5 +274,31 @@
     align-items: stretch;
     gap: 12px;
     margin-top: 30px;
+  }
+}
+
+@media (max-width: 380px) {
+  .hero {
+    min-height: 500px;
+    padding: 28px 0 32px;
+  }
+
+  .particlesLayer {
+    opacity: 0.68;
+  }
+
+  .particles {
+    inset: -4% -12% 6%;
+    transform: none;
+  }
+
+  .heroCopy h1 {
+    font-size: clamp(27px, 8.4vw, 31px);
+  }
+
+  .heroText {
+    max-width: 300px;
+    margin-top: 20px;
+    font-size: 11.5px;
   }
 }

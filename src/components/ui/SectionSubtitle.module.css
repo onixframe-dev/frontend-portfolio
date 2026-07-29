@@ -14,7 +14,14 @@
     width: min(100%, 330px);
     max-width: 100%;
     margin-top: 14px;
-    font-size: 15px;
-    line-height: 1.7;
+    font-size: 14.5px;
+    line-height: 1.65;
+  }
+}
+
+@media (max-width: 380px) {
+  .subtitle {
+    width: min(100%, 300px);
+    font-size: 14px;
   }
 }
