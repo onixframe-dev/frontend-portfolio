@@ -267,7 +267,7 @@ export function Hero() {
       <div className={styles.heroCopy}>
         <h1>
           <span className={styles.heroLine}>Чистый frontend</span>
-          <span className={styles.heroLine}>для премиальных</span>
+          <span className={styles.heroLine}>для современных</span>
           <span className={styles.heroLine}>проектов</span>
         </h1>
         <p className={styles.heroText}>

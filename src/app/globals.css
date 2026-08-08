@@ -121,7 +121,7 @@ a {
   opacity: 0.42;
   pointer-events: none;
   z-index: 0;
-  filter: drop-shadow(0 0 7px rgba(92, 225, 230, 0.18));
+  filter: drop-shadow(0 0 5px rgba(92, 225, 230, 0.12));
   animation: pageStarsDrift 46s linear infinite, pageStarsPulse 7.5s ease-in-out infinite;
   -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 58px, #000 calc(100% - 84px), transparent 100%);
   mask-image: linear-gradient(to bottom, transparent 0, #000 58px, #000 calc(100% - 84px), transparent 100%);
@@ -134,9 +134,9 @@ a {
   z-index: 0;
   pointer-events: none;
   background:
-    radial-gradient(ellipse at 50% 7%, rgba(92, 225, 230, 0.12), transparent 30rem),
-    radial-gradient(ellipse at 22% 18%, rgba(124, 92, 255, 0.08), transparent 34rem),
-    radial-gradient(ellipse at 78% 48%, rgba(92, 225, 230, 0.045), transparent 38rem),
+    radial-gradient(ellipse at 50% 7%, rgba(92, 225, 230, 0.065), transparent 30rem),
+    radial-gradient(ellipse at 22% 18%, rgba(124, 92, 255, 0.045), transparent 34rem),
+    radial-gradient(ellipse at 78% 48%, rgba(92, 225, 230, 0.028), transparent 38rem),
     linear-gradient(to bottom, #000 0, transparent 70px, transparent calc(100% - 120px), #000 100%);
 }
 

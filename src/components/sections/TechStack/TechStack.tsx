@@ -96,7 +96,7 @@ export function TechStack() {
       <div className={sectionStyles.sectionGrid}>
         <div className={styles.techStackHeader}>
           <AnimatedTitle as="h3">Рабочий стек технологий</AnimatedTitle>
-          <SectionSubtitle>Современный frontend-стек для премиальных проектов</SectionSubtitle>
+          <SectionSubtitle>Современный frontend-стек для современных проектов</SectionSubtitle>
         </div>
 
         <div className={styles.techStackGrid}>

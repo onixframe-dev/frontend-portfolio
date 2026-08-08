@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { Github, Instagram, Mail, Menu, Send, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { usePathname } from "next/navigation";
 import { Button } from "../../ui/Button";
 import styles from "./Header.module.css";
@@ -14,6 +14,29 @@ const navItems = [
   { href: "/#contacts", label: "Контакты" },
   { href: "/brief", label: "Заявка" },
 ];
+
+type MobileMenuItemProps = {
+  href: string;
+  children: ReactNode;
+  active?: boolean;
+  external?: boolean;
+  onClick?: () => void;
+};
+
+function MobileMenuItem({ href, children, active = false, external = false, onClick }: MobileMenuItemProps) {
+  return (
+    <a
+      href={href}
+      className={`${styles.mobileMenuItem} ${active ? styles.activeLink : ""}`}
+      aria-current={active ? "page" : undefined}
+      target={external ? "_blank" : undefined}
+      rel={external ? "noreferrer" : undefined}
+      onClick={onClick}
+    >
+      <span className={styles.mobileMenuItemContent}>{children}</span>
+    </a>
+  );
+}
 
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -181,17 +204,16 @@ export function Header() {
         <div className={styles.mobilePanel} onClick={(event) => event.stopPropagation()}>
           <div className={styles.mobileTop}>
             <span>Навигация</span>
-            <button type="button" onClick={closeMenu} aria-label="Закрыть меню">
+            <button className={styles.mobileCloseButton} type="button" onClick={closeMenu} aria-label="Закрыть меню">
               <X size={20} />
             </button>
           </div>
           <nav className={styles.mobileNav} aria-label="Mobile navigation">
             {navItems.map((item) => (
-              <a
+              <MobileMenuItem
                 key={item.href}
                 href={item.href}
-                className={isActive(item.href) ? styles.activeLink : ""}
-                aria-current={isActive(item.href) ? "page" : undefined}
+                active={isActive(item.href)}
                 onClick={() => {
                   if (item.href.startsWith("/#")) {
                     setActiveHash(item.href.replace("/", ""));
@@ -200,13 +222,13 @@ export function Header() {
                 }}
               >
                 {item.label}
-              </a>
+              </MobileMenuItem>
             ))}
           </nav>
           <div className={styles.mobileSocials}>
-            <a href="https://github.com" target="_blank" rel="noreferrer"><Github size={18} /> GitHub</a>
-            <a href="https://www.instagram.com/igor_gordich/" target="_blank" rel="noreferrer"><Instagram size={18} /> Instagram</a>
-            <a href="https://t.me" target="_blank" rel="noreferrer"><Send size={18} /> Telegram</a>
+            <MobileMenuItem href="https://github.com" external><Github size={18} /> GitHub</MobileMenuItem>
+            <MobileMenuItem href="https://www.instagram.com/igor_gordich/" external><Instagram size={18} /> Instagram</MobileMenuItem>
+            <MobileMenuItem href="https://t.me" external><Send size={18} /> Telegram</MobileMenuItem>
           </div>
         </div>
       </div>
