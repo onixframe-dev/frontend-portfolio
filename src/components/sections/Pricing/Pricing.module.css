@@ -97,7 +97,7 @@
   position: relative;
   z-index: 1;
   max-width: 620px;
-  margin: 26px auto 0;
+  margin: 24px auto 0;
   color: rgba(220, 228, 238, 0.58);
   font-size: 14px;
   font-weight: 600;
@@ -117,7 +117,7 @@
   padding: 32px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 28px;
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--surface-card);
   backdrop-filter: blur(20px);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   overflow: hidden;
@@ -164,7 +164,7 @@
 .priceCard:hover {
   transform: translateY(-8px);
   border-color: rgba(124, 92, 255, 0.4);
-  background: rgba(255, 255, 255, 0.021);
+  background: var(--surface-card-hover);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25), 0 0 12px rgba(124, 92, 255, 0.12);
 }
 .priceCard:hover::after {
@@ -173,7 +173,7 @@
 }
 .priceCardFeatured {
   border-color: rgba(124, 92, 255, 0.4);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+  background: linear-gradient(180deg, #12171c 0%, #090d10 100%);
 }
 .priceTop {
   display: flex;
@@ -328,6 +328,11 @@
 .clickable {
   cursor: pointer;
 }
+
+.priceButton {
+  align-self: stretch;
+}
+
 .pricingModalOverlay {
   position: fixed;
   inset: 0;
@@ -648,6 +653,11 @@
     min-height: auto;
     padding: 28px;
   }
+
+  .priceButton {
+    width: min(100%, 360px);
+    align-self: center;
+  }
 }
 @media (max-width: 560px) {
   .pricingHeader h2 {
@@ -701,6 +711,10 @@
     border-radius: var(--mobile-card-radius);
   }
 
+  .priceButton {
+    width: min(100%, 300px);
+  }
+
   .priceBadge {
     padding: 7px 13px;
     font-size: 13px;
@@ -722,6 +736,7 @@
     font-size: 13.5px;
     line-height: 1.5;
   }
+
   .pricingModalOverlay {
     padding: 10px;
   }

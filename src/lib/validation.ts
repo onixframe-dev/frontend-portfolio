@@ -1,6 +1,7 @@
 import { z } from "zod";
 
-const contactPattern = /^(?:@[a-zA-Z0-9_]{3,32}|\+?\d[\d\s()-]{6,20})$/;
+const contactMethodPattern =
+  /(?:@[a-zA-Z0-9._]{3,32}|\+?\d[\d\s()-]{6,20}|[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}|(?:https?:\/\/)?(?:www\.)?(?:instagram\.com|t\.me)\/[A-Za-z0-9._]{3,32}\/?)/i;
 const letterPattern = /[A-Za-zА-Яа-яЁё]/g;
 const wordPattern = /[A-Za-zА-Яа-яЁё]{2,}/g;
 const vowelPattern = /[AEIOUYaeiouyАаЕеЁёИиОоУуЫыЭэЮюЯя]/g;
@@ -94,6 +95,10 @@ function hasReadableText(value: string, minWords = 1) {
   return vowels.length > 0 || /^[A-ZА-ЯЁ0-9\s./-]+$/.test(normalized);
 }
 
+function hasContactMethod(value: string) {
+  return contactMethodPattern.test(value.trim());
+}
+
 export const contactFormSchema = z.object({
   name: z
     .string()
@@ -105,8 +110,9 @@ export const contactFormSchema = z.object({
   contact: z
     .string()
     .trim()
-    .min(1, "Укажите телефон или Telegram.")
-    .regex(contactPattern, "Введите телефон или Telegram в формате @username."),
+    .min(1, "Укажите контакт для связи.")
+    .max(180, "Контактов слишком много.")
+    .refine(hasContactMethod, "Укажите Telegram, Instagram, email или телефон."),
   message: z
     .string()
     .trim()
@@ -169,8 +175,9 @@ export const briefSchema = z.object({
   contactContact: z
     .string()
     .trim()
-    .min(1, "Укажите телефон или Telegram.")
-    .regex(contactPattern, "Введите телефон или Telegram в формате @username."),
+    .min(1, "Укажите контакт для связи.")
+    .max(180, "Контактов слишком много.")
+    .refine(hasContactMethod, "Укажите Telegram, Instagram, email или телефон."),
   notes: z
     .string()
     .trim()

@@ -14,12 +14,11 @@ import {
   Layers3,
   Mail,
   MapPinned,
-  MessageCircle,
   Rocket,
   Send,
   Sparkles,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Header } from "@/components/layout/Header/Header";
@@ -78,14 +77,27 @@ const packages = [
 
 const integrations = [
   { label: "Форма заявки", icon: Mail },
-  { label: "Telegram", icon: Send },
-  { label: "Онлайн-чат", icon: MessageCircle },
+  { label: "Telegram-уведомления", icon: Send },
+  { label: "Email-уведомления", icon: Mail },
   { label: "Карта", icon: MapPinned },
   { label: "Аналитика", icon: BarChart3 },
   { label: "Ничего", icon: CheckCircle2 },
 ];
 
 const deadlines = ["Как можно скорее", "3–5 дней", "1–2 недели", "2–4 недели", "Не срочно"];
+
+const textAssistProps = {
+  lang: "ru",
+  spellCheck: true,
+  autoCorrect: "on",
+  autoCapitalize: "sentences",
+} as const;
+
+const contactInputProps = {
+  spellCheck: false,
+  autoCorrect: "off",
+  autoCapitalize: "none",
+} as const;
 
 export default function BriefPage() {
   const [step, setStep] = useState(1);
@@ -123,6 +135,24 @@ export default function BriefPage() {
   });
 
   const values = watch();
+
+  useEffect(() => {
+    const packageKey = new URLSearchParams(window.location.search).get("package");
+    const selectedPackage = packages.find((pkg) => pkg.key === packageKey);
+
+    if (!selectedPackage) {
+      return;
+    }
+
+    setValue("packageKey", selectedPackage.key, { shouldDirty: true, shouldValidate: true });
+
+    if (!getValues("notes")) {
+      setValue("notes", `Интересует пакет: ${selectedPackage.name}.`, {
+        shouldDirty: true,
+        shouldValidate: false,
+      });
+    }
+  }, [getValues, setValue]);
 
   const normalizeTextField = (
     field: "projectName" | "business" | "audience" | "advantage" | "inspiration" | "contactName" | "notes",
@@ -246,7 +276,9 @@ export default function BriefPage() {
                           id="projectName"
                           type="text"
                           placeholder="Например: студия маникюра LUNA, бренд одежды Nubo, личное портфолио."
+                          autoComplete="organization"
                           aria-invalid={Boolean(errors.projectName)}
+                          {...textAssistProps}
                           {...register("projectName", { onBlur: () => normalizeTextField("projectName") })}
                         />
                         {errors.projectName ? <small className={styles.errorText}>{errors.projectName.message}</small> : null}
@@ -258,6 +290,7 @@ export default function BriefPage() {
                           placeholder="Например: продаём женскую одежду онлайн, делаем ремонт квартир, запускаем курс по дизайну."
                           rows={3}
                           aria-invalid={Boolean(errors.business)}
+                          {...textAssistProps}
                           {...register("business", { onBlur: () => normalizeTextField("business") })}
                         />
                         {errors.business ? <small className={styles.errorText}>{errors.business.message}</small> : null}
@@ -268,7 +301,9 @@ export default function BriefPage() {
                           id="audience"
                           type="text"
                           placeholder="Например: девушки 20–35 лет, малый бизнес, владельцы квартир после покупки."
+                          autoComplete="off"
                           aria-invalid={Boolean(errors.audience)}
+                          {...textAssistProps}
                           {...register("audience", { onBlur: () => normalizeTextField("audience") })}
                         />
                         {errors.audience ? <small className={styles.errorText}>{errors.audience.message}</small> : null}
@@ -279,7 +314,9 @@ export default function BriefPage() {
                           id="advantage"
                           type="text"
                           placeholder="Например: быстро отвечаем, работаем под ключ, сильный визуал, честные сроки."
+                          autoComplete="off"
                           aria-invalid={Boolean(errors.advantage)}
+                          {...textAssistProps}
                           {...register("advantage", { onBlur: () => normalizeTextField("advantage") })}
                         />
                         {errors.advantage ? <small className={styles.errorText}>{errors.advantage.message}</small> : null}
@@ -307,6 +344,7 @@ export default function BriefPage() {
                           placeholder="Например: нравится структура Apple, чистота Vercel, карточки как у Linear. Можно просто вставить ссылки."
                           rows={4}
                           aria-invalid={Boolean(errors.inspiration)}
+                          {...textAssistProps}
                           {...register("inspiration", { onBlur: () => normalizeTextField("inspiration") })}
                         />
                         {errors.inspiration ? <small className={styles.errorText}>{errors.inspiration.message}</small> : null}
@@ -388,17 +426,22 @@ export default function BriefPage() {
                             id="contactName"
                             type="text"
                             placeholder="Например: Анна"
+                            autoComplete="name"
                             aria-invalid={Boolean(errors.contactName)}
+                            {...textAssistProps}
                             {...register("contactName", { onBlur: () => normalizeTextField("contactName") })}
                           />
                           {errors.contactName ? <small className={styles.errorText}>{errors.contactName.message}</small> : null}
                         </Field>
-                        <Field label="Телефон или Telegram" htmlFor="contactContact">
+                        <Field label="Контакты для связи" htmlFor="contactContact">
                           <input
                             id="contactContact"
                             type="text"
-                            placeholder="Например: @username или +375 29 670-25-46"
+                            placeholder="Например: @telegram, Instagram, email или +375 29 670-25-46"
+                            autoComplete="off"
+                            inputMode="text"
                             aria-invalid={Boolean(errors.contactContact)}
+                            {...contactInputProps}
                             {...register("contactContact")}
                           />
                           {errors.contactContact ? <small className={styles.errorText}>{errors.contactContact.message}</small> : null}
@@ -419,6 +462,7 @@ export default function BriefPage() {
                           placeholder="Например: нужен тёмный стиль, нужно добавить блок с отзывами, форма должна отправляться в Telegram."
                           rows={4}
                           aria-invalid={Boolean(errors.notes)}
+                          {...textAssistProps}
                           {...register("notes", { onBlur: () => normalizeTextField("notes") })}
                         />
                         {errors.notes ? <small className={styles.errorText}>{errors.notes.message}</small> : null}

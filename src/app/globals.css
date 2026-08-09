@@ -3,6 +3,8 @@
   --bg-soft: #151922;
   --card: rgba(255, 255, 255, 0.06);
   --card-strong: rgba(255, 255, 255, 0.1);
+  --surface-card: linear-gradient(180deg, #101418 0%, #080b0e 100%);
+  --surface-card-hover: linear-gradient(180deg, #11171b 0%, #090d10 100%);
   --line: rgba(255, 255, 255, 0.12);
   --text: #f4f6fb;
   --muted: #a8b0bf;

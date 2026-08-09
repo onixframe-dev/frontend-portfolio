@@ -11,6 +11,7 @@ import styles from "./Pricing.module.css";
 type Currency = "BYN" | "USD";
 
 type Plan = {
+  key: "html" | "react" | "next";
   title: string;
   priceByn: number;
   badge: string;
@@ -32,8 +33,18 @@ type RateState = {
   status: "loading" | "ready" | "error";
 };
 
+type CachedRate = {
+  rate: number;
+  date: string;
+  cachedAt: number;
+};
+
+const RATE_CACHE_KEY = "onixframe-usd-rate";
+const RATE_CACHE_TTL_MS = 12 * 60 * 60 * 1000;
+
 const plans: Plan[] = [
   {
+    key: "html",
     title: "HTML / CSS / JS Landing",
     priceByn: 600,
     badge: "Базовый сайт",
@@ -45,22 +56,28 @@ const plans: Plan[] = [
     extraPriceByn: 120,
     extraUnit: "за секцию",
     includes: [
+      "Разработка по референсам и вашим пожеланиям",
       "Вёрстка до 5 секций",
       "Адаптив под телефон, планшет и desktop",
       "Чистый HTML, CSS и JavaScript",
+      "Форма с отправкой на email или в Telegram",
+      "Базовое SEO и meta-теги",
       "Базовые hover-эффекты и плавные анимации",
-      "Форма без backend-интеграции",
       "Подготовка к загрузке на Vercel или GitHub Pages",
       "Аккуратная структура файлов",
       "Базовая оптимизация изображений"
     ],
     additional: [
-      "Сложность и объём фиксируются перед стартом.",
-      "Сложная анимация обсуждается отдельно.",
-      "Форма с отправкой в Telegram или email обсуждается отдельно."
+      "Подбор визуального направления: от 150 Br.",
+      "Админ-панель: от 100 Br.",
+      "Помощь с текстом: от 50 Br.",
+      "Аналитика и цели: от 50 Br.",
+      "Подключение Google или Яндекс Карты: от 50 Br.",
+      "Сложная анимация: от 80 Br."
     ]
   },
   {
+    key: "react",
     title: "React Landing / Website",
     priceByn: 1100,
     badge: "Популярный",
@@ -72,11 +89,14 @@ const plans: Plan[] = [
     extraPriceByn: 180,
     extraUnit: "за секцию",
     includes: [
+      "Разработка по референсам и вашим пожеланиям",
       "React + Vite",
       "Компонентная структура",
       "До 7 экранов или секций",
       "Каталог, карточки или модальные окна",
       "Адаптивная вёрстка",
+      "Форма с отправкой на email или в Telegram",
+      "Базовое SEO и meta-теги",
       "Базовая интерактивность",
       "Анимации появления и hover-эффекты",
       "Подготовка проекта к деплою на Vercel",
@@ -84,15 +104,19 @@ const plans: Plan[] = [
       "Базовая оптимизация интерфейса"
     ],
     additional: [
-      "Дополнительные секции считаются по тарифу пакета.",
-      "Фильтры, поиск и сортировка обсуждаются отдельно.",
-      "Сложные состояния интерфейса обсуждаются отдельно.",
-      "Интеграция API обсуждается отдельно.",
-      "Личный кабинет или админ-панель обсуждаются отдельно."
+      "Подбор визуального направления: от 150 Br.",
+      "Админ-панель: от 150 Br.",
+      "Помощь с текстом: от 50 Br.",
+      "Аналитика и цели: от 50 Br.",
+      "Подключение Google или Яндекс Карты: от 50 Br.",
+      "Фильтры, поиск или сортировка: от 120 Br.",
+      "Интеграция API: от 150 Br.",
+      "Личный кабинет: от 300 Br."
     ],
     featured: true
   },
   {
+    key: "next",
     title: "Next.js + TypeScript",
     priceByn: 1700,
     badge: "Продвинутый",
@@ -104,25 +128,30 @@ const plans: Plan[] = [
     extraPriceByn: 250,
     extraUnit: "за секцию или страницу",
     includes: [
+      "Разработка по референсам и вашим пожеланиям",
       "Next.js + TypeScript",
       "Страницы, компоненты и данные",
       "SEO-структура и meta-теги",
       "Каталог проектов, услуг или кейсов",
       "Базовая оптимизация скорости",
       "Деплой на Vercel",
+      "Форма с отправкой на email или в Telegram",
       "Настройка структуры проекта",
       "Адаптивная вёрстка",
       "Чистая архитектура компонентов",
       "Подготовка проекта к дальнейшему развитию"
     ],
     additional: [
-      "Дополнительные секции и страницы считаются по тарифу пакета.",
-      "Подключение CMS обсуждается отдельно.",
-      "Авторизация или личный кабинет обсуждаются отдельно.",
-      "Интеграция базы данных обсуждается отдельно.",
-      "Сложная backend-логика обсуждается отдельно.",
-      "Многоязычность обсуждается отдельно.",
-      "Расширенное SEO обсуждается отдельно."
+      "Подбор визуального направления: от 150 Br.",
+      "Админ-панель: от 150 Br.",
+      "Помощь с текстом: от 50 Br.",
+      "Аналитика и цели: от 50 Br.",
+      "Подключение Google или Яндекс Карты: от 50 Br.",
+      "Подключение CMS: от 250 Br.",
+      "Авторизация или личный кабинет: от 400 Br.",
+      "Интеграция базы данных: от 300 Br.",
+      "Многоязычность: от 250 Br.",
+      "Расширенное SEO: от 150 Br."
     ]
   }
 ];
@@ -134,6 +163,42 @@ const bynFormatter = new Intl.NumberFormat("ru-BY", {
 const usdFormatter = new Intl.NumberFormat("en-US", {
   maximumFractionDigits: 0,
 });
+
+function readCachedRate() {
+  try {
+    const cached = window.localStorage.getItem(RATE_CACHE_KEY);
+
+    if (!cached) {
+      return null;
+    }
+
+    const parsed = JSON.parse(cached) as CachedRate;
+    const isValid =
+      typeof parsed.rate === "number" &&
+      Number.isFinite(parsed.rate) &&
+      typeof parsed.date === "string" &&
+      Date.now() - parsed.cachedAt < RATE_CACHE_TTL_MS;
+
+    return isValid ? parsed : null;
+  } catch {
+    return null;
+  }
+}
+
+function writeCachedRate(rate: number, date: string) {
+  try {
+    window.localStorage.setItem(
+      RATE_CACHE_KEY,
+      JSON.stringify({
+        rate,
+        date,
+        cachedAt: Date.now(),
+      } satisfies CachedRate),
+    );
+  } catch {
+    // localStorage can be unavailable in private mode; the live request still works.
+  }
+}
 
 export function Pricing() {
   const [activePlan, setActivePlan] = useState<Plan | null>(null);
@@ -154,6 +219,17 @@ export function Pricing() {
     const controller = new AbortController();
 
     async function loadRate() {
+      const cachedRate = readCachedRate();
+
+      if (cachedRate) {
+        setRateState({
+          rate: cachedRate.rate,
+          date: cachedRate.date,
+          status: "ready",
+        });
+        return;
+      }
+
       try {
         const response = await fetch("/api/rates/usd", {
           signal: controller.signal,
@@ -170,6 +246,7 @@ export function Pricing() {
           date: data.date,
           status: "ready",
         });
+        writeCachedRate(data.rate, data.date);
       } catch {
         if (controller.signal.aborted) {
           return;
@@ -257,6 +334,19 @@ export function Pricing() {
 
   const formatDualExtraPrice = (plan: Plan) => `${formatDualPrice(plan.extraPriceByn, "+")} ${plan.extraUnit}`;
 
+  const formatAdditionalPrice = (item: string) => {
+    const rate = rateState.rate;
+
+    if (!rate) {
+      return item;
+    }
+
+    return item.replace(/от (\d+) Br/g, (_, amount: string) => {
+      const amountByn = Number(amount);
+      return `от ${bynFormatter.format(amountByn)} Br / $${usdFormatter.format(amountByn / rate)}`;
+    });
+  };
+
   const rateLabel =
     rateState.status === "ready" && rateState.rate
       ? `Курс НБРБ: 1 USD = ${rateState.rate.toFixed(4)} Br`
@@ -275,7 +365,7 @@ export function Pricing() {
           <SectionSubtitle>
             Пакеты помогают быстро выбрать формат разработки.
             <br />
-            В карточках указаны сроки, базовый объём и доплаты за секции.
+            В стоимость входит разработка по референсам и вашим пожеланиям, форма заявки, базовое SEO и meta-теги.
           </SectionSubtitle>
         </div>
         <div className={styles.currencyPanel}>
@@ -343,6 +433,7 @@ export function Pricing() {
 
             <Button
               variant={plan.featured ? 'priceFeatured' : 'price'}
+              className={styles.priceButton}
               type="button"
               onClick={(event) => {
                 event.stopPropagation();
@@ -436,12 +527,12 @@ export function Pricing() {
                 <h4>Дополнительно</h4>
                 <ul>
                   {selectedPlan.additional.map((item) => (
-                    <li key={item}>{item}</li>
+                    <li key={item}>{formatAdditionalPrice(item)}</li>
                   ))}
                 </ul>
               </div>
 
-              <Button variant="modal" href="mailto:onixframe.dev@gmail.com">
+              <Button variant="modal" href={`/brief?package=${selectedPlan.key}`}>
                 Обсудить проект
               </Button>
             </div>

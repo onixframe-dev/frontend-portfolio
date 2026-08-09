@@ -1,41 +1,45 @@
 "use client";
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useMemo, useRef, useState } from "react";
-import { categories, projects } from "@/data/projects";
-import type { ProjectCategory } from "@/data/projects";
+import { useEffect, useRef, useState } from "react";
+import { projects } from "@/data/projects";
 import { ProjectCard } from "./ProjectCard";
 import { AnimatedTitle } from "../../ui/AnimatedTitle";
 import { SectionSubtitle } from "../../ui/SectionSubtitle";
-import { Button } from "../../ui/Button";
 import sectionStyles from "../../ui/Section.module.css";
 import styles from "./ProjectCatalog.module.css";
 
-type ActiveCategory = "All Projects" | ProjectCategory;
-
 const PROJECTS_PER_PAGE = 6;
+const COMPACT_PROJECTS_PER_PAGE = 4;
 
 export function ProjectCatalog() {
   const sectionRef = useRef<HTMLElement | null>(null);
-  const [activeCategory, setActiveCategory] = useState<ActiveCategory>("All Projects");
   const [page, setPage] = useState(0);
+  const [projectsPerPage, setProjectsPerPage] = useState(PROJECTS_PER_PAGE);
 
-  const filteredProjects = useMemo(() => {
-    if (activeCategory === "All Projects") return projects;
-    return projects.filter((project) => project.category === activeCategory);
-  }, [activeCategory]);
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 920px)");
+    const syncProjectsPerPage = () => {
+      setProjectsPerPage(mediaQuery.matches ? COMPACT_PROJECTS_PER_PAGE : PROJECTS_PER_PAGE);
+    };
 
-  const pageCount = Math.ceil(filteredProjects.length / PROJECTS_PER_PAGE);
-  const visibleProjects = filteredProjects.slice(page * PROJECTS_PER_PAGE, (page + 1) * PROJECTS_PER_PAGE);
+    syncProjectsPerPage();
+    mediaQuery.addEventListener("change", syncProjectsPerPage);
+
+    return () => {
+      mediaQuery.removeEventListener("change", syncProjectsPerPage);
+    };
+  }, []);
+
+  const pageCount = Math.ceil(projects.length / projectsPerPage);
+  const visibleProjects = projects.slice(page * projectsPerPage, (page + 1) * projectsPerPage);
+
+  useEffect(() => {
+    setPage((currentPage) => Math.min(currentPage, Math.max(pageCount - 1, 0)));
+  }, [pageCount]);
 
   const scrollToSection = () => {
     sectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-  };
-
-  const selectCategory = (category: ActiveCategory) => {
-    setActiveCategory(category);
-    setPage(0);
-    scrollToSection();
   };
 
   const selectPage = (nextPage: number) => {
@@ -49,27 +53,8 @@ export function ProjectCatalog() {
         <div className={styles.catalogTitle}>
           <AnimatedTitle>Полный каталог проектов</AnimatedTitle>
           <SectionSubtitle>
-            Отфильтруйте проекты по типу и стеку.
-            <br />
-            Лендинги, React-приложения.
-            <br />
-            Next.js + TypeScript.
+            Подборка работ и шаблонов, которые показывают структуру, адаптив и визуальный подход.
           </SectionSubtitle>
-        </div>
-        <div className={styles.filterBarWrapper}>
-          <div className={styles.filterBar} role="tablist" aria-label="Project categories">
-            {categories.map((category) => (
-              <Button
-                key={category}
-                variant="filter"
-                active={category === activeCategory}
-                onClick={() => selectCategory(category)}
-                type="button"
-              >
-                {category}
-              </Button>
-            ))}
-          </div>
         </div>
       </div>
 

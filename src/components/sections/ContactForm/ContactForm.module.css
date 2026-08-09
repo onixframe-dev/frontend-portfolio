@@ -20,7 +20,7 @@
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.09);
   border-radius: 30px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.052), rgba(255, 255, 255, 0.026));
+  background: var(--surface-card);
   box-shadow: 0 28px 76px rgba(0, 0, 0, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.055);
   backdrop-filter: blur(18px);
 }

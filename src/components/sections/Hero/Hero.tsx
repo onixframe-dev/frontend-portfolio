@@ -273,7 +273,7 @@ export function Hero() {
         <p className={styles.heroText}>
           Современные сайты и интерфейсы
           <br />
-          на React, Next.js и TypeScript.
+          на HTML, CSS, JavaScript, React, Next.js и TypeScript.
           <br />
           Адаптивная вёрстка, архитектура проекта.
           <br />

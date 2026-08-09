@@ -107,7 +107,7 @@
 }
 
 .heroText {
-  max-width: 600px;
+  max-width: 760px;
   margin: 22px auto 0;
   color: rgba(255, 255, 255, 0.712);
   font-size: 16px;
@@ -213,6 +213,7 @@
   }
 
   .heroText {
+    max-width: 680px;
     font-size: 13px;
   }
 

@@ -1,20 +1,3 @@
-.filterBar {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  gap: 10px;
-  margin: 0;
-  padding: 14px 16px;
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  border-radius: 22px;
-  width: fit-content;
-  max-width: 100%;
-  background: rgba(7, 17, 22, 0.58);
-  backdrop-filter: blur(12px);
-}
-
 .catalogHeader {
   display: flex;
   flex-direction: column;
@@ -44,12 +27,6 @@
   color: transparent;
   text-shadow: 0 0 34px rgba(92, 225, 230, 0.08);
   animation: catalogTitleFlow 8s ease-in-out infinite;
-}
-
-.filterBarWrapper {
-  display: flex;
-  justify-content: center;
-  width: 100%;
 }
 
 .catalogGrid {
@@ -197,26 +174,9 @@
   .catalogHeader {
     display: block;
   }
-
-  .filterBarWrapper {
-    justify-content: center;
-    margin-top: 18px;
-  }
 }
 
 @media (max-width: 760px) {
-  .filterBar {
-    width: 100%;
-    gap: 10px;
-    padding: 12px;
-    border-radius: var(--mobile-card-radius);
-  }
-
-  .filterBar > * {
-    flex: 1 1 100%;
-    min-width: 0;
-  }
-
   .catalogGrid > * {
     min-width: 100%;
   }
@@ -225,10 +185,6 @@
 @media (max-width: 380px) {
   .catalogHeader {
     gap: 18px;
-  }
-
-  .filterBar {
-    padding: 10px;
   }
 
   .pagination {

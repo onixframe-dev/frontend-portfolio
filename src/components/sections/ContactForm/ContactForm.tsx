@@ -12,6 +12,19 @@ import { Button } from "../../ui/Button";
 import { SuccessToast } from "../../ui/SuccessToast";
 import styles from "./ContactForm.module.css";
 
+const textAssistProps = {
+  lang: "ru",
+  spellCheck: true,
+  autoCorrect: "on",
+  autoCapitalize: "sentences",
+} as const;
+
+const contactInputProps = {
+  spellCheck: false,
+  autoCorrect: "off",
+  autoCapitalize: "none",
+} as const;
+
 export function ContactForm() {
   const [showSuccessToast, setShowSuccessToast] = useState(false);
   const [sendError, setSendError] = useState("");
@@ -98,17 +111,22 @@ export function ContactForm() {
               <input
                 type="text"
                 placeholder="Например: Анна"
+                autoComplete="name"
                 aria-invalid={Boolean(errors.name)}
+                {...textAssistProps}
                 {...register("name", { onBlur: () => normalizeTextField("name") })}
               />
                   <small className={styles.errorText}>{errors.name?.message || "\u00a0"}</small>
             </label>
             <label>
-              <span>Телефон или Telegram</span>
+              <span>Контакты для связи</span>
               <input
                 type="text"
-                placeholder="@username или номер телефона"
+                placeholder="@telegram, Instagram, email или телефон"
+                autoComplete="off"
+                inputMode="text"
                 aria-invalid={Boolean(errors.contact)}
+                {...contactInputProps}
                 {...register("contact")}
               />
                   <small className={styles.errorText}>{errors.contact?.message || "\u00a0"}</small>
@@ -121,6 +139,7 @@ export function ContactForm() {
               rows={5}
               placeholder="Например: нужен лендинг для услуги, есть тексты и референсы, макета пока нет."
               aria-invalid={Boolean(errors.message)}
+              {...textAssistProps}
               {...register("message", { onBlur: () => normalizeTextField("message") })}
             />
             <small className={styles.errorText}>{errors.message?.message || "\u00a0"}</small>
