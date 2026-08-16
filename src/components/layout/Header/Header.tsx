@@ -145,8 +145,8 @@ export function Header() {
           aria-label="На главную"
         >
           <Image
-            src="/8.png"
-            alt="NEXFRAME logo"
+            src="/logo.png"
+            alt="OnixFrame logo"
             className={styles.logo}
             width={50}
             height={50}

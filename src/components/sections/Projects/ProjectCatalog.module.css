@@ -32,16 +32,11 @@
 .catalogGrid {
   position: relative;
   z-index: 1;
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 24px;
   align-items: stretch;
   min-height: 0;
-}
-
-.catalogGrid > * {
-  flex: 1 1 calc(33.333% - 16px);
-  min-width: 320px;
 }
 
 .catalogSection {
@@ -174,11 +169,15 @@
   .catalogHeader {
     display: block;
   }
+
+  .catalogGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 760px) {
-  .catalogGrid > * {
-    min-width: 100%;
+  .catalogGrid {
+    grid-template-columns: 1fr;
   }
 }
 

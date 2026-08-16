@@ -13,7 +13,7 @@ export function Footer() {
         <div className={styles.footerTop}>
           <div className={styles.footerAbout}>
             <a href="#top" className={styles.footerBrand}>
-              <Image src="/8.png" alt="NEXFRAME logo" className={styles.footerLogo} width={48} height={48} />
+              <Image src="/logo.png" alt="OnixFrame logo" className={styles.footerLogo} width={48} height={48} />
               <span className={styles.footerBrandText}>OnixFrame</span>
             </a>
             <p>Чистый frontend для сайтов, каталогов и интерфейсов с аккуратной архитектурой.</p>

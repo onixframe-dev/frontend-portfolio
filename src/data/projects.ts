@@ -23,16 +23,30 @@ export const categories: Array<"All Projects" | ProjectCategory> = [
 export const projects: Project[] = [
   {
     id: 1,
-    title: "Figma Helper",
+    title: "Expense Tracker",
     category: "Next.js / TS",
-    description: "Инструмент для подготовки макетов, структуры секций и frontend-кода из Figma.",
-    stack: ["Next.js", "TypeScript", "React", "UI"],
+    description: "Приложение для учёта финансов с авторизацией, транзакциями, категориями и аналитикой расходов.",
+    stack: ["React", "Next.js", "TypeScript", "JavaScript"],
     year: "2026",
-    accent: "#7C5CFF",
-    demoUrl: "#"
+    accent: "#18f08b",
+    demoUrl: "https://expence-tracker-team.vercel.app/",
+    image: "/expence-tracker.png",
+    imageAlt: "Expense Tracker app preview"
   },
   {
     id: 2,
+    title: "Image Search App",
+    category: "Landing Pages",
+    description: "Приложение для поиска изображений через Pixabay API с галереей, лайтбоксом и подгрузкой результатов.",
+    stack: ["Vite", "JavaScript", "Axios", "SimpleLightbox"],
+    year: "2026",
+    accent: "#4f73ff",
+    demoUrl: "https://search-images-bay.vercel.app/",
+    image: "/search-images.png",
+    imageAlt: "Image Search App preview"
+  },
+  {
+    id: 3,
     title: "Landing Page",
     category: "React",
     description: "Лендинг артистов на HTML, CSS и JavaScript: фильтрация, карточки и подключение базы данных.",
@@ -40,77 +54,69 @@ export const projects: Project[] = [
     year: "2026",
     accent: "#5CE1E6",
     demoUrl: "https://artist-hub-pi.vercel.app/",
-    image: "/Header.jpg",
+    image: "/artist.jpg",
     imageAlt: "Landing page website preview"
   },
   {
-    id: 3,
-    title: "Premium Landing Page",
-    category: "Landing Pages",
-    description: "Современный лендинг с чистой структурой, адаптивом, анимациями и сильным первым экраном.",
-    stack: ["HTML", "CSS", "JavaScript"],
-    year: "2026",
-    accent: "#ff3df5",
-    demoUrl: "#"
-  },
-  {
     id: 4,
-    title: "SaaS Promo Page",
-    category: "Landing Pages",
-    description: "Промо-страница для цифрового продукта: оффер, преимущества, тарифы, FAQ и форма заявки.",
-    stack: ["HTML", "CSS", "JavaScript"],
+    title: "NoteHub Auth",
+    category: "Next.js / TS",
+    description: "Приложение заметок с авторизацией, поиском, пагинацией, профилем пользователя и управлением записями.",
+    stack: ["React", "Next.js", "TypeScript", "JavaScript"],
     year: "2026",
-    accent: "#3db1ff",
-    demoUrl: "#"
+    accent: "#2f80ff",
+    demoUrl: "https://notehub-auth.vercel.app/",
+    image: "/notehub.png",
+    imageAlt: "NoteHub Auth app preview"
   },
   {
     id: 5,
-    title: "Agency Website",
+    title: "Handmade Jewelry",
     category: "Landing Pages",
-    description: "Сайт для студии или сервиса с портфолио, услугами, отзывами и контактным блоком.",
-    stack: ["HTML", "CSS", "JavaScript"],
+    description: "Лендинг для украшений ручной работы с первым экраном, преимуществами, галереей, отзывами и контактами.",
+    stack: ["Vite", "HTML", "CSS", "JavaScript"],
     year: "2026",
-    accent: "#d83dff",
-    demoUrl: "#"
+    accent: "#d5c66f",
+    demoUrl: "https://onixframe-dev.github.io/Handmade-Jewely/",
+    image: "/handmade-Jewely.png",
+    imageAlt: "Handmade Jewelry landing page preview"
   },
   {
     id: 6,
-    title: "Product Showcase",
+    title: "WebStudio",
     category: "Landing Pages",
-    description: "Лендинг продукта с крупными визуальными блоками, характеристиками и CTA-секциями.",
-    stack: ["HTML", "CSS", "JavaScript"],
+    description: "Адаптивный лендинг веб-студии с навигацией, портфолио, мобильным меню и модальной формой заявки.",
+    stack: ["HTML5", "CSS3", "Flexbox"],
     year: "2026",
-    accent: "#3dffe5",
-    demoUrl: "#"
+    accent: "#4d5bff",
+    demoUrl: "https://webstudio-lemon.vercel.app/",
+    image: "/webstudio.png",
+    imageAlt: "WebStudio landing page preview"
   },
   {
     id: 7,
-    title: "React Product Page",
-    category: "React",
-    description: "Страница продукта на React с компонентами, состояниями, фильтрами и аккуратным интерфейсом.",
-    stack: ["React", "CSS Modules", "Components"],
-    year: "2026",
-    accent: "#B8FF5C",
-    demoUrl: "#"
-  },
-  {
-    id: 8,
-    title: "Motion UI Cards",
+    title: "TravelTrucks",
     category: "Next.js / TS",
-    description: "Набор интерактивных карточек, hover-эффектов и микроанимаций для современных сайтов.",
-    stack: ["React", "Framer Motion", "UI"],
+    description: "Каталог аренды кемперов с фильтрами, страницами деталей, галереей, отзывами и формой бронирования.",
+    stack: ["Next.js", "TypeScript", "React", "TanStack Query"],
     year: "2026",
-    accent: "#FF5CB8",
-    demoUrl: "#"
-  },
-  {
-    id: 9,
-    title: "Portfolio Hub",
-    category: "Next.js / TS",
-    description: "Личный сайт-каталог проектов: фильтры, карточки, прайсы и ссылки на демо.",
-    stack: ["Next.js", "TypeScript", "Vercel"],
-    year: "2026",
-    accent: "#5CFFB1",
-    demoUrl: "#"
+    accent: "#8fa99d",
+    demoUrl: "https://travel-trucks-alpha-nine.vercel.app/",
+    image: "/travel-trucks-.png",
+    imageAlt: "TravelTrucks camper catalog preview"
   }
 ];
+
+// Template for the next project card:
+// {
+//   id: 8,
+//   title: "Project Name",
+//   category: "Next.js / TS",
+//   description: "Короткое описание проекта и ключевой функциональности.",
+//   stack: ["React", "Next.js", "TypeScript", "JavaScript"],
+//   year: "2026",
+//   accent: "#5CE1E6",
+//   demoUrl: "https://project-demo.example.com/",
+//   image: "/project-image.png",
+//   imageAlt: "Project preview"
+// }
