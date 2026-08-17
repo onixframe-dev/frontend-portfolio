@@ -93,7 +93,7 @@ export function ContactForm() {
             Если задача объёмная, удобнее заполнить заявку.
           </p>
           <div className={styles.quickLinks}>
-            <a href="https://t.me" target="_blank" rel="noreferrer"><Send size={16} /> <span>Telegram</span></a>
+            <a href="https://t.me/OnixFrame" target="_blank" rel="noreferrer"><Send size={16} /> <span>Telegram</span></a>
             <a href="tel:+375296702546"><Phone size={16} /> <span>Телефон</span></a>
             <a href="https://www.instagram.com/igor_gordich/" target="_blank" rel="noreferrer"><Instagram size={16} /> <span>Instagram</span></a>
             <a href="mailto:onixframe.dev@gmail.com"><Mail size={16} /> <span>Email</span></a>

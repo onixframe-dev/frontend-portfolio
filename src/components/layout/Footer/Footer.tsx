@@ -29,7 +29,7 @@ export function Footer() {
               <a href="https://github.com" target="_blank" rel="noreferrer"><Github size={18} /> GitHub</a>
               <a href="https://vercel.com" target="_blank" rel="noreferrer"><Triangle size={17} /> Vercel</a>
               <a href="https://www.instagram.com/igor_gordich/" target="_blank" rel="noreferrer"><Instagram size={18} /> Instagram</a>
-              <a href="https://t.me" target="_blank" rel="noreferrer"><Send size={17} /> Telegram</a>
+              <a href="https://t.me/OnixFrame" target="_blank" rel="noreferrer"><Send size={17} /> Telegram</a>
             </div>
           </div>
         </div>

@@ -182,7 +182,7 @@ export function Header() {
           <Button variant="icon" href="https://www.instagram.com/igor_gordich/" target="_blank" rel="noreferrer" ariaLabel="Instagram">
             <Instagram size={18} />
           </Button>
-          <Button variant="icon" href="https://t.me" target="_blank" rel="noreferrer" ariaLabel="Telegram">
+          <Button variant="icon" href="https://t.me/OnixFrame" target="_blank" rel="noreferrer" ariaLabel="Telegram">
             <Send size={17} />
           </Button>
           <Button variant="contact" href="/#contacts" onClick={() => setActiveHash("#contacts")}>
@@ -228,7 +228,7 @@ export function Header() {
           <div className={styles.mobileSocials}>
             <MobileMenuItem href="https://github.com" external><Github size={18} /> GitHub</MobileMenuItem>
             <MobileMenuItem href="https://www.instagram.com/igor_gordich/" external><Instagram size={18} /> Instagram</MobileMenuItem>
-            <MobileMenuItem href="https://t.me" external><Send size={18} /> Telegram</MobileMenuItem>
+            <MobileMenuItem href="https://t.me/OnixFrame" external><Send size={18} /> Telegram</MobileMenuItem>
           </div>
         </div>
       </div>

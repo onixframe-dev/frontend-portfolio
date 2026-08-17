@@ -40,7 +40,7 @@ export async function POST(request: Request) {
       subject: `Новое сообщение с сайта OnixFrame: ${name}`,
       text: emailMessage,
     }),
-    sendTelegramMessage({ text: telegramMessage, parseMode: "HTML" }),
+    sendTelegramMessage({ text: telegramMessage, parseMode: "HTML", leadActions: true }),
   ]);
 
   if (!emailResult.ok && !telegramResult.ok) {
