@@ -9,7 +9,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://frontend-portfolio-lovat-two.vercel.app"),
+  metadataBase: new URL("https://frontend-portfolio-ochre-six.vercel.app"),
   title: "OnixFrame — разработка сайтов и интерфейсов",
   description: "Разработка современных сайтов, лендингов, каталогов и frontend-интерфейсов на HTML, CSS, JavaScript, React, Next.js и TypeScript.",
   alternates: {
@@ -24,9 +24,10 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/opengraph-image",
+        url: "/opengraph-image.png",
         width: 1200,
         height: 630,
+        type: "image/png",
         alt: "OnixFrame — разработка сайтов и интерфейсов",
       },
     ],
@@ -35,7 +36,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "OnixFrame — разработка сайтов и интерфейсов",
     description: "Современные сайты, лендинги, каталоги и frontend-интерфейсы на HTML, CSS, JavaScript, React, Next.js и TypeScript.",
-    images: ["/opengraph-image"],
+    images: ["/opengraph-image.png"],
   },
   appleWebApp: {
     statusBarStyle: "black-translucent",

@@ -27,9 +27,8 @@ const sphereDots = Array.from({ length: 15 * 15 }, (_, index) => {
   };
 });
 
-export default function Image() {
-  return new ImageResponse(
-    (
+export function OpenGraphImageMarkup() {
+  return (
       <div
         style={{
           width: "100%",
@@ -69,14 +68,24 @@ export default function Image() {
           }}
         >
           <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="https://frontend-portfolio-lovat-two.vercel.app/logo.png"
-              width="54"
-              height="54"
-              alt=""
-              style={{ objectFit: "contain" }}
-            />
+            <div
+              style={{
+                width: 54,
+                height: 54,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: 16,
+                border: "1px solid rgba(176,196,255,.48)",
+                background: "linear-gradient(135deg, rgba(235,244,255,.92), rgba(105,126,255,.18))",
+                color: "#0b1020",
+                fontSize: 22,
+                fontWeight: 950,
+                boxShadow: "0 0 24px rgba(122,162,255,.22)",
+              }}
+            >
+              OF
+            </div>
             <div style={{ display: "flex", fontSize: 30, fontWeight: 780 }}>
               <span>Onix</span>
               <span style={{ color: "#7aa2ff" }}>Frame</span>
@@ -236,7 +245,12 @@ export default function Image() {
           </div>
         </div>
       </div>
-    ),
+  );
+}
+
+export default function Image() {
+  return new ImageResponse(
+    <OpenGraphImageMarkup />,
     size,
   );
 }
