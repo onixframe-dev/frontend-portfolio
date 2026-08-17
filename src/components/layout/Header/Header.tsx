@@ -185,7 +185,7 @@ export function Header() {
           <Button variant="icon" href="https://t.me" target="_blank" rel="noreferrer" ariaLabel="Telegram">
             <Send size={17} />
           </Button>
-          <Button variant="contact" href="mailto:onixframe.dev@gmail.com">
+          <Button variant="contact" href="/#contacts" onClick={() => setActiveHash("#contacts")}>
             <Mail size={17} /> Связаться
           </Button>
           <button
