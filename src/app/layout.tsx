@@ -9,8 +9,34 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://frontend-portfolio-lovat-two.vercel.app"),
   title: "OnixFrame — разработка сайтов и интерфейсов",
   description: "Разработка современных сайтов, лендингов, каталогов и frontend-интерфейсов на HTML, CSS, JavaScript, React, Next.js и TypeScript.",
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    title: "OnixFrame — разработка сайтов и интерфейсов",
+    description: "Современные сайты, лендинги, каталоги и frontend-интерфейсы на HTML, CSS, JavaScript, React, Next.js и TypeScript.",
+    url: "/",
+    siteName: "OnixFrame",
+    locale: "ru_RU",
+    type: "website",
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "OnixFrame — разработка сайтов и интерфейсов",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "OnixFrame — разработка сайтов и интерфейсов",
+    description: "Современные сайты, лендинги, каталоги и frontend-интерфейсы на HTML, CSS, JavaScript, React, Next.js и TypeScript.",
+    images: ["/opengraph-image"],
+  },
   appleWebApp: {
     statusBarStyle: "black-translucent",
   },

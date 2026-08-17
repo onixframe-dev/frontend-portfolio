@@ -12,32 +12,32 @@ const PARTICLE_SPACING_REM = 1.8;
 const getParticleConfig = (width: number) => {
   if (width <= 380) {
     return {
-      spacingPx: 17,
-      radius: 2.45,
-      autoX: 118,
-      autoY: 92,
-      pointerStrength: 0.46,
+      sphereRadius: 146,
+      radius: 2.25,
+      autoX: 74,
+      autoY: 58,
+      pointerStrength: 0.34,
       bottomSafeArea: 58,
     };
   }
 
   if (width <= 560) {
     return {
-      spacingPx: 19,
-      radius: 2.65,
-      autoX: 142,
-      autoY: 104,
-      pointerStrength: 0.55,
+      sphereRadius: 176,
+      radius: 2.45,
+      autoX: 92,
+      autoY: 68,
+      pointerStrength: 0.4,
       bottomSafeArea: 62,
     };
   }
 
   return {
-    spacingPx: PARTICLE_SPACING_REM * 16,
+    sphereRadius: PARTICLE_SPACING_REM * 16 * 7.2,
     radius: 3.2,
-    autoX: 200,
-    autoY: 150,
-    pointerStrength: 0.8,
+    autoX: 150,
+    autoY: 108,
+    pointerStrength: 0.62,
     bottomSafeArea: 70,
   };
 };
@@ -68,16 +68,24 @@ export function Hero() {
     const particles = Array.from({ length: totalParticles }, (_, index) => {
       const row = Math.floor(index / PARTICLE_ROWS);
       const col = index % PARTICLE_ROWS;
-      const distance = Math.sqrt((row - center) ** 2 + (col - center) ** 2);
+      const normalizedX = (col - center) / center;
+      const normalizedY = (row - center) / center;
+      const distance = Math.sqrt(normalizedX ** 2 + normalizedY ** 2);
+      const sphereZ = Math.sqrt(Math.max(0, 1 - distance ** 2));
+      const edgeFade = Math.min(1, Math.max(0, (1.08 - distance) / 0.22));
 
       return {
         row,
         col,
+        normalizedX,
+        normalizedY,
         distance,
-        scale: Math.max(0.1, 1.2 - distance * 0.12),
-        opacity: Math.max(0.05, 1 - distance * 0.1),
-        hue: 184 + distance * 7,
-        lightness: Math.max(42, 76 - distance * 4),
+        sphereZ,
+        edgeFade,
+        scale: Math.max(0.18, 0.54 + sphereZ * 0.72),
+        opacity: Math.max(0.03, (0.16 + sphereZ * 0.84) * edgeFade),
+        hue: 184 + distance * 34,
+        lightness: Math.max(38, 74 - distance * 18),
       };
     });
 
@@ -107,20 +115,19 @@ export function Hero() {
       const width = canvas.clientWidth;
       const height = canvas.clientHeight;
       const particleConfig = getParticleConfig(width);
-      const gridSize = PARTICLE_ROWS * particleConfig.spacingPx;
       const bottomSafeArea = particleConfig.bottomSafeArea;
-      const startX = (width - gridSize) / 2;
-      const startY = Math.max(28, (height - bottomSafeArea - gridSize) / 2);
+      const centerX = width / 2;
+      const centerY = Math.max(28 + particleConfig.sphereRadius * 0.72, (height - bottomSafeArea) / 2);
 
       if (modeRef.current === "auto") {
         const autoCursor = {
-          x: Math.sin(currentTime * 0.3) * particleConfig.autoX + Math.sin(currentTime * 0.17) * particleConfig.autoX * 0.5,
-          y: Math.cos(currentTime * 0.2) * particleConfig.autoY + Math.cos(currentTime * 0.23) * particleConfig.autoY * 0.53,
+          x: Math.sin(currentTime * 0.2) * particleConfig.autoX + Math.sin(currentTime * 0.11) * particleConfig.autoX * 0.42,
+          y: Math.cos(currentTime * 0.16) * particleConfig.autoY + Math.cos(currentTime * 0.13) * particleConfig.autoY * 0.45,
         };
 
         if (autoReturnRef.current.active) {
           const elapsed = Date.now() - autoReturnRef.current.startedAt;
-          const progress = Math.min(elapsed / 1400, 1);
+          const progress = Math.min(elapsed / 1900, 1);
           const eased = progress < 0.5
             ? 4 * progress ** 3
             : 1 - (-2 * progress + 2) ** 3 / 2;
@@ -140,24 +147,29 @@ export function Hero() {
 
       if (modeRef.current === "static") {
         const idleTime = Date.now() - lastPointerMoveRef.current;
-        const strength = Math.min(Math.max((idleTime - 220) / 1000, 0), 1);
+        const strength = Math.min(Math.max((idleTime - 220) / 1400, 0), 1);
         cursorRef.current = {
-          x: staticCursorRef.current.x + Math.sin(currentTime * 1.4) * 18 * strength,
-          y: staticCursorRef.current.y + Math.cos(currentTime * 1.15) * 14 * strength,
+          x: staticCursorRef.current.x + Math.sin(currentTime * 0.9) * 12 * strength,
+          y: staticCursorRef.current.y + Math.cos(currentTime * 0.75) * 10 * strength,
         };
       }
 
       context.clearRect(0, 0, width, height);
 
-      particles.forEach(({ row, col, distance, scale, opacity, hue, lightness }) => {
-        const dampening = Math.max(0.3, 1 - distance * 0.08);
-        const wave = Math.sin(currentTime * 1.5 + row * 0.42 + col * 0.24) * 2;
-        const x = startX + col * particleConfig.spacingPx + cursorRef.current.x * dampening + wave;
-        const y = startY + row * particleConfig.spacingPx + cursorRef.current.y * dampening - wave;
+      particles.forEach(({ row, col, normalizedX, normalizedY, distance, sphereZ, scale, opacity, hue, lightness }) => {
+        if (distance > 1.08) return;
+
+        const dampening = 0.22 + sphereZ * 0.78;
+        const drift = Math.sin(currentTime * 0.72 + row * 0.34 + col * 0.22);
+        const orbit = Math.cos(currentTime * 0.38 + normalizedY * 1.8) * 8 * sphereZ;
+        const sphereX = normalizedX * particleConfig.sphereRadius * (0.9 + sphereZ * 0.12);
+        const sphereY = normalizedY * particleConfig.sphereRadius * 0.92;
+        const x = centerX + sphereX + cursorRef.current.x * dampening + orbit + drift * 1.4;
+        const y = centerY + sphereY + cursorRef.current.y * dampening - drift * 1.2;
         const radius = particleConfig.radius * scale;
         const fadeStart = height - bottomSafeArea;
-        const edgeFade = Math.min(1, Math.max(0, (height - y) / bottomSafeArea));
-        const visibleOpacity = y > fadeStart ? opacity * edgeFade : opacity;
+        const bottomFade = Math.min(1, Math.max(0, (height - y) / bottomSafeArea));
+        const visibleOpacity = y > fadeStart ? opacity * bottomFade : opacity;
 
         if (visibleOpacity <= 0.01) return;
 
