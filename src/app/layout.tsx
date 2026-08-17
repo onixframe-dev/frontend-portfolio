@@ -11,6 +11,12 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "OnixFrame — разработка сайтов и интерфейсов",
   description: "Разработка современных сайтов, лендингов, каталогов и frontend-интерфейсов на HTML, CSS, JavaScript, React, Next.js и TypeScript.",
+  appleWebApp: {
+    statusBarStyle: "black-translucent",
+  },
+  other: {
+    "color-scheme": "dark only",
+  },
   icons: {
     icon: "/favicon.svg",
     shortcut: "/favicon.svg",
@@ -18,6 +24,9 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
   themeColor: "#000000",
 };
 
