@@ -2,6 +2,12 @@ import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 
+const siteUrl = "https://frontend-portfolio-ochre-six.vercel.app";
+const siteName = "OnixFrame";
+const siteDescription =
+  "Frontend-разработчик для бизнеса в Беларуси и СНГ. Разработка лендингов, сайтов-визиток и frontend-интерфейсов на React, Next.js, TypeScript, HTML, CSS и JavaScript.";
+const ogImage = "/opengraph-image.png";
+
 const inter = Inter({
   subsets: ["latin", "cyrillic"],
   display: "swap",
@@ -9,22 +15,48 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://frontend-portfolio-ochre-six.vercel.app"),
-  title: "OnixFrame — разработка сайтов и интерфейсов",
-  description: "Разработка современных сайтов, лендингов, каталогов и frontend-интерфейсов на HTML, CSS, JavaScript, React, Next.js и TypeScript.",
+  metadataBase: new URL(siteUrl),
+  applicationName: siteName,
+  title: {
+    default: "OnixFrame — разработка сайтов и интерфейсов",
+    template: "%s | OnixFrame",
+  },
+  description: siteDescription,
+  keywords: [
+    "разработка сайтов",
+    "разработка сайтов Беларусь",
+    "разработка сайтов СНГ",
+    "создание лендинга",
+    "создание лендинга Беларусь",
+    "создание сайта-визитки",
+    "frontend разработчик",
+    "frontend разработчик Беларусь",
+    "React разработчик",
+    "React разработчик Беларусь",
+    "Next.js разработчик",
+    "Next.js разработчик Беларусь",
+    "TypeScript",
+    "адаптивная вёрстка",
+    "сайт под ключ",
+    "Минск",
+    "Беларусь",
+  ],
+  authors: [{ name: "OnixFrame", url: siteUrl }],
+  creator: "OnixFrame",
+  publisher: "OnixFrame",
   alternates: {
     canonical: "/",
   },
   openGraph: {
     title: "OnixFrame — разработка сайтов и интерфейсов",
-    description: "Современные сайты, лендинги, каталоги и frontend-интерфейсы на HTML, CSS, JavaScript, React, Next.js и TypeScript.",
+    description: siteDescription,
     url: "/",
-    siteName: "OnixFrame",
+    siteName,
     locale: "ru_RU",
     type: "website",
     images: [
       {
-        url: "/opengraph-image.png",
+        url: ogImage,
         width: 1200,
         height: 630,
         type: "image/png",
@@ -35,11 +67,25 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "OnixFrame — разработка сайтов и интерфейсов",
-    description: "Современные сайты, лендинги, каталоги и frontend-интерфейсы на HTML, CSS, JavaScript, React, Next.js и TypeScript.",
-    images: ["/opengraph-image.png"],
+    description: siteDescription,
+    images: [ogImage],
   },
   appleWebApp: {
+    title: siteName,
+    capable: true,
     statusBarStyle: "black-translucent",
+  },
+  category: "technology",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
   },
   other: {
     "color-scheme": "dark only",
@@ -57,10 +103,83 @@ export const viewport: Viewport = {
   themeColor: "#000000",
 };
 
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": `${siteUrl}/#website`,
+      url: siteUrl,
+      name: siteName,
+      description: siteDescription,
+      inLanguage: "ru-RU",
+    },
+    {
+      "@type": "ProfessionalService",
+      "@id": `${siteUrl}/#business`,
+      name: siteName,
+      url: siteUrl,
+      image: `${siteUrl}${ogImage}`,
+      description: siteDescription,
+      slogan:
+        "Frontend-разработчик для бизнеса в Беларуси. Работаю с заказчиками по всей Беларуси и СНГ.",
+      areaServed: [
+        {
+          "@type": "Country",
+          name: "Беларусь",
+        },
+        {
+          "@type": "Place",
+          name: "СНГ",
+        },
+      ],
+      serviceType: [
+        "Разработка лендингов",
+        "Разработка сайтов-визиток",
+        "Frontend-разработка",
+        "React-разработка",
+        "Next.js-разработка",
+        "Адаптивная вёрстка",
+      ],
+      offers: {
+        "@type": "OfferCatalog",
+        name: "Услуги разработки сайтов",
+        itemListElement: [
+          {
+            "@type": "Offer",
+            name: "HTML / CSS / JS Landing",
+            price: "600",
+            priceCurrency: "BYN",
+            availability: "https://schema.org/InStock",
+          },
+          {
+            "@type": "Offer",
+            name: "React Landing / Website",
+            price: "1100",
+            priceCurrency: "BYN",
+            availability: "https://schema.org/InStock",
+          },
+          {
+            "@type": "Offer",
+            name: "Next.js + TypeScript",
+            price: "1700",
+            priceCurrency: "BYN",
+            availability: "https://schema.org/InStock",
+          },
+        ],
+      },
+    },
+  ],
+};
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ru" className={inter.variable}>
       <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
         <div className="siteContent">{children}</div>
       </body>
     </html>
