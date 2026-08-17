@@ -6,11 +6,13 @@ type TelegramPayload = {
 
 const TELEGRAM_ENDPOINT = "https://api.telegram.org";
 const leadStatusLabels = {
-  new: "🟢 Новая",
-  read: "👁 Прочитано",
-  work: "🔧 В работе",
-  done: "✅ Закрыто",
+  new: "🟢 НОВАЯ ЗАЯВКА",
+  read: "🔵 ПРОЧИТАНО",
+  work: "🟠 В РАБОТЕ",
+  done: "✅ ЗАКРЫТО",
 } as const;
+const leadStatusDivider = "━━━━━━━━━━━━";
+const previousLeadStatusPrefixes = ["🟢 Новая", "👁 Прочитано", "🔧 В работе", "✅ Закрыто"];
 
 type LeadStatus = keyof typeof leadStatusLabels;
 
@@ -54,7 +56,7 @@ function getLeadStatusKeyboard(activeStatus: LeadStatus = "new") {
 }
 
 function hasStatusLine(line: string) {
-  return Object.values(leadStatusLabels).some((label) => line.startsWith(label));
+  return [...Object.values(leadStatusLabels), ...previousLeadStatusPrefixes].some((label) => line.startsWith(label));
 }
 
 function applyLeadStatus(text: string, status: LeadStatus) {
@@ -64,7 +66,11 @@ function applyLeadStatus(text: string, status: LeadStatus) {
     lines.shift();
   }
 
-  return `<b>${escapeTelegramHtml(leadStatusLabels[status])}</b>\n${escapeTelegramHtml(lines.join("\n").trim())}`;
+  if (lines[0] === leadStatusDivider) {
+    lines.shift();
+  }
+
+  return `<b>${escapeTelegramHtml(leadStatusLabels[status])}</b>\n${leadStatusDivider}\n${escapeTelegramHtml(lines.join("\n").trim())}`;
 }
 
 async function callTelegramApi(method: string, payload: Record<string, unknown>) {
