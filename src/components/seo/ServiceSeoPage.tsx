@@ -20,6 +20,8 @@ type ServiceSeoPageProps = {
     answer: string;
   }>;
   structuredData: Record<string, unknown>;
+  backHref?: string;
+  backLabel?: string;
 };
 
 export function ServiceSeoPage({
@@ -34,6 +36,8 @@ export function ServiceSeoPage({
   audienceText,
   faq,
   structuredData,
+  backHref = "/razrabotka-lendinga-belarus",
+  backLabel = "К разделу о нас",
 }: ServiceSeoPageProps) {
   return (
     <main>
@@ -42,9 +46,9 @@ export function ServiceSeoPage({
         <section className={styles.hero}>
           <div className={styles.heroInner}>
             <div className={styles.heroText}>
-              <a className={styles.backLink} href="/razrabotka-lendinga-belarus">
+              <a className={styles.backLink} href={backHref}>
                 <ArrowLeft size={16} />
-                К разделу о нас
+                {backLabel}
               </a>
               <p className={styles.eyebrow}>{eyebrow}</p>
               <h1>{title}</h1>

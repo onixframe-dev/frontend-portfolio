@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { ArrowUpRight, Check, Sparkles, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Button } from "../../ui/Button";
@@ -47,7 +48,7 @@ const RATE_CACHE_TTL_MS = 12 * 60 * 60 * 1000;
 const plans: Plan[] = [
   {
     key: "html",
-    title: "HTML / CSS / JS Landing",
+    title: "Лендинг / сайт-визитка",
     priceByn: 600,
     badge: "Базовый сайт",
     badgeTone: "starter",
@@ -83,7 +84,7 @@ const plans: Plan[] = [
   },
   {
     key: "react",
-    title: "React Landing / Website",
+    title: "Интерактивный сайт",
     priceByn: 1100,
     badge: "Популярный",
     badgeTone: "popular",
@@ -126,7 +127,7 @@ const plans: Plan[] = [
   },
   {
     key: "next",
-    title: "Next.js + TypeScript",
+    title: "Современный сайт / веб-приложение",
     priceByn: 1700,
     badge: "Продвинутый",
     badgeTone: "advanced",
@@ -377,9 +378,13 @@ export function Pricing() {
       <div className={`${sectionStyles.sectionHeader} ${styles.pricingHeader}`}>
         <div>
           <AnimatedTitle>Прайс на разработку сайтов</AnimatedTitle>
-          <SectionSubtitle>
-            Пакеты помогают быстро выбрать формат разработки.
-            В стоимость входит адаптивная вёрстка по макету, референсам или согласованной визуальной концепции, форма заявки, базовое SEO и meta-теги.
+          <SectionSubtitle className={styles.pricingSubtitle}>
+            Пакеты помогут быстро выбрать подходящий формат разработки.
+            <br />
+            <br />
+            В стоимость входит адаптивная вёрстка по макету или согласованной визуальной концепции, форма заявки, базовое SEO и мета-теги.
+            <br />
+            <br />
             Полноценный дизайн-макет в Figma рассчитывается отдельно или предоставляется заказчиком.
           </SectionSubtitle>
         </div>
@@ -446,15 +451,6 @@ export function Pricing() {
               ))}
             </ul>
 
-            <a
-              className={styles.serviceDetailLink}
-              href={plan.serviceHref}
-              onClick={(event) => event.stopPropagation()}
-            >
-              <span>{plan.serviceLabel}</span>
-              <ArrowUpRight size={15} />
-            </a>
-
             <Button
               variant={plan.featured ? 'priceFeatured' : 'price'}
               className={styles.priceButton}
@@ -466,6 +462,14 @@ export function Pricing() {
             >
               Подробнее
             </Button>
+
+            <Link
+              className={styles.serviceDetailsLink}
+              href={plan.serviceHref}
+              onClick={(event) => event.stopPropagation()}
+            >
+              Все детали услуги <ArrowUpRight size={12} />
+            </Link>
           </article>
         ))}
       </div>

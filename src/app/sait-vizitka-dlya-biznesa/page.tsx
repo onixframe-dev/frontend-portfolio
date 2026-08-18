@@ -35,6 +35,8 @@ const structuredData = {
 export default function BusinessCardWebsitePage() {
   return (
     <ServiceSeoPage
+      backHref="/#pricing"
+      backLabel="Вернуться к тарифам"
       eyebrow="Сайт-визитка для бизнеса"
       title="Сайт-визитка, который быстро объясняет кто вы, что предлагаете и как с вами связаться"
       lead="Подходит для малого бизнеса, услуг, экспертов и локальных компаний, которым нужна понятная онлайн-презентация без сложной логики."

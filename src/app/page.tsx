@@ -15,11 +15,11 @@ export default function Home() {
       <Header />
       <Hero />
       <div className="starryRegion">
-        <Services />
-        <TechStack />
-        <Pricing />
         <ProjectCatalog />
+        <Services />
         <About />
+        <Pricing />
+        <TechStack />
         <ContactForm />
         <Footer />
       </div>

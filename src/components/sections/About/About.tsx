@@ -15,11 +15,9 @@ export function About() {
     <section id="about" className={`${sectionStyles.sectionBlock} ${styles.aboutBlock}`}>
       <div className={`${sectionStyles.sectionHeader} ${styles.aboutHeader}`}>
         <div>
-          <AnimatedTitle>Подход: визуал, архитектура, результат</AnimatedTitle>
+          <AnimatedTitle>Как я работаю</AnimatedTitle>
           <SectionSubtitle>
-            Делаю современные лендинги и интерфейсы с продуманной структурой.
-            <br />
-            В фокусе — первый экран, логика и аккуратный адаптив.
+            Продумываю не только внешний вид, но и структуру, логику интерфейса и дальнейший запуск проекта.
           </SectionSubtitle>
         </div>
       </div>

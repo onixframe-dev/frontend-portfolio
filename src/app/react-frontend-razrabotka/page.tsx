@@ -35,6 +35,8 @@ const structuredData = {
 export default function ReactFrontendDevelopmentPage() {
   return (
     <ServiceSeoPage
+      backHref="/#pricing"
+      backLabel="Вернуться к тарифам"
       eyebrow="React frontend-разработка"
       title="React-интерфейсы для сайтов, каталогов и страниц с интерактивной логикой"
       lead="Делаю frontend на React, когда сайту нужны компоненты, карточки, фильтры, модальные окна, состояния и более гибкая структура."

@@ -45,12 +45,18 @@ export function Header() {
   const [activeHash, setActiveHash] = useState<string>("");
 
   useEffect(() => {
+    // Allow browser to auto-restore scroll position when navigating back
     if ("scrollRestoration" in window.history) {
-      window.history.scrollRestoration = "manual";
+      window.history.scrollRestoration = "auto";
     }
 
-    if (!window.location.hash) {
-      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    // Only scroll to top on initial page load with no hash
+    if (!window.location.hash && typeof window !== "undefined") {
+      const scrollHeight = document.documentElement.scrollHeight;
+      // Only scroll if we're at the top (initial load)
+      if (window.scrollY < 50 && scrollHeight > window.innerHeight) {
+        window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+      }
     }
   }, []);
 
@@ -68,6 +74,22 @@ export function Header() {
       setActiveHash("");
       return;
     }
+
+    // When returning to home page, restore scroll position
+    const handleRouteChange = () => {
+      // If there's a hash, scroll to that element
+      if (window.location.hash) {
+        const target = document.querySelector(window.location.hash);
+        if (target) {
+          setTimeout(() => {
+            target.scrollIntoView({ behavior: "smooth", block: "start" });
+          }, 100);
+        }
+      }
+    };
+
+    // Handle direct navigation to home
+    handleRouteChange();
 
     const syncHash = () => {
       setActiveHash(window.location.hash || "");

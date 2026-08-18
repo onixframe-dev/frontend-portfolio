@@ -24,6 +24,24 @@
   color: rgba(255, 255, 255, 0.92);
   margin-bottom: 18px;
 }
+
+.pricingSubtitle {
+  max-width: 660px !important;
+  color: rgba(220, 228, 238, 0.65) !important;
+  font-weight: 500 !important;
+  line-height: 1.75 !important;
+  font-size: 16px !important;
+  margin-bottom: 24px !important;
+}
+
+@media (max-width: 560px) {
+  .pricingSubtitle {
+    max-width: 100% !important;
+    font-size: 15px !important;
+    line-height: 1.68 !important;
+  }
+}
+
 .currencyPanel {
   display: inline-flex;
   flex-wrap: wrap;
@@ -305,37 +323,6 @@
   max-width: 540px;
 }
 
-.serviceDetailLink {
-  position: relative;
-  z-index: 3;
-  align-self: stretch;
-  min-height: 44px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  margin-top: 22px;
-  padding: 0 14px;
-  border: 1px solid rgba(92, 225, 230, 0.16);
-  border-radius: 999px;
-  color: rgba(235, 253, 255, 0.9);
-  background: rgba(8, 27, 32, 0.46);
-  font-size: 13px;
-  font-weight: 850;
-  line-height: 1.2;
-  text-decoration: none;
-  transition: color 0.22s ease, border-color 0.22s ease, background 0.22s ease, transform 0.22s ease;
-}
-
-.serviceDetailLink:hover,
-.serviceDetailLink:focus-visible {
-  color: #ffffff;
-  border-color: rgba(92, 225, 230, 0.34);
-  background: rgba(10, 42, 50, 0.76);
-  outline: none;
-  transform: translateY(-1px);
-}
-
 .priceList {
   display: flex;
   flex-direction: column;
@@ -363,6 +350,29 @@
 
 .priceButton {
   align-self: stretch;
+}
+
+.serviceDetailsLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+  color: rgba(124, 92, 255, 0.8);
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.22s ease, opacity 0.22s ease;
+}
+
+.serviceDetailsLink:hover {
+  color: rgba(124, 92, 255, 1);
+  opacity: 1;
+}
+
+.serviceDetailsLink:focus-visible {
+  outline: 2px solid rgba(124, 92, 255, 0.5);
+  outline-offset: 2px;
+  border-radius: 2px;
 }
 
 .pricingModalOverlay {
@@ -716,6 +726,11 @@
     width: min(100%, 360px);
     align-self: center;
   }
+
+  .serviceDetailsLink {
+    justify-content: center;
+    margin-top: 10px;
+  }
 }
 @media (max-width: 560px) {
   .pricingHeader h2 {
@@ -837,6 +852,10 @@
     margin: 0;
     width: 42px;
     height: 42px;
+  }
+
+  .serviceDetailsLink {
+    font-size: 12.5px;
   }
 }
 
