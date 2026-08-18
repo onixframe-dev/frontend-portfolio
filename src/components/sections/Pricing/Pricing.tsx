@@ -461,6 +461,14 @@ export function Pricing() {
             >
               Подробнее
             </Button>
+
+            <a
+              className={styles.serviceDetailsLink}
+              href={plan.serviceHref}
+              onClick={(event) => event.stopPropagation()}
+            >
+              Все детали услуги <ArrowUpRight size={12} />
+            </a>
           </article>
         ))}
       </div>

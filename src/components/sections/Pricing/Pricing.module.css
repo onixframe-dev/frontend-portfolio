@@ -352,6 +352,29 @@
   align-self: stretch;
 }
 
+.serviceDetailsLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+  color: rgba(124, 92, 255, 0.8);
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.22s ease, opacity 0.22s ease;
+}
+
+.serviceDetailsLink:hover {
+  color: rgba(124, 92, 255, 1);
+  opacity: 1;
+}
+
+.serviceDetailsLink:focus-visible {
+  outline: 2px solid rgba(124, 92, 255, 0.5);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
 .pricingModalOverlay {
   position: fixed;
   inset: 0;
@@ -703,6 +726,11 @@
     width: min(100%, 360px);
     align-self: center;
   }
+
+  .serviceDetailsLink {
+    justify-content: center;
+    margin-top: 10px;
+  }
 }
 @media (max-width: 560px) {
   .pricingHeader h2 {
@@ -824,6 +852,10 @@
     margin: 0;
     width: 42px;
     height: 42px;
+  }
+
+  .serviceDetailsLink {
+    font-size: 12.5px;
   }
 }
 
