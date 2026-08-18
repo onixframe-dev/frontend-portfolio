@@ -41,7 +41,7 @@ export default function ReactFrontendDevelopmentPage() {
       title="React-интерфейсы для сайтов, каталогов и страниц с интерактивной логикой"
       lead="Делаю frontend на React, когда сайту нужны компоненты, карточки, фильтры, модальные окна, состояния и более гибкая структура."
       price="от 1100 BYN"
-      duration="от 7–14 рабочих дней"
+      duration="от 7 рабочих дней"
       format="React + адаптивная компонентная структура"
       included={[
         "компонентная структура React",
