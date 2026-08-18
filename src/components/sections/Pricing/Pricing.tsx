@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { ArrowUpRight, Check, Sparkles, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Button } from "../../ui/Button";
@@ -462,13 +463,13 @@ export function Pricing() {
               Подробнее
             </Button>
 
-            <a
+            <Link
               className={styles.serviceDetailsLink}
               href={plan.serviceHref}
               onClick={(event) => event.stopPropagation()}
             >
               Все детали услуги <ArrowUpRight size={12} />
-            </a>
+            </Link>
           </article>
         ))}
       </div>
