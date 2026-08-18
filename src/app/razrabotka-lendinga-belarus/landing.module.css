@@ -232,7 +232,7 @@
 }
 
 .serviceLinksGrid {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .serviceLinkCard {
@@ -257,7 +257,8 @@
   transform: translateY(-4px);
 }
 
-.serviceLinkCard span {
+.serviceLinkCard h3 {
+  margin: 0;
   color: #fff;
   font-size: 20px;
   font-weight: 800;

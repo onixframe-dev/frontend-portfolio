@@ -1,10 +1,10 @@
 .subtitle {
-  max-width: 620px;
+  max-width: 720px;
   margin: 18px auto 0;
   color: rgba(220, 228, 238, 0.72);
-  font-size: 16px;
+  font-size: 18px;
   line-height: 1.75;
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: 0;
   text-wrap: balance;
 }

@@ -83,8 +83,8 @@ const faq = [
 const serviceLinks = [
   {
     href: "/sait-vizitka-dlya-biznesa",
-    title: "Сайт-визитка для бизнеса",
-    text: "Короткая презентация компании, услуг, контактов и формы заявки.",
+    title: "Лендинг и сайт-визитка",
+    text: "Страница для презентации услуги, компании, контактов и получения заявок.",
   },
   {
     href: "/react-frontend-razrabotka",
@@ -95,11 +95,6 @@ const serviceLinks = [
     href: "/nextjs-sait-pod-kluch",
     title: "Next.js сайт под ключ",
     text: "SEO-структура, страницы, TypeScript, Vercel и база для развития проекта.",
-  },
-  {
-    href: "/telegram-zayavki-formy",
-    title: "Telegram-заявки и формы",
-    text: "Формы, брифы и заявки с отправкой в Telegram или email.",
   },
 ];
 
@@ -264,7 +259,7 @@ export default function LandingDevelopmentBelarusPage() {
           <div className={styles.serviceLinksGrid}>
             {serviceLinks.map((service) => (
               <a className={styles.serviceLinkCard} href={service.href} key={service.href}>
-                <span>{service.title}</span>
+                <h3>{service.title}</h3>
                 <p>{service.text}</p>
                 <strong>
                   Подробнее <ArrowRight size={16} />

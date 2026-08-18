@@ -26,7 +26,7 @@ export function Footer() {
             </div>
 
             <div className={styles.footerLinks}>
-              <a href="/razrabotka-lendinga-belarus">О нас</a>
+              <a href="/#about">О нас</a>
               <a href="https://github.com" target="_blank" rel="noreferrer"><Github size={18} /> GitHub</a>
               <a href="https://vercel.com" target="_blank" rel="noreferrer"><Triangle size={17} /> Vercel</a>
               <a href="https://www.instagram.com/igor_gordich/" target="_blank" rel="noreferrer"><Instagram size={18} /> Instagram</a>

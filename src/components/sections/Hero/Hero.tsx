@@ -13,7 +13,7 @@ const getParticleConfig = (width: number) => {
   if (width <= 380) {
     return {
       sphereRadius: 146,
-      radius: 2.25,
+      radius: 1.6,
       autoX: 74,
       autoY: 58,
       pointerStrength: 0.34,
@@ -24,7 +24,7 @@ const getParticleConfig = (width: number) => {
   if (width <= 560) {
     return {
       sphereRadius: 176,
-      radius: 2.45,
+      radius: 1.75,
       autoX: 92,
       autoY: 68,
       pointerStrength: 0.4,
@@ -34,7 +34,7 @@ const getParticleConfig = (width: number) => {
 
   return {
     sphereRadius: PARTICLE_SPACING_REM * 16 * 7.2,
-    radius: 3.2,
+    radius: 2.2,
     autoX: 150,
     autoY: 108,
     pointerStrength: 0.62,

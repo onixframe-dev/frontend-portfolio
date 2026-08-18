@@ -85,9 +85,9 @@
 }
 
 .nav {
-  gap: 32px;
+  gap: 24px;
   color: rgba(245, 249, 255, 0.82);
-  font-size: 15px;
+  font-size: 14px;
   letter-spacing: 0.02em;
 }
 

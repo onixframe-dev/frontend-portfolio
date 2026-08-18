@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, Sparkles, X } from "lucide-react";
+import { ArrowUpRight, Check, Sparkles, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Button } from "../../ui/Button";
 import { AnimatedTitle } from "../../ui/AnimatedTitle";
@@ -25,6 +25,8 @@ type Plan = {
   extraUnit: string;
   fitsFor: string;
   additional: string[];
+  serviceHref: string;
+  serviceLabel: string;
 };
 
 type RateState = {
@@ -75,7 +77,9 @@ const plans: Plan[] = [
       "Подключение Google или Яндекс Карты: от 80 Br.",
       "Сложная анимация: от 150 Br.",
       "Админ-панель: по оценке"
-    ]
+    ],
+    serviceHref: "/sait-vizitka-dlya-biznesa",
+    serviceLabel: "Лендинг и сайт-визитка"
   },
   {
     key: "react",
@@ -116,6 +120,8 @@ const plans: Plan[] = [
       "Авторизация / личный кабинет: от 900 Br.",
       "Админ-панель: по оценке"
     ],
+    serviceHref: "/react-frontend-razrabotka",
+    serviceLabel: "React frontend-разработка",
     featured: true
   },
   {
@@ -159,7 +165,9 @@ const plans: Plan[] = [
       "Админ-панель: по оценке",
       "Многоязычность: от 400 Br.",
       "Расширенное SEO: от 250 Br."
-    ]
+    ],
+    serviceHref: "/nextjs-sait-pod-kluch",
+    serviceLabel: "Next.js сайт под ключ"
   }
 ];
 
@@ -371,9 +379,7 @@ export function Pricing() {
           <AnimatedTitle>Прайс на разработку сайтов</AnimatedTitle>
           <SectionSubtitle>
             Пакеты помогают быстро выбрать формат разработки.
-            <br />
             В стоимость входит адаптивная вёрстка по макету, референсам или согласованной визуальной концепции, форма заявки, базовое SEO и meta-теги.
-            <br />
             Полноценный дизайн-макет в Figma рассчитывается отдельно или предоставляется заказчиком.
           </SectionSubtitle>
         </div>
@@ -440,6 +446,15 @@ export function Pricing() {
               ))}
             </ul>
 
+            <a
+              className={styles.serviceDetailLink}
+              href={plan.serviceHref}
+              onClick={(event) => event.stopPropagation()}
+            >
+              <span>{plan.serviceLabel}</span>
+              <ArrowUpRight size={15} />
+            </a>
+
             <Button
               variant={plan.featured ? 'priceFeatured' : 'price'}
               className={styles.priceButton}
@@ -501,6 +516,10 @@ export function Pricing() {
                   {formatDualPrice(selectedPlan.priceByn)}
                 </strong>
                 <p>{selectedPlan.description}</p>
+                <a className={styles.modalServiceLink} href={selectedPlan.serviceHref}>
+                  Подробнее: {selectedPlan.serviceLabel}
+                  <ArrowUpRight size={15} />
+                </a>
 
                 <div className={styles.modalMeta}>
                   <span className={styles.modalBadge}>Срок: {selectedPlan.duration}</span>
