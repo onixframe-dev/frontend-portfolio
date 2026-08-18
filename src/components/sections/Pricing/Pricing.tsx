@@ -450,15 +450,6 @@ export function Pricing() {
               ))}
             </ul>
 
-            <a
-              className={styles.serviceDetailLink}
-              href={plan.serviceHref}
-              onClick={(event) => event.stopPropagation()}
-            >
-              <span>{plan.serviceLabel}</span>
-              <ArrowUpRight size={15} />
-            </a>
-
             <Button
               variant={plan.featured ? 'priceFeatured' : 'price'}
               className={styles.priceButton}
