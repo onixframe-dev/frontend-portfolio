@@ -165,7 +165,7 @@ export default function LandingDevelopmentBelarusPage() {
               </div>
               <div>
                 <span>Срок</span>
-                <strong>от 3–5 рабочих дней</strong>
+                <strong>от 5 рабочих дней</strong>
               </div>
               <div>
                 <span>Формат</span>
@@ -231,7 +231,7 @@ export default function LandingDevelopmentBelarusPage() {
             <article className={styles.infoCard}>
               <Clock3 size={22} />
               <h3>Сроки</h3>
-              <p>Простой лендинг обычно занимает от 3–5 рабочих дней после согласования материалов.</p>
+              <p>Простой лендинг обычно занимает от 5 рабочих дней после согласования материалов. Точный срок зависит от объёма проекта, готовности материалов и количества необходимых интеграций.</p>
             </article>
             <article className={styles.infoCard}>
               <SearchCheck size={22} />

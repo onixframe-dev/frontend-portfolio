@@ -41,7 +41,7 @@ export default function NextjsWebsitePage() {
       title="Next.js сайт для бизнеса с SEO-структурой, страницами и базой для роста"
       lead="Подходит для коммерческих сайтов, каталогов услуг, портфолио-хабов и проектов, которым важны скорость, структура и дальнейшее развитие."
       price="от 1700 BYN"
-      duration="от 14–30 рабочих дней"
+      duration="от 14 рабочих дней"
       format="Next.js + TypeScript + Vercel"
       included={[
         "Next.js + TypeScript",

@@ -10,7 +10,7 @@ const services = [
     title: "Лендинг и сайт-визитка",
     description: "Страница для презентации услуги, компании, контактов и получения заявок.",
     price: "от 600 BYN",
-    duration: "от 3–5 дней",
+    duration: "от 5 дней",
     icon: LayoutPanelTop,
   },
   {
@@ -18,7 +18,7 @@ const services = [
     title: "React frontend-разработка",
     description: "Интерфейсы с компонентами, карточками, фильтрами и интерактивной логикой.",
     price: "от 1100 BYN",
-    duration: "от 7–14 дней",
+    duration: "от 7 дней",
     icon: Code2,
   },
   {
@@ -26,7 +26,7 @@ const services = [
     title: "Next.js сайт под ключ",
     description: "SEO-структура, страницы, TypeScript, Vercel и база для развития проекта.",
     price: "от 1700 BYN",
-    duration: "от 14–30 дней",
+    duration: "от 14 дней",
     icon: PanelsTopLeft,
   },
 ];
