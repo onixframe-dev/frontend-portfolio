@@ -35,6 +35,8 @@ const structuredData = {
 export default function NextjsWebsitePage() {
   return (
     <ServiceSeoPage
+      backHref="/#pricing"
+      backLabel="Вернуться к тарифам"
       eyebrow="Next.js сайт под ключ"
       title="Next.js сайт для бизнеса с SEO-структурой, страницами и базой для роста"
       lead="Подходит для коммерческих сайтов, каталогов услуг, портфолио-хабов и проектов, которым важны скорость, структура и дальнейшее развитие."
