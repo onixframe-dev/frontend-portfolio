@@ -278,24 +278,19 @@ export function Hero() {
 
       <div className={styles.heroCopy}>
         <h1>
-          <span className={styles.heroLine}>Чистый frontend</span>
-          <span className={styles.heroLine}>для современных</span>
-          <span className={styles.heroLine}>проектов</span>
+          <span className={styles.heroLine}>Современные сайты</span>
+          <span className={styles.heroLine}>и frontend-интерфейсы</span>
         </h1>
         <p className={styles.heroText}>
-          Современные сайты и интерфейсы
+          Разрабатываю адаптивные сайты и веб-интерфейсы для бизнеса и digital-проектов.
           <br />
-          на HTML, CSS, JavaScript, React, Next.js и TypeScript.
-          <br />
-          Адаптивная вёрстка, архитектура проекта.
-          <br />
-          Быстрый запуск.
+          От лендингов до React и Next.js приложений.
         </p>
         <div className={styles.heroButtons}>
-          <Button variant="primary" href="#pricing">
-            Прайс-лист <ArrowUpRight size={18} />
+          <Button variant="primary" href="#catalog">
+            Посмотреть проекты <ArrowUpRight size={18} />
           </Button>
-          <Button variant="ghost" href="#catalog">Портфолио</Button>
+          <Button variant="ghost" href="#contacts">Обсудить проект</Button>
         </div>
       </div>
 

@@ -51,9 +51,9 @@ export function ProjectCatalog() {
     <section ref={sectionRef} id="catalog" className={`${sectionStyles.sectionBlock} ${styles.catalogSection}`}>
       <div className={`${sectionStyles.sectionHeader} ${styles.catalogHeader}`}>
         <div className={styles.catalogTitle}>
-          <AnimatedTitle>Полный каталог проектов</AnimatedTitle>
+          <AnimatedTitle>Избранные проекты</AnimatedTitle>
           <SectionSubtitle>
-            Подборка работ и шаблонов, которые показывают структуру, адаптив и визуальный подход.
+            Сайты и веб-приложения, разработанные с фокусом на адаптивность, интерфейс и удобство использования.
           </SectionSubtitle>
         </div>
       </div>

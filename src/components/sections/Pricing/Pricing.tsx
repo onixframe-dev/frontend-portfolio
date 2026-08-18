@@ -47,7 +47,7 @@ const RATE_CACHE_TTL_MS = 12 * 60 * 60 * 1000;
 const plans: Plan[] = [
   {
     key: "html",
-    title: "HTML / CSS / JS Landing",
+    title: "Лендинг / сайт-визитка",
     priceByn: 600,
     badge: "Базовый сайт",
     badgeTone: "starter",
@@ -83,7 +83,7 @@ const plans: Plan[] = [
   },
   {
     key: "react",
-    title: "React Landing / Website",
+    title: "Интерактивный сайт",
     priceByn: 1100,
     badge: "Популярный",
     badgeTone: "popular",
@@ -126,7 +126,7 @@ const plans: Plan[] = [
   },
   {
     key: "next",
-    title: "Next.js + TypeScript",
+    title: "Современный сайт / веб-приложение",
     priceByn: 1700,
     badge: "Продвинутый",
     badgeTone: "advanced",
