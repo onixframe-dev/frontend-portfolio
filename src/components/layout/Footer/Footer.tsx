@@ -1,8 +1,6 @@
 import Image from "next/image";
-import { Github, Instagram, Mail, Phone, Send, Triangle } from "lucide-react";
+import { Github, Instagram, Mail, Phone, Send } from "lucide-react";
 import styles from "./Footer.module.css";
-
-const legalInfo = "Самозанятый: Фамилия И. О. · УНП: XXXXXXXXX";
 
 export function Footer() {
   const year = new Date().getFullYear();
@@ -27,8 +25,7 @@ export function Footer() {
 
             <div className={styles.footerLinks}>
               <a href="/#about">О нас</a>
-              <a href="https://github.com" target="_blank" rel="noreferrer"><Github size={18} /> GitHub</a>
-              <a href="https://vercel.com" target="_blank" rel="noreferrer"><Triangle size={17} /> Vercel</a>
+              <a href="https://github.com/onixframe-dev" target="_blank" rel="noreferrer"><Github size={18} /> GitHub</a>
               <a href="https://www.instagram.com/igor_gordich/" target="_blank" rel="noreferrer"><Instagram size={18} /> Instagram</a>
               <a href="https://t.me/OnixFrame" target="_blank" rel="noreferrer"><Send size={17} /> Telegram</a>
             </div>
@@ -38,7 +35,6 @@ export function Footer() {
         <div className={styles.footerBottom}>
           <div className={styles.footerMeta}>
             <span>© {year} OnixFrame</span>
-            <p className={styles.footerLegal}>{legalInfo}</p>
           </div>
         </div>
       </div>

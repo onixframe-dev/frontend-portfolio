@@ -199,7 +199,7 @@ export function Header() {
         </nav>
 
         <div className={styles.headerActions}>
-          <Button variant="icon" href="https://github.com" target="_blank" rel="noreferrer" ariaLabel="GitHub">
+          <Button variant="icon" href="https://github.com/onixframe-dev" target="_blank" rel="noreferrer" ariaLabel="GitHub">
             <Github size={18} />
           </Button>
           <Button variant="icon" href="https://www.instagram.com/igor_gordich/" target="_blank" rel="noreferrer" ariaLabel="Instagram">
@@ -249,7 +249,7 @@ export function Header() {
             ))}
           </nav>
           <div className={styles.mobileSocials}>
-            <MobileMenuItem href="https://github.com" external><Github size={18} /> GitHub</MobileMenuItem>
+            <MobileMenuItem href="https://github.com/onixframe-dev" external><Github size={18} /> GitHub</MobileMenuItem>
             <MobileMenuItem href="https://www.instagram.com/igor_gordich/" external><Instagram size={18} /> Instagram</MobileMenuItem>
             <MobileMenuItem href="https://t.me/OnixFrame" external><Send size={18} /> Telegram</MobileMenuItem>
           </div>

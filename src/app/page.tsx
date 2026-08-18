@@ -7,7 +7,14 @@ import { ProjectCatalog } from "@/components/sections/Projects/ProjectCatalog";
 import { Pricing } from "@/components/sections/Pricing/Pricing";
 import { Services } from "@/components/sections/Services/Services";
 import { TechStack } from "@/components/sections/TechStack/TechStack";
+import type { Metadata } from "next";
 import { ScrollToTop } from "@/components/ui/ScrollToTop/ScrollToTop";
+
+export const metadata: Metadata = {
+  title: "Разработка современных сайтов и frontend-интерфейсов",
+  description:
+    "Разработка современных адаптивных сайтов и frontend-интерфейсов на React и Next.js. Лендинги, интерактивные сайты и веб-приложения.",
+};
 
 export default function Home() {
   return (
