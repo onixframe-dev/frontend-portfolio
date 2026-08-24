@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { SITE_URL } from "@/lib/site";
 import { ArrowLeft, ArrowRight, CheckCircle2, Clock3, FileText, MessagesSquare, SearchCheck } from "lucide-react";
 import { Header } from "@/components/layout/Header/Header";
 import { Footer } from "@/components/layout/Footer/Footer";
@@ -6,7 +7,7 @@ import { Button } from "@/components/ui/Button";
 import { ScrollToTop } from "@/components/ui/ScrollToTop/ScrollToTop";
 import styles from "./landing.module.css";
 
-const siteUrl = "https://frontend-portfolio-ochre-six.vercel.app";
+const siteUrl = SITE_URL;
 const pageUrl = `${siteUrl}/razrabotka-lendinga-belarus`;
 
 export const metadata: Metadata = {

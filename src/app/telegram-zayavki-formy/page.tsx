@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { ServiceSeoPage } from "@/components/seo/ServiceSeoPage";
+import { SITE_URL } from "@/lib/site";
 
-const siteUrl = "https://frontend-portfolio-ochre-six.vercel.app";
+const siteUrl = SITE_URL;
 const pageUrl = `${siteUrl}/telegram-zayavki-formy`;
 
 export const metadata: Metadata = {
