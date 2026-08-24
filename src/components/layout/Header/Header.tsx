@@ -8,10 +8,10 @@ import { Button } from "../../ui/Button";
 import styles from "./Header.module.css";
 
 const navItems = [
-  { href: "/#services", label: "Услуги" },
-  { href: "/#pricing", label: "Прайс" },
   { href: "/#catalog", label: "Портфолио" },
+  { href: "/#services", label: "Услуги" },
   { href: "/#about", label: "Подход" },
+  { href: "/#pricing", label: "Прайс" },
   { href: "/#contacts", label: "Контакты" },
   { href: "/brief", label: "Заявка" },
 ];
