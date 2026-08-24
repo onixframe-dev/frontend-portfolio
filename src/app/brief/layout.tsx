@@ -7,6 +7,10 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/brief",
   },
+  robots: {
+    index: false,
+    follow: true,
+  },
   openGraph: {
     title: "Бриф на разработку сайта | OnixFrame",
     description:
@@ -14,9 +18,11 @@ export const metadata: Metadata = {
     url: "/brief",
   },
   twitter: {
+    card: "summary_large_image",
     title: "Бриф на разработку сайта | OnixFrame",
     description:
       "Короткая анкета для оценки сайта, лендинга или frontend-проекта.",
+    images: ["/opengraph-image.png"],
   },
 };
 

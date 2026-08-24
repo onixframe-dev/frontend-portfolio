@@ -11,9 +11,9 @@ import type { Metadata } from "next";
 import { ScrollToTop } from "@/components/ui/ScrollToTop/ScrollToTop";
 
 export const metadata: Metadata = {
-  title: "Разработка современных сайтов и frontend-интерфейсов",
+  title: "Разработка сайтов и frontend-интерфейсов для бизнеса",
   description:
-    "Разработка современных адаптивных сайтов и frontend-интерфейсов на React и Next.js. Лендинги, интерактивные сайты и веб-приложения.",
+    "Разработка сайтов, лендингов и frontend-интерфейсов для бизнеса: React, Next.js, адаптивная вёрстка, формы заявок и подготовка к запуску. Работаю с клиентами из Беларуси, СНГ и других стран.",
 };
 
 export default function Home() {

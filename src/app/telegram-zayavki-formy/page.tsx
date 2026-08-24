@@ -18,6 +18,13 @@ export const metadata: Metadata = {
       "Формы заявок для сайта с отправкой в Telegram-группу или email, удобный формат сообщений и базовая обработка ошибок.",
     url: "/telegram-zayavki-formy",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "Подключение Telegram-заявок и форм | OnixFrame",
+    description:
+      "Формы заявок с отправкой в Telegram или email: сообщения с сайта, брифы, уведомления и статусы заявок.",
+    images: ["/opengraph-image.png"],
+  },
 };
 
 const structuredData = {

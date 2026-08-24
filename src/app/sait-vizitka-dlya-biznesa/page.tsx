@@ -18,6 +18,13 @@ export const metadata: Metadata = {
       "Сайт-визитка для малого бизнеса, эксперта или локальной компании: структура, вёрстка, контакты и форма заявки.",
     url: "/sait-vizitka-dlya-biznesa",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "Сайт-визитка для бизнеса | OnixFrame",
+    description:
+      "Сайт-визитка для малого бизнеса, эксперта или локальной компании: структура, вёрстка, контакты и форма заявки.",
+    images: ["/opengraph-image.png"],
+  },
 };
 
 const structuredData = {
