@@ -1,10 +1,8 @@
 "use client";
 
 import { Instagram, Mail, MessageCircle, Phone, Send } from "lucide-react";
-import { useState } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { contactFormSchema, normalizeTextValue, type ContactFormValues } from "@/lib/validation";
+import { type FocusEvent, type FormEvent, useRef, useState } from "react";
+import type { ContactFormValues } from "@/lib/validation";
 import sectionStyles from "../../ui/Section.module.css";
 import { AnimatedTitle } from "../../ui/AnimatedTitle";
 import { SectionSubtitle } from "../../ui/SectionSubtitle";
@@ -28,38 +26,75 @@ const contactInputProps = {
 export function ContactForm() {
   const [showSuccessToast, setShowSuccessToast] = useState(false);
   const [sendError, setSendError] = useState("");
-  const {
-    register,
-    handleSubmit,
-    getValues,
-    setValue,
-    reset,
-    formState: { errors, isSubmitting },
-  } = useForm<ContactFormValues>({
-    resolver: zodResolver(contactFormSchema),
-    mode: "onChange",
-    reValidateMode: "onChange",
-    defaultValues: {
-      name: "",
-      contact: "",
-      message: "",
-    },
-  });
+  const [errors, setErrors] = useState<Partial<Record<keyof ContactFormValues, string>>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const formRef = useRef<HTMLFormElement>(null);
+  const validatorRef = useRef<Promise<typeof import("@/lib/validation")> | null>(null);
+  const validationRunRef = useRef(0);
 
-  const normalizeTextField = (field: "name" | "message") => {
-    setValue(field, normalizeTextValue(getValues(field)), { shouldDirty: true, shouldValidate: true });
+  const loadValidator = () => {
+    validatorRef.current ??= import("@/lib/validation");
+    return validatorRef.current;
   };
 
-  const onSubmit = async (values: ContactFormValues) => {
-    setSendError("");
+  const getValues = (form: HTMLFormElement): ContactFormValues => {
+    const formData = new FormData(form);
+    return {
+      name: String(formData.get("name") ?? ""),
+      contact: String(formData.get("contact") ?? ""),
+      message: String(formData.get("message") ?? ""),
+    };
+  };
 
-    const response = await fetch("/api/email/contact", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(values),
+  const getErrors = (issues: Array<{ path: PropertyKey[]; message: string }>) => {
+    const nextErrors: Partial<Record<keyof ContactFormValues, string>> = {};
+    issues.forEach((issue) => {
+      const field = issue.path[0];
+      if ((field === "name" || field === "contact" || field === "message") && !nextErrors[field]) {
+        nextErrors[field] = issue.message;
+      }
     });
+    return nextErrors;
+  };
+
+  const validateCurrentValues = () => {
+    const form = formRef.current;
+    if (!form) return;
+    const validationRun = ++validationRunRef.current;
+
+    void loadValidator().then(({ contactFormSchema }) => {
+      const result = contactFormSchema.safeParse(getValues(form));
+      if (validationRun === validationRunRef.current) {
+        setErrors(result.success ? {} : getErrors(result.error.issues));
+      }
+    });
+  };
+
+  const normalizeTextField = async (event: FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { normalizeTextValue } = await loadValidator();
+    event.currentTarget.value = normalizeTextValue(event.currentTarget.value);
+    validateCurrentValues();
+  };
+
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const { contactFormSchema } = await loadValidator();
+    const result = contactFormSchema.safeParse(getValues(event.currentTarget));
+    if (!result.success) {
+      setErrors(getErrors(result.error.issues));
+      return;
+    }
+
+    setErrors({});
+    setSendError("");
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch("/api/email/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(result.data),
+      });
 
     if (!response.ok) {
       const data = (await response.json().catch(() => null)) as { error?: string } | null;
@@ -67,8 +102,12 @@ export function ContactForm() {
       return;
     }
 
-    reset();
+    event.currentTarget.reset();
     setShowSuccessToast(true);
+      setIsSubmitting(false);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -100,7 +139,8 @@ export function ContactForm() {
 
         <form
           className={styles.form}
-          onSubmit={handleSubmit(onSubmit)}
+          ref={formRef}
+          onSubmit={onSubmit}
           noValidate
         >
           <div className={styles.row}>
@@ -112,9 +152,12 @@ export function ContactForm() {
                 autoComplete="name"
                 aria-invalid={Boolean(errors.name)}
                 {...textAssistProps}
-                {...register("name", { onBlur: () => normalizeTextField("name") })}
+                name="name"
+                onFocus={() => void loadValidator()}
+                onChange={validateCurrentValues}
+                onBlur={normalizeTextField}
               />
-                  <small className={styles.errorText}>{errors.name?.message || "\u00a0"}</small>
+                  <small className={styles.errorText}>{errors.name || "\u00a0"}</small>
             </label>
             <label>
               <span>Контакты для связи</span>
@@ -125,9 +168,11 @@ export function ContactForm() {
                 inputMode="text"
                 aria-invalid={Boolean(errors.contact)}
                 {...contactInputProps}
-                {...register("contact")}
+                name="contact"
+                onFocus={() => void loadValidator()}
+                onChange={validateCurrentValues}
               />
-                  <small className={styles.errorText}>{errors.contact?.message || "\u00a0"}</small>
+                  <small className={styles.errorText}>{errors.contact || "\u00a0"}</small>
             </label>
           </div>
 
@@ -138,9 +183,12 @@ export function ContactForm() {
               placeholder="Например: нужен лендинг для услуги, есть тексты и референсы, макета пока нет."
               aria-invalid={Boolean(errors.message)}
               {...textAssistProps}
-              {...register("message", { onBlur: () => normalizeTextField("message") })}
+              name="message"
+              onFocus={() => void loadValidator()}
+              onChange={validateCurrentValues}
+              onBlur={normalizeTextField}
             />
-            <small className={styles.errorText}>{errors.message?.message || "\u00a0"}</small>
+            <small className={styles.errorText}>{errors.message || "\u00a0"}</small>
           </label>
 
           <div className={styles.actions}>
