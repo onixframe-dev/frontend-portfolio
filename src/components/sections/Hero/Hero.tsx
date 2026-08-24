@@ -45,7 +45,9 @@ const getParticleConfig = (width: number) => {
 export function Hero() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationFrameRef = useRef<number>();
-  const idleTimeoutRef = useRef<ReturnType<typeof setTimeout>>();
+  const idleTimeoutRef = useRef<number>();
+  const autoModeTimeoutRef = useRef<number>();
+  const canvasSizeRef = useRef({ width: 0, height: 0 });
   const cursorRef = useRef({ x: 0, y: 0 });
   const staticCursorRef = useRef({ x: 0, y: 0 });
   const modeRef = useRef<"auto" | "pointer" | "static">("auto");
@@ -65,41 +67,52 @@ export function Hero() {
 
     const totalParticles = PARTICLE_ROWS * PARTICLE_ROWS;
     const center = Math.floor(PARTICLE_ROWS / 2);
-    const particles = Array.from({ length: totalParticles }, (_, index) => {
-      const row = Math.floor(index / PARTICLE_ROWS);
-      const col = index % PARTICLE_ROWS;
-      const normalizedX = (col - center) / center;
-      const normalizedY = (row - center) / center;
-      const distance = Math.sqrt(normalizedX ** 2 + normalizedY ** 2);
-      const sphereZ = Math.sqrt(Math.max(0, 1 - distance ** 2));
-      const edgeFade = Math.min(1, Math.max(0, (1.08 - distance) / 0.22));
 
-      return {
-        row,
-        col,
-        normalizedX,
-        normalizedY,
-        distance,
-        sphereZ,
-        edgeFade,
-        scale: Math.max(0.18, 0.54 + sphereZ * 0.72),
-        opacity: Math.max(0.03, (0.16 + sphereZ * 0.84) * edgeFade),
-        hue: 184 + distance * 34,
-        lightness: Math.max(38, 74 - distance * 18),
-      };
-    });
+    let resizeFrameId = 0;
+    let idleCallbackId: number | undefined;
+    let isHeroVisible = true;
+    let isInitialized = false;
+    let particles: Array<{
+      row: number;
+      col: number;
+      normalizedX: number;
+      normalizedY: number;
+      distance: number;
+      sphereZ: number;
+      scale: number;
+      opacity: number;
+      hue: number;
+      lightness: number;
+    }> = [];
 
     const resizeCanvas = () => {
       const rect = canvas.getBoundingClientRect();
       const pixelRatio = window.devicePixelRatio || 1;
+      const width = Math.floor(rect.width);
+      const height = Math.floor(rect.height);
 
-      canvas.width = Math.floor(rect.width * pixelRatio);
-      canvas.height = Math.floor(rect.height * pixelRatio);
+      if (width === canvasSizeRef.current.width && height === canvasSizeRef.current.height) {
+        return;
+      }
+
+      canvasSizeRef.current = { width, height };
+      canvas.width = Math.floor(width * pixelRatio);
+      canvas.height = Math.floor(height * pixelRatio);
       context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
     };
 
-    resizeCanvas();
-    window.addEventListener("resize", resizeCanvas);
+    const requestCanvasResize = () => {
+      if (resizeFrameId) {
+        return;
+      }
+
+      resizeFrameId = window.requestAnimationFrame(() => {
+        resizeFrameId = 0;
+        resizeCanvas();
+      });
+    };
+
+    window.addEventListener("resize", requestCanvasResize, { passive: true });
 
     let observer: IntersectionObserver | null = null;
 
@@ -112,8 +125,12 @@ export function Hero() {
 
     const animate = () => {
       const currentTime = (Date.now() - startTimeRef.current) * 0.001;
-      const width = canvas.clientWidth;
-      const height = canvas.clientHeight;
+      const { width, height } = canvasSizeRef.current;
+
+      if (!width || !height) {
+        animationFrameRef.current = requestAnimationFrame(animate);
+        return;
+      }
       const particleConfig = getParticleConfig(width);
       const bottomSafeArea = particleConfig.bottomSafeArea;
       const centerX = width / 2;
@@ -189,31 +206,93 @@ export function Hero() {
     };
 
     const startAnimation = () => {
-      if (!animationFrameRef.current) {
+      if (!document.hidden && isInitialized && isHeroVisible && !animationFrameRef.current) {
         startTimeRef.current = Date.now();
         animate();
       }
     };
 
+    const initializeAnimation = () => {
+      particles = Array.from({ length: totalParticles }, (_, index) => {
+        const row = Math.floor(index / PARTICLE_ROWS);
+        const col = index % PARTICLE_ROWS;
+        const normalizedX = (col - center) / center;
+        const normalizedY = (row - center) / center;
+        const distance = Math.sqrt(normalizedX ** 2 + normalizedY ** 2);
+        const sphereZ = Math.sqrt(Math.max(0, 1 - distance ** 2));
+        const edgeFade = Math.min(1, Math.max(0, (1.08 - distance) / 0.22));
+
+        return {
+          row,
+          col,
+          normalizedX,
+          normalizedY,
+          distance,
+          sphereZ,
+          scale: Math.max(0.18, 0.54 + sphereZ * 0.72),
+          opacity: Math.max(0.03, (0.16 + sphereZ * 0.84) * edgeFade),
+          hue: 184 + distance * 34,
+          lightness: Math.max(38, 74 - distance * 18),
+        };
+      });
+      resizeCanvas();
+      isInitialized = true;
+      startAnimation();
+    };
+
     if ("IntersectionObserver" in window) {
       observer = new IntersectionObserver(([entry]) => {
-        if (entry.isIntersecting) {
+        isHeroVisible = entry.isIntersecting;
+
+        if (isHeroVisible) {
           startAnimation();
         } else {
           stopAnimation();
         }
       });
       observer.observe(canvas);
+    }
+
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        stopAnimation();
+      } else {
+        startAnimation();
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    const requestIdleCallback = (window as Window & {
+      requestIdleCallback?: typeof window.requestIdleCallback;
+      cancelIdleCallback?: typeof window.cancelIdleCallback;
+    }).requestIdleCallback;
+    const cancelIdleCallback = (window as Window & {
+      cancelIdleCallback?: typeof window.cancelIdleCallback;
+    }).cancelIdleCallback;
+
+    if (typeof requestIdleCallback === "function") {
+      idleCallbackId = requestIdleCallback(initializeAnimation, { timeout: 800 });
     } else {
-      startAnimation();
+      idleTimeoutRef.current = window.setTimeout(initializeAnimation, 250);
     }
 
     return () => {
       observer?.disconnect();
-      window.removeEventListener("resize", resizeCanvas);
+      window.removeEventListener("resize", requestCanvasResize);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
       stopAnimation();
+      if (resizeFrameId) {
+        window.cancelAnimationFrame(resizeFrameId);
+      }
+      if (idleCallbackId !== undefined && typeof cancelIdleCallback === "function") {
+        cancelIdleCallback(idleCallbackId);
+      }
       if (idleTimeoutRef.current) {
         clearTimeout(idleTimeoutRef.current);
+      }
+      if (autoModeTimeoutRef.current) {
+        clearTimeout(autoModeTimeoutRef.current);
       }
     };
   }, []);
@@ -236,11 +315,15 @@ export function Hero() {
       clearTimeout(idleTimeoutRef.current);
     }
 
-    idleTimeoutRef.current = setTimeout(() => {
+    idleTimeoutRef.current = window.setTimeout(() => {
       modeRef.current = "static";
     }, 500);
 
-    window.setTimeout(() => {
+    if (autoModeTimeoutRef.current) {
+      clearTimeout(autoModeTimeoutRef.current);
+    }
+
+    autoModeTimeoutRef.current = window.setTimeout(() => {
       if (Date.now() - lastPointerMoveRef.current >= 4000) {
         modeRef.current = "auto";
         startTimeRef.current = Date.now();
