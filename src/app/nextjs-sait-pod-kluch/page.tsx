@@ -18,6 +18,13 @@ export const metadata: Metadata = {
       "Next.js сайт для бизнеса: TypeScript, SEO-структура, страницы, формы, каталог и подготовка к развитию.",
     url: "/nextjs-sait-pod-kluch",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "Next.js сайт под ключ | OnixFrame",
+    description:
+      "Next.js сайт для бизнеса: TypeScript, SEO-структура, страницы, формы, каталог и подготовка к развитию.",
+    images: ["/opengraph-image.png"],
+  },
 };
 
 const structuredData = {

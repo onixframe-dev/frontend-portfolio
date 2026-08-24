@@ -22,7 +22,7 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
             src={project.image}
             alt={project.imageAlt ?? project.title}
             fill
-            sizes="(max-width: 760px) 100vw, (max-width: 1180px) 50vw, 380px"
+            sizes="(max-width: 760px) calc(100vw - 32px), (max-width: 1180px) calc((100vw - 56px) / 2), 380px"
             className={styles.projectImage}
           />
         ) : (

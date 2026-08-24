@@ -18,6 +18,13 @@ export const metadata: Metadata = {
       "Разработка frontend-интерфейсов на React: компоненты, состояния, карточки, фильтры, формы и адаптивная вёрстка.",
     url: "/react-frontend-razrabotka",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "React frontend-разработка | OnixFrame",
+    description:
+      "Разработка frontend-интерфейсов на React: компоненты, состояния, карточки, фильтры, формы и адаптивная вёрстка.",
+    images: ["/opengraph-image.png"],
+  },
 };
 
 const structuredData = {

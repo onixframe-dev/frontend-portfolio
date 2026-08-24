@@ -6,7 +6,7 @@ import "./globals.css";
 const siteUrl = SITE_URL;
 const siteName = "OnixFrame";
 const siteDescription =
-  "Frontend-разработчик для бизнеса в Беларуси и СНГ. Разработка лендингов, сайтов-визиток и frontend-интерфейсов на React, Next.js, TypeScript, HTML, CSS и JavaScript.";
+  "Разработка сайтов, лендингов и frontend-интерфейсов для бизнеса: React, Next.js, адаптивная вёрстка, формы заявок и подготовка к запуску. Работаю с клиентами из Беларуси, СНГ и других стран.";
 const ogImage = "/opengraph-image.png";
 
 const inter = Inter({
@@ -19,29 +19,10 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   applicationName: siteName,
   title: {
-    default: "OnixFrame — разработка сайтов и интерфейсов",
+    default: "Разработка сайтов и frontend-интерфейсов для бизнеса | OnixFrame",
     template: "%s | OnixFrame",
   },
   description: siteDescription,
-  keywords: [
-    "разработка сайтов",
-    "разработка сайтов Беларусь",
-    "разработка сайтов СНГ",
-    "создание лендинга",
-    "создание лендинга Беларусь",
-    "создание сайта-визитки",
-    "frontend разработчик",
-    "frontend разработчик Беларусь",
-    "React разработчик",
-    "React разработчик Беларусь",
-    "Next.js разработчик",
-    "Next.js разработчик Беларусь",
-    "TypeScript",
-    "адаптивная вёрстка",
-    "сайт под ключ",
-    "Минск",
-    "Беларусь",
-  ],
   authors: [{ name: "OnixFrame", url: siteUrl }],
   creator: "OnixFrame",
   publisher: "OnixFrame",
@@ -49,7 +30,7 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   openGraph: {
-    title: "OnixFrame — разработка сайтов и интерфейсов",
+    title: "Разработка сайтов и frontend-интерфейсов для бизнеса | OnixFrame",
     description: siteDescription,
     url: "/",
     siteName,
@@ -61,13 +42,13 @@ export const metadata: Metadata = {
         width: 1200,
         height: 630,
         type: "image/png",
-        alt: "OnixFrame — разработка сайтов и интерфейсов",
+        alt: "OnixFrame — разработка сайтов и frontend-интерфейсов для бизнеса",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "OnixFrame — разработка сайтов и интерфейсов",
+    title: "Разработка сайтов и frontend-интерфейсов для бизнеса | OnixFrame",
     description: siteDescription,
     images: [ogImage],
   },
@@ -122,6 +103,13 @@ const structuredData = {
       url: siteUrl,
       image: `${siteUrl}${ogImage}`,
       description: siteDescription,
+      email: "onixframe.dev@gmail.com",
+      telephone: "+375296702546",
+      sameAs: [
+        "https://github.com/onixframe-dev",
+        "https://www.instagram.com/igor_gordich/",
+        "https://t.me/OnixFrame",
+      ],
       slogan:
         "Frontend-разработчик для бизнеса в Беларуси. Работаю с заказчиками по всей Беларуси и СНГ.",
       areaServed: [

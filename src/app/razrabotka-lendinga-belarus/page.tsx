@@ -24,9 +24,11 @@ export const metadata: Metadata = {
     url: "/razrabotka-lendinga-belarus",
   },
   twitter: {
+    card: "summary_large_image",
     title: "Разработка лендингов в Беларуси | OnixFrame",
     description:
       "Адаптивные лендинги для бизнеса в Беларуси: структура, вёрстка, форма заявки, базовое SEO и запуск.",
+    images: ["/opengraph-image.png"],
   },
 };
 

@@ -11,6 +11,12 @@ const nextConfig = {
         destination: "https://onixframe.com/:path*",
         permanent: true,
       },
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "frontend-portfolio-ochre-six.vercel.app" }],
+        destination: "https://onixframe.com/:path*",
+        permanent: true,
+      },
     ];
   },
   ...(isGitHubPages
