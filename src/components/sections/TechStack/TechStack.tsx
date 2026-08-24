@@ -100,7 +100,7 @@ export function TechStack() {
         </div>
 
         <div className={styles.techStackGrid}>
-          <div className={`${styles.techRow} ${styles.topRow}`}>
+          <div className={styles.techRow}>
             {techStack.slice(0, 5).map((tech) => (
               <div
                 key={tech.id}
@@ -120,7 +120,7 @@ export function TechStack() {
             ))}
           </div>
 
-          <div className={`${styles.techRow} ${styles.bottomRow}`}>
+          <div className={styles.techRow}>
             {techStack.slice(5).map((tech) => (
               <div
                 key={tech.id}

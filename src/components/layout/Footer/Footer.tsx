@@ -24,7 +24,7 @@ export function Footer() {
             </div>
 
             <div className={styles.footerLinks}>
-              <a href="/#about">О нас</a>
+              <a href="/#about">Подход</a>
               <a href="https://github.com/onixframe-dev" target="_blank" rel="noreferrer"><Github size={18} /> GitHub</a>
               <a href="https://www.instagram.com/igor_gordich/" target="_blank" rel="noreferrer"><Instagram size={18} /> Instagram</a>
               <a href="https://t.me/OnixFrame" target="_blank" rel="noreferrer"><Send size={17} /> Telegram</a>

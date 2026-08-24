@@ -1,8 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
+import { SITE_URL } from "@/lib/site";
 import "./globals.css";
 
-const siteUrl = "https://frontend-portfolio-ochre-six.vercel.app";
+const siteUrl = SITE_URL;
 const siteName = "OnixFrame";
 const siteDescription =
   "Frontend-разработчик для бизнеса в Беларуси и СНГ. Разработка лендингов, сайтов-визиток и frontend-интерфейсов на React, Next.js, TypeScript, HTML, CSS и JavaScript.";
