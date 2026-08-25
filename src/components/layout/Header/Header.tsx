@@ -108,12 +108,11 @@ export function Header() {
       return;
     }
 
-    const sections = navItems
-      .filter((item) => item.href.startsWith("/#"))
-      .map((item) => document.querySelector<HTMLElement>(item.href.replace("/", "")))
-      .filter(Boolean) as HTMLElement[];
-
     let frameId = 0;
+    let idleCallbackId: number | undefined;
+    let fallbackTimeoutId: number | undefined;
+    let isTracking = false;
+    let sections: HTMLElement[] = [];
 
     const updateActiveSection = () => {
       const offset = 140;
@@ -141,13 +140,56 @@ export function Header() {
       });
     };
 
-    updateActiveSection();
-    window.addEventListener("scroll", requestActiveSectionUpdate, { passive: true });
+    const startTracking = (shouldUpdate: boolean) => {
+      if (isTracking) {
+        return;
+      }
+
+      isTracking = true;
+      sections = navItems
+        .filter((item) => item.href.startsWith("/#"))
+        .map((item) => document.querySelector<HTMLElement>(item.href.replace("/", "")))
+        .filter(Boolean) as HTMLElement[];
+      window.removeEventListener("scroll", startTrackingOnScroll);
+      window.addEventListener("scroll", requestActiveSectionUpdate, { passive: true });
+
+      if (shouldUpdate) {
+        requestActiveSectionUpdate();
+      }
+    };
+
+    const startTrackingOnScroll = () => startTracking(true);
+
+    window.addEventListener("scroll", startTrackingOnScroll, { passive: true });
+
+    if (window.location.hash) {
+      startTracking(false);
+    } else {
+      const requestIdleCallback = (window as Window & {
+        requestIdleCallback?: typeof window.requestIdleCallback;
+      }).requestIdleCallback;
+
+      if (typeof requestIdleCallback === "function") {
+        idleCallbackId = requestIdleCallback(() => startTracking(true), { timeout: 800 });
+      } else {
+        fallbackTimeoutId = window.setTimeout(() => startTracking(true), 250);
+      }
+    }
 
     return () => {
+      window.removeEventListener("scroll", startTrackingOnScroll);
       window.removeEventListener("scroll", requestActiveSectionUpdate);
       if (frameId) {
         window.cancelAnimationFrame(frameId);
+      }
+      const cancelIdleCallback = (window as Window & {
+        cancelIdleCallback?: typeof window.cancelIdleCallback;
+      }).cancelIdleCallback;
+      if (idleCallbackId !== undefined && typeof cancelIdleCallback === "function") {
+        cancelIdleCallback(idleCallbackId);
+      }
+      if (fallbackTimeoutId !== undefined) {
+        window.clearTimeout(fallbackTimeoutId);
       }
     };
   }, [pathname]);

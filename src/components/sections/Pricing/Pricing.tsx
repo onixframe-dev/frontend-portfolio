@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { ArrowUpRight, Check, Sparkles, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "../../ui/Button";
 import { AnimatedTitle } from "../../ui/AnimatedTitle";
 import { SectionSubtitle } from "../../ui/SectionSubtitle";
@@ -224,6 +224,57 @@ export function Pricing() {
     date: null,
     status: "loading",
   });
+  const pricingRef = useRef<HTMLElement>(null);
+  const rateLoadStartedRef = useRef(false);
+  const rateRequestControllerRef = useRef<AbortController | null>(null);
+
+  const loadRate = useCallback(async () => {
+    if (rateLoadStartedRef.current) {
+      return;
+    }
+
+    rateLoadStartedRef.current = true;
+    const cachedRate = readCachedRate();
+
+    if (cachedRate) {
+      setRateState({
+        rate: cachedRate.rate,
+        date: cachedRate.date,
+        status: "ready",
+      });
+      return;
+    }
+
+    const controller = new AbortController();
+    rateRequestControllerRef.current = controller;
+
+    try {
+      const response = await fetch("/api/rates/usd", {
+        signal: controller.signal,
+      });
+
+      if (!response.ok) {
+        throw new Error("Rate request failed");
+      }
+
+      const data = (await response.json()) as { rate: number; date: string };
+
+      setRateState({
+        rate: data.rate,
+        date: data.date,
+        status: "ready",
+      });
+      writeCachedRate(data.rate, data.date);
+    } catch {
+      if (!controller.signal.aborted) {
+        setRateState({
+          rate: null,
+          date: null,
+          status: "error",
+        });
+      }
+    }
+  }, []);
 
   const openPlan = (plan: Plan) => setActivePlan(plan);
   const closePlan = () => setActivePlan(null);
@@ -232,54 +283,38 @@ export function Pricing() {
   const isModalOpen = Boolean(selectedPlan);
 
   useEffect(() => {
-    const controller = new AbortController();
+    const section = pricingRef.current;
+    if (!section) return;
 
-    async function loadRate() {
-      const cachedRate = readCachedRate();
+    const IntersectionObserverConstructor = (window as Window & {
+      IntersectionObserver?: typeof IntersectionObserver;
+    }).IntersectionObserver;
 
-      if (cachedRate) {
-        setRateState({
-          rate: cachedRate.rate,
-          date: cachedRate.date,
-          status: "ready",
-        });
-        return;
-      }
+    if (!IntersectionObserverConstructor) {
+      const loadRateWhenNearViewport = () => {
+        if (section.getBoundingClientRect().top > window.innerHeight + 480) return;
+        window.removeEventListener("scroll", loadRateWhenNearViewport);
+        void loadRate();
+      };
 
-      try {
-        const response = await fetch("/api/rates/usd", {
-          signal: controller.signal,
-        });
-
-        if (!response.ok) {
-          throw new Error("Rate request failed");
-        }
-
-        const data = (await response.json()) as { rate: number; date: string };
-
-        setRateState({
-          rate: data.rate,
-          date: data.date,
-          status: "ready",
-        });
-        writeCachedRate(data.rate, data.date);
-      } catch {
-        if (controller.signal.aborted) {
-          return;
-        }
-
-        setRateState({
-          rate: null,
-          date: null,
-          status: "error",
-        });
-      }
+      window.addEventListener("scroll", loadRateWhenNearViewport, { passive: true });
+      return () => window.removeEventListener("scroll", loadRateWhenNearViewport);
     }
 
-    loadRate();
+    const observer = new IntersectionObserverConstructor(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        observer.disconnect();
+        void loadRate();
+      },
+      { rootMargin: "480px 0px" },
+    );
 
-    return () => controller.abort();
-  }, []);
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, [loadRate]);
+
+  useEffect(() => () => rateRequestControllerRef.current?.abort(), []);
 
   useEffect(() => {
     const scrollY = window.scrollY;
@@ -372,6 +407,7 @@ export function Pricing() {
 
   return (
     <section
+      ref={pricingRef}
       id="pricing"
       className={`${sectionStyles.sectionBlock} ${isModalOpen ? styles.pricingModalRootOpen : ""}`}
     >
@@ -401,7 +437,10 @@ export function Pricing() {
             <button
               type="button"
               className={`${styles.currencyButton} ${currency === "USD" ? styles.currencyButtonActive : ""}`}
-              onClick={() => setCurrency("USD")}
+              onClick={() => {
+                setCurrency("USD");
+                void loadRate();
+              }}
               aria-pressed={currency === "USD"}
             >
               USD
