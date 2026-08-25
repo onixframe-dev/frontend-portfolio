@@ -9,6 +9,7 @@
   background-size: 240% 100%;
   -webkit-background-clip: text;
   background-clip: text;
+  -webkit-text-fill-color: transparent;
   text-shadow: 0 0 22px rgba(92, 225, 230, 0.08);
   animation: titleColorFlow 7.5s ease-in-out infinite;
   text-wrap: balance;

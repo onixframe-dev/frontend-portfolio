@@ -25,6 +25,7 @@
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  -webkit-text-fill-color: transparent;
   text-shadow: 0 0 34px rgba(92, 225, 230, 0.08);
   animation: catalogTitleFlow 8s ease-in-out infinite;
 }
