@@ -15,6 +15,7 @@
   --mobile-page-gutter: 20px;
   --mobile-card-radius: 22px;
   --mobile-card-padding: 20px;
+  color-scheme: only dark;
 }
 
 * {
@@ -27,7 +28,6 @@ html {
   max-width: 100%;
   scroll-behavior: smooth;
   font-size: 16px;
-  color-scheme: only dark;
   background: #000 !important;
   forced-color-adjust: none;
   overflow-x: hidden;

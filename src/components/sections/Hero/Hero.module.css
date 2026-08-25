@@ -10,7 +10,7 @@
   isolation: isolate;
   touch-action: pan-y;
   background: #000;
-  box-shadow: 0 0 0 100vmax #000, 0 56px 120px rgba(0, 0, 0, 0.58);
+  box-shadow: 0 56px 120px rgba(0, 0, 0, 0.58);
 }
 
 /* .hero::before {

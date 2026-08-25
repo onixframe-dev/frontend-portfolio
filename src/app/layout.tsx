@@ -70,7 +70,7 @@ export const metadata: Metadata = {
     },
   },
   other: {
-    "color-scheme": "dark only",
+    "color-scheme": "dark",
   },
   icons: {
     icon: "/favicon.svg",
