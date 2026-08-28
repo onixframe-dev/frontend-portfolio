@@ -734,7 +734,9 @@
 }
 @media (max-width: 560px) {
   .pricingHeader h2 {
+    width: 100%;
     font-size: 28px;
+    text-align: center;
   }
 
   .pricingHeader {
