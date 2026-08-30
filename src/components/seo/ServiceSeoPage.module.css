@@ -79,6 +79,7 @@
 .pricingLink {
   position: relative;
   overflow: hidden;
+  width: 194px;
   min-height: 52px;
   padding: 0 28px;
   border-color: rgba(92, 225, 230, 0.22);
