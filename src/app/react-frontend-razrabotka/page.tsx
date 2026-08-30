@@ -82,6 +82,7 @@ export default function ReactFrontendDevelopmentPage() {
         },
       ]}
       structuredData={structuredData}
+      currentServiceHref="/react-frontend-razrabotka"
     />
   );
 }

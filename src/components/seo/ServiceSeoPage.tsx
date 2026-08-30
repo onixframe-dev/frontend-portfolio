@@ -20,9 +20,17 @@ type ServiceSeoPageProps = {
     answer: string;
   }>;
   structuredData: Record<string, unknown>;
+  currentServiceHref: string;
   backHref?: string;
   backLabel?: string;
 };
+
+const serviceLinks = [
+  { href: "/sait-vizitka-dlya-biznesa", label: "Сайт-визитка" },
+  { href: "/react-frontend-razrabotka", label: "React frontend" },
+  { href: "/nextjs-sait-pod-kluch", label: "Next.js под ключ" },
+  { href: "/telegram-zayavki-formy", label: "Telegram-заявки" },
+];
 
 export function ServiceSeoPage({
   eyebrow,
@@ -36,6 +44,7 @@ export function ServiceSeoPage({
   audienceText,
   faq,
   structuredData,
+  currentServiceHref,
   backHref = "/razrabotka-lendinga-belarus",
   backLabel = "К разделу о нас",
 }: ServiceSeoPageProps) {
@@ -50,6 +59,15 @@ export function ServiceSeoPage({
                 <ArrowLeft size={16} />
                 {backLabel}
               </a>
+              <nav className={styles.relatedServices} aria-label="Другие услуги">
+                {serviceLinks
+                  .filter((service) => service.href !== currentServiceHref)
+                  .map((service) => (
+                    <a key={service.href} href={service.href}>
+                      {service.label}
+                    </a>
+                  ))}
+              </nav>
               <p className={styles.eyebrow}>{eyebrow}</p>
               <h1>{title}</h1>
               <p className={styles.lead}>{lead}</p>

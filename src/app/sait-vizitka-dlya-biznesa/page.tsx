@@ -81,6 +81,7 @@ export default function BusinessCardWebsitePage() {
         },
       ]}
       structuredData={structuredData}
+      currentServiceHref="/sait-vizitka-dlya-biznesa"
     />
   );
 }

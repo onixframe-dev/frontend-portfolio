@@ -80,6 +80,7 @@ export default function TelegramFormsPage() {
         },
       ]}
       structuredData={structuredData}
+      currentServiceHref="/telegram-zayavki-formy"
     />
   );
 }

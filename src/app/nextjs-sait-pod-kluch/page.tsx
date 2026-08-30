@@ -82,6 +82,7 @@ export default function NextjsWebsitePage() {
         },
       ]}
       structuredData={structuredData}
+      currentServiceHref="/nextjs-sait-pod-kluch"
     />
   );
 }
