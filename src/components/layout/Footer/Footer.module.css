@@ -200,7 +200,7 @@
 .footerContacts a:hover,
 .footerContacts a:focus-visible {
   color: #fff;
-  transform: translateY(-2px);
+  transform: none;
   outline: none;
 }
 
@@ -267,7 +267,7 @@
 .footerContacts a:hover,
 .footerContacts a:focus-visible {
   color: #fff;
-  transform: translateY(-1px);
+  transform: none;
   outline: none;
 }
 

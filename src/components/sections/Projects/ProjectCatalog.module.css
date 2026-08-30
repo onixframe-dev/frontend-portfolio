@@ -124,7 +124,7 @@
 }
 
 .pageLink:hover {
-  transform: translateY(-2px);
+  transform: none;
   color: #ffffff;
   border-color: transparent;
   background: rgba(12, 41, 46, 0.9);
