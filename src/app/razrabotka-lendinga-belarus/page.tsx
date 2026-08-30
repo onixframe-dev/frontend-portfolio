@@ -33,12 +33,12 @@ export const metadata: Metadata = {
 };
 
 const included = [
-  "адаптивная вёрстка под телефон, планшет и desktop",
-  "структура страницы под услугу, продукт или личный бренд",
-  "форма заявки с отправкой на email или в Telegram",
-  "базовые meta-теги, Open Graph и техническая SEO-структура",
-  "подготовка проекта к публикации на Vercel",
-  "аккуратная структура компонентов и файлов",
+  "Адаптивная вёрстка под телефон, планшет и desktop",
+  "Структура страницы под услугу, продукт или личный бренд",
+  "Форма заявки с отправкой на email или в Telegram",
+  "Базовые meta-теги, Open Graph и техническая SEO-структура",
+  "Подготовка проекта к публикации на Vercel",
+  "Аккуратная структура компонентов и файлов",
 ];
 
 const steps = [
@@ -155,7 +155,7 @@ export default function LandingDevelopmentBelarusPage() {
                 <Button href="/brief" variant="priceFeatured">
                   Заполнить заявку <ArrowRight size={17} />
                 </Button>
-                <Button href="/#pricing" variant="ghost">
+                <Button href="/#pricing" variant="ghost" className={styles.pricingLink}>
                   Смотреть цены
                 </Button>
               </div>
