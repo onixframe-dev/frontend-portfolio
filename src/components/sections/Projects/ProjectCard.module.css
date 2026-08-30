@@ -41,7 +41,7 @@
 }
 
 .projectCard:hover {
-  transform: translateY(-8px);
+  transform: none;
   border-color: transparent;
   background: var(--surface-card-hover);
   box-shadow: 0 7px 20px rgba(124, 92, 255, 0.16), 0 0 10px rgba(124, 92, 255, 0.08);

@@ -87,7 +87,7 @@
     0 18px 42px rgba(0, 0, 0, 0.3),
     0 0 26px rgba(92, 225, 230, 0.16),
     inset 0 1px 0 rgba(255, 255, 255, 0.14);
-  transform: translateY(-4px) scale(1.04);
+  transform: scale(1.04);
 }
 
 .scrollTop:hover::before,

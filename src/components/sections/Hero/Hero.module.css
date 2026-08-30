@@ -135,7 +135,7 @@
 
 .heroButtons a:hover,
 .heroButtons a:focus-visible {
-  transform: translateY(-3px);
+  transform: none;
   border-color: rgba(92, 225, 230, 0.5);
   background: rgba(92, 225, 230, 0.12);
   color: #ffffff;

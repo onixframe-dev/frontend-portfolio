@@ -52,12 +52,12 @@ export default function BusinessCardWebsitePage() {
       duration="от 5 рабочих дней"
       format="по макету, референсам или визуальной концепции"
       included={[
-        "главная структура: первый экран, услуги, преимущества, контакты",
-        "адаптивная вёрстка под телефон, планшет и desktop",
-        "форма заявки с отправкой на email или в Telegram",
-        "базовые meta-теги и Open Graph для ссылок",
-        "подготовка к публикации на Vercel",
-        "аккуратная структура файлов и изображений",
+        "Главная структура: первый экран, услуги, преимущества, контакты",
+        "Адаптивная вёрстка под телефон, планшет и desktop",
+        "Форма заявки с отправкой на email или в Telegram",
+        "Базовые meta-теги и Open Graph для ссылок",
+        "Подготовка к публикации на Vercel",
+        "Аккуратная структура файлов и изображений",
       ]}
       audienceTitle="Для компаний и специалистов, которым нужен простой сайт без лишней сложности"
       audienceText={[
@@ -81,6 +81,7 @@ export default function BusinessCardWebsitePage() {
         },
       ]}
       structuredData={structuredData}
+      currentServiceHref="/sait-vizitka-dlya-biznesa"
     />
   );
 }

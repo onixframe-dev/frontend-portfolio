@@ -32,7 +32,7 @@
 
 .button:hover,
 .button:focus-visible {
-  transform: translateY(-2px);
+  transform: none;
 }
 
 .button:disabled {

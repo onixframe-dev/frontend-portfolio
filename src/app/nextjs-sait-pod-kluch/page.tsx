@@ -53,11 +53,11 @@ export default function NextjsWebsitePage() {
       format="Next.js + TypeScript + Vercel"
       included={[
         "Next.js + TypeScript",
-        "страницы, компоненты и понятная структура проекта",
+        "Страницы, компоненты и понятная структура проекта",
         "SEO-структура, meta-теги, sitemap и robots",
-        "каталог услуг, проектов или кейсов",
-        "форма заявки с отправкой на email или в Telegram",
-        "деплой и подготовка проекта на Vercel",
+        "Каталог услуг, проектов или кейсов",
+        "Форма заявки с отправкой на email или в Telegram",
+        "Деплой и подготовка проекта на Vercel",
       ]}
       audienceTitle="Для сайтов, которые должны не просто выглядеть, а расти дальше"
       audienceText={[
@@ -82,6 +82,7 @@ export default function NextjsWebsitePage() {
         },
       ]}
       structuredData={structuredData}
+      currentServiceHref="/nextjs-sait-pod-kluch"
     />
   );
 }

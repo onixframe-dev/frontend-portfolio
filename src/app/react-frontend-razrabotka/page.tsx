@@ -52,12 +52,12 @@ export default function ReactFrontendDevelopmentPage() {
       duration="от 7 рабочих дней"
       format="React + адаптивная компонентная структура"
       included={[
-        "компонентная структура React",
-        "каталоги, карточки, фильтры или модальные окна",
-        "адаптивная вёрстка под основные экраны",
-        "форма заявки с отправкой на email или в Telegram",
-        "базовые состояния интерфейса и hover-эффекты",
-        "подготовка проекта к деплою на Vercel",
+        "Компонентная структура React",
+        "Каталоги, карточки, фильтры или модальные окна",
+        "Адаптивная вёрстка под основные экраны",
+        "Форма заявки с отправкой на email или в Telegram",
+        "Базовые состояния интерфейса и hover-эффекты",
+        "Подготовка проекта к деплою на Vercel",
       ]}
       audienceTitle="Для проектов, где обычной статичной страницы уже мало"
       audienceText={[
@@ -82,6 +82,7 @@ export default function ReactFrontendDevelopmentPage() {
         },
       ]}
       structuredData={structuredData}
+      currentServiceHref="/react-frontend-razrabotka"
     />
   );
 }
