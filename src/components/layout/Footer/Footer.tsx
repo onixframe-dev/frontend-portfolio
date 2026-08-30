@@ -10,7 +10,7 @@ export function Footer() {
       <div className={styles.footerInner}>
         <div className={styles.footerTop}>
           <div className={styles.footerAbout}>
-            <a href="#top" className={styles.footerBrand}>
+            <a href="/" className={styles.footerBrand}>
               <Image src="/logo.png" alt="OnixFrame logo" className={styles.footerLogo} width={48} height={48} />
               <span className={styles.footerBrandText}>OnixFrame</span>
             </a>
