@@ -57,7 +57,7 @@ export function ServiceSeoPage({
                 <Button href="/brief" variant="priceFeatured">
                   Заполнить заявку <ArrowRight size={17} />
                 </Button>
-                <Button href="/#pricing" variant="ghost">
+                <Button href="/#pricing" variant="ghost" className={styles.pricingLink}>
                   Смотреть цены
                 </Button>
               </div>
